@@ -1,0 +1,45 @@
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>Our First Vue App</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+</head>
+<body>
+  <div id="appl">
+    <ul>
+      <li v-for="product in products">
+        [{{ product.stock }}] {{ product.name }}: ${{ product.price }}
+        <span v-if="product.stock === 0">--- OUT OF STOCK</span>
+        <button v-else v-on:click="product.stock -= 1">Sell</button>
+      </li>
+    </ul>
+    <h2>Our inventory is worth: ${{ inventoryCost }}</h2>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#appl',
+      data: {
+        products: []
+      },
+      computed: {
+        inventoryCost() {
+          let totalCost = 0
+          for (let i = 0; i < this.products.length; i++) {
+            totalCost += (this.products[i].stock * this.products[i].price)
+          }
+          return totalCost
+        }
+      },
+      created() {
+        fetch('https://api.myjson.com/bins/184sbc')
+          .then(response => response.json())
+          .then(json => {
+            this.products = json.products
+          })
+      }
+    })
+  </script>
+</body>
+</html>
