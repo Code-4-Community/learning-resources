@@ -1,0 +1,19 @@
+site_name: Jumpstart Learning Resources
+repo_url: https://github.com/Code-4-Community/Teaching-Resources
+
+theme:
+  name: material
+  favicon: "img/favicon.ico"
+  features:
+    - tabs
+
+nav:
+  - Home: index.md
+  - Guides:
+      - Home: guides/index.md
+      - Send a POST request: guides/postrequest.md
+  - Workshops (2019):
+      - Home: workshops2019/index.md
+      - Source Control with Git: workshops2019/git/index.md
+      - Frontend Web Development and Vue.js: workshops2019/frontend/index.md
+      - Intro To Backend Development and APIs: workshops2019/backend/index.md
