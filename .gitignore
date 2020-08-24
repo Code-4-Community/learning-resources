@@ -1,0 +1,7 @@
+
+# IDE/OS Files
+.idea/
+.DS_Store
+
+# Build Files
+site/
