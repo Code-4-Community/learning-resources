@@ -22,7 +22,7 @@
     - Exceptions
   - Mocking objects with Mockito
     - Mocking behavior and returns
-    - Spying on objects
+    - Verification
     - Argument Captors
     - Show the test created for the backend api module
     
@@ -88,9 +88,7 @@ annotations
 
 Check out the [JUnit 5 Documentation page](https://junit.org/junit5/docs/current/user-guide/).
 
-#### Testing in JUnit
-
-##### Basic Tests
+#### Basic Tests
 
 Most of the time, a test is started with the `@Test` annotation, though. Then it will perform some actions, do a couple
 of assertions, and end. If it fails, either Maven or the IntelliJ test window will let you know which tests failed and 
@@ -117,7 +115,7 @@ To run these tests once they've been added, you can just run `mvn` or `mvn insta
 The tests will be found and run automatically for you, since Maven is set up to look for IntelliJ tests.
 If you'd prefer to do it in IntelliJ, all you have to do is hit the green play button, and choose Run or Debug.
 
-##### BeforeEach, BeforeAll, AfterEach, and AfterAll
+#### BeforeEach, BeforeAll, AfterEach, and AfterAll
 
 JUnit provides `@BeforeEach`, `@BeforeAll`, `@AfterEach`, and `@AfterAll` annotations. These allow you to perform 
 methods before/after every/each test if it helps to set up or clean up tests without you having to call them manually.
@@ -134,7 +132,7 @@ public void setup() {
 
 The above code will then run before each test in the test suite and set up the processor and database for you.
 
-##### Parameterized Tests
+#### Parameterized Tests
 
 As said previously, you can also run multiple tests using different input parameters by using the `@ParameterizedTest` 
 annotation. 
@@ -237,7 +235,7 @@ public class PostsRouter implements IRouter {
 
 And this is how we override that behavior in the test class:
 ```java
-public class TestPostsRouter {
+public class PostsRouterTest {
     ...
 
     // Create the new externals, which overides the old behavior.
@@ -253,5 +251,179 @@ public class TestPostsRouter {
         this.processor = new Processor(this.db, new TestExterns());
         ...
     }
+}
+```
+
+#### Exceptions
+
+When testing exceptions, JUnit provides methods and annotations to help, but we find it more helpful to use the 
+try/catch way of doing things. We think it allows you to test things about the exception better.
+
+Example:
+```java 
+try {
+    thingThatThrowsException();
+    fail(); // fail this test if we make it this far
+}
+catch (TheExpectedExceptionType e) {
+    assertEquals("My exception message", e.getMessage());
+    assertEquals(otherThingsAboutException, e.doSomething());
+}
+```
+
+### Testing Using Mockito
+
+Mockito is a really useful library for mocking the interactions between objects that you don't have control over
+(like dependencies). It lets you create fake versions of objects which you have complete control over, and it even lets
+you verify things about how it was called.
+
+If you're interested in learning more about Mockito, [here is the 
+documentation](http://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html). It even lets you do some 
+really cool things like `spy()`, where you can pass in an existing object, have it do _most_ of the things it usually 
+does, and then just override/verify/mock what you want!
+
+#### Mocking an Object and Overriding Returns
+
+To mock an object, all you have to do is call (the static method) `mock(Thing.class)`. By default, it will return null 
+for every non-void method you call, but you can override that using `thenReturn`, `thenThrow`, `then` (`thenAnswer`, 
+allows you to do custom stuff), or `doReturn`, `doThrow`, `doAnswer`, `doNothing`, `doCallRealMethod` in the case of 
+void returns. You can also chain them together to have it return/throw/do things one after the other in the order 
+they're called.
+
+Here are examples of the `then...` and `do...` styles of mocking:
+```java 
+MyCustomObject obj = mock(MyCustomObject.class); // can be done to interfaces too!
+
+when(obj.myCustomMethod()).thenReturn("Hello World!");
+
+String res = obj.myCustomMethod() // Returns "Hello World!");
+
+assertEquals("Hello World!", res);
+```
+
+```java 
+MyCustomObject obj = mock(MyCustomObject.class); // can be done to interfaces too!
+
+doReturn("Hello World!").when(obj).myCustomMethod());
+
+String res = obj.myCustomMethod() // Returns "Hello World!");
+
+assertEquals("Hello World!", res);
+```
+
+If you're interested in having the thing you want to do be done only when certain parameters are entered, then you can 
+do that with argument matchers. You can do things like `any()` for anything, `anyInt()` for any integer, 
+`any(MyClass.class)` for that specific class, or even just enter your own number/string for specific entries.
+The result you specify will only be returned/done when that matcher is satisfied. Note: if there's another condition
+you need satisfied, you can also create your own matcher if the default ones aren't enough (I've never done that though,
+they're usually good enough).
+
+Example:
+```java 
+when(myMock.do(anyInt()).thenReturn(5);
+
+myMock.do(5); // returns 5
+myMock.do(-1); // returns 5
+myMock.do(anyInt()); // you can't do this though, it only works in the "when" or "do..." methods
+
+when(myMock.other(any(Other.class)).thenReturn(5);
+myMock.other(myOther); // returns 5
+myMock.other(notMyOther); // returns null, we didn't specify what to do here
+```
+
+#### Verification
+
+You can also verify that methods on your mock were called.
+
+Example:
+```java 
+Thing thing = mock(Thing.class);
+thing.callSomeMethod(5);
+
+// This will throw an exception if it wasn't called.
+verify(thing).callSomeMethod(any()); // this also takes argument matchers
+verify(thing).callSomeMethod(6); // this will throw an exception
+```
+
+By default, the above `verify` will only pass if the method was called _exactly_ once. To verify that it wasn't called,
+you can use `verify(thing, never())`. To verify that it was called exactly 5 times, you can use 
+`verify(thing, times(5))`. To verify that it was called at least/most 2 times, you can use 
+`verify(thing, atLeast(2))` or `verify(thing, atMost(2))`.
+
+#### ArgumentCaptors
+
+An `ArgumentCaptor` allows you to capture the argument that was used in a method on a mock. This is usually done
+so that you can perform more exact tests on your mock. 
+
+Example:
+```java 
+// Run your test prerequisites.
+
+// Create your ArgumentCaptor.
+ArgumentCaptor<SomeType> arg = ArgumentCaptor.forClass(SomeType.class);
+
+verify(mock).doSomething(arg.capture());
+
+// Then you can test things about your arg.
+assertEquals("Hey!", arg.getMessage());
+```
+
+#### A Full Mockito Example
+
+Because this topic can be pretty complicated, we'll be providing an extensive example below. Please note, we don't 
+expect you to actually write these tests. There's not much to test with Mockito (unless you want to mock the 
+database interfaces). Writing tests for the router is also a bit much, so Mockito is included in this project more as an
+example of what is available to you if you end up doing more projects in Java. 
+
+Example from `PostsRouterTest`:
+```java
+@Test
+public void testGetPosts() {
+  // Set up for the get route specifically.
+  Route getRoute = mock(Route.class);
+  when(vertxRouter.get("/")).thenReturn(getRoute);
+
+  router.initializeRouter(vertx);
+
+  // Just to show you one, this is how we would test something (using an any...) that might be
+  // called
+  // more than once. There's also an atMostOnce(), times(<some number>), and a few other counting
+  // params.
+  verify(vertxRouter, atLeastOnce()).get(anyString());
+  // If it's just once you're expecting, you can leave it off though.
+  verify(vertxRouter).get("/");
+
+  // Here's how to capture an argument used. We can then test things about it.
+  ArgumentCaptor<Handler<RoutingContext>> handlerArgumentCaptor =
+      ArgumentCaptor.forClass(Handler.class);
+  verify(getRoute).handler(handlerArgumentCaptor.capture());
+
+  // Here is the 'private' PostsRouter::handleGetPostsRoute handler. We can now test stuff about
+  // it.
+  Handler<RoutingContext> handler = handlerArgumentCaptor.getValue();
+
+  // But first we need to prepare for the call to PostsRouter::getPosts.
+  when(processor.getPosts()).thenReturn(generatePosts(5));
+
+  // And run the handler.
+  handler.handle(ctx);
+
+  // Finally, get the encoded String using an ArgumentCaptor, and make sure it's what we're
+  // expecting.
+  // We could also test the status code and headers, but we're not too worried about those.
+  ArgumentCaptor<String> encodedResponse = ArgumentCaptor.forClass(String.class);
+  verify(res).end(encodedResponse.capture());
+  assertEquals(
+      "{\"posts\":[{\"id\":0,\"author\":\"author 0\",\"dateCreated\":\"today's date\","
+          + "\"title\":\"title\",\"clapCount\":500,\"preview\":\"this is a body\"},"
+          + "{\"id\":1,\"author\":\"author 1\",\"dateCreated\":\"today's date\",\"title\":\"title\","
+          + "\"clapCount\":500,\"preview\":\"this is a body\"},"
+          + "{\"id\":2,\"author\":\"author 2\",\"dateCreated\":\"today's date\",\"title\":\"title\","
+          + "\"clapCount\":500,\"preview\":\"this is a body\"},{\"id\":3,\"author\":"
+          + "\"author 3\",\"dateCreated\":\"today's date\",\"title\":\"title\",\"clapCount\":500,"
+          + "\"preview\":\"this is a body\"},{\"id\":4,\"author\":\"author 4\","
+          + "\"dateCreated\":\"today's date\",\"title\":\"title\",\"clapCount\":500,\"preview\":"
+          + "\"this is a body\"}]}",
+      encodedResponse.getValue());
 }
 ```
