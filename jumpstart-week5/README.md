@@ -29,13 +29,11 @@
 2. DTOs and Marshalling/Unmarshalling
   - What are DTOs
     - What are they used for
-    - Why are they necessary
   - Marshalling/Unmarshalling
-    - Validating unmarshalled objects/why it's necessary
+  - Validating unmarshalled objects/why it's necessary
  
 3. Other Request Types
-  - POST, PUT, and DELETE
-  - What are they commonly used for
+  - POST, PUT, PATCH, and DELETE: what are they commonly used for
   - Other types exist, but we won't cover them
   
 ## Testing
@@ -427,3 +425,112 @@ public void testGetPosts() {
       encodedResponse.getValue());
 }
 ```
+
+## DTOs and Marshalling/Unmarshalling
+
+### What are DTOs
+
+DTOs, or Data Transfer Objects, are objects whose only purpose is to contain and transfer data around. They usually
+only have methods for getting and setting data. Sometimes serialization and deserialization is included, but we'll 
+mostly be focusing on the getting and setting part. 
+
+Her is an example of a DTO:
+```java 
+public class SampleDTO {
+  private String name;
+  private Integer id; // Note how we're using wrapper classes. DTOs don't have values set, they may end up being null.
+
+  // For Unmarshalling (if your object will be unmarshalled ever). 
+  private SampleDTO { }
+
+  public SampleDTO(String name, Integer id) {
+    this.name = name;
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+  ...
+```
+
+They're especially useful with REST requests and APIs because they can hold data from your incoming and outgoing 
+requests.
+
+### Marshalling/Unmarshalling
+
+Marshalling and Unmarshalling is the process of transforming an object instance into a serialized representation  
+of the object or vice versa. For our purposes, it's the process of turning a JSON into one of our DTOs.
+There are a couple of libraries that are really useful for this, namely [Jackson](https://github.com/FasterXML/jackson)
+and Vertx's [JsonObject](https://vertx.io/docs/apidocs/io/vertx/core/json/JsonObject.html) (what we'll be using 
+in this project). Most marshallers/unmarshallers expect the names of the JSON and the class you're working with to 
+match.
+
+The following examples use the `SampleDTO` from above.
+
+An example of Marshalling:
+```java 
+SampleDTO dto = new SampleDTO("me", 1);
+
+String json = JsonObject.mapFrom(dto).encode(); // returns "{'name':'me','id':1}"
+```
+
+An example of Unmarshalling:
+```java
+String input = "{'name':'me','id':1'}";
+
+SampleDTO dto = new JsonObject(input).mapTo(SampleDTO.class); // returns the unmarshalled object
+```
+
+Note: In the `SampleDTO` class above, there is an empty, private constructor. This is required by your unmarshallers
+(as far as we're aware, both JsonObject and Jackson require it) to instantiate a class before using 
+[introspection](https://www.oracle.com/technical-resources/articles/java/javareflection.html) to find all of the 
+required fields and load them into the class.
+
+### Validating Unmarshalled Objects
+
+After unmarshalling an object, it's important that you validate it to make sure that the fields have valid data. This
+can be just making sure that integers have a positive values, no fields are null, strings aren't empty, or whatever
+other basic data validation checks you need to perform. This needs to be done because users of your platform can't be
+trusted to enter good data. It's always a good idea to make sure the data you are provided from a public facing API is 
+what you're expecting, or you can find errors popping up in your projects. 
+
+To make sure your DTOs have safe data inside, a `validate()` method is usually created in your DTOs (and it's
+not a bad idea to put that into an interface which your DTOs will inherit). This method will be called after 
+unmarshalling (or marshalling if you're worried about returning bad data to the front end) to check the DTO's fields and
+validate them.
+
+## Other Request Types
+
+Last week, we learned about the `GET` request type. There are a lot of other common request types too.
+
+### Common Request Types
+
+The most common request types (other than `GET`) are `POST`, `PUT`, `PATCH`, and `DELETE`. When thinking in terms
+of CRUD (create, read, update, delete), this is what those types represent:
+
+| Method | CRUD type | What it does |
+| :---   | :---      | :-----       |
+| GET    | Read      | Only _get_ information |
+| POST   | Create    | Create new information |
+| PUT    | Replace (Update) | Replace currently existing information |
+| PATCH  | Modify (Update) | Modify currently existing information |
+| DELETE | Delete | Delete information |
+
+Requests can also have a request body (`GET` requests usually have all relevant information in its headers or path).
+It's common that request bodies are in JSON format, but there are other formats that can be used too. `GET` requests 
+are also the requests that are used in browsers when typing in a URL, while the other types may be used 
+when you submit a form/log in or perform other operations. Because of this, `POST`, `PUT`, `PATCH`, and `DELETE` methods
+are more closely related to each other than to `GET` requests.
+
+See the [comparison between GET and POST requests](https://www.w3schools.com/tags/ref_httpmethods.asp).
+
+### Other Request Types
+
+There are many other request types that are used too. In practice, though, you'll probably never see them. The most 
+commonly used requests are `GET` and `POST`, followed by `PUT`, `PATCH`, and `DELETE`.
+MDN has a list of [other request types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) if you're interested.
