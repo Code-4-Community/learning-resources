@@ -1,4 +1,4 @@
-# Week 5: Advanced Backend and Testing.
+# Week 5: Advanced Backend and Testing
 
 ## Agenda
 - Backend Basics Cont.
@@ -16,9 +16,9 @@
   - Types of tests
   - Basic testing with JUnit
     - Show basic test examples
-    - Before/BeforeAll annotations
+    - `BeforeEach`/`BeforeAll` annotations
     - Parameterized tests
-    - Externals Class
+    - `Externals` Class
     - Exceptions
   - Mocking objects with Mockito
     - Mocking behavior and returns
@@ -33,8 +33,7 @@
   - Validating unmarshalled objects/why it's necessary
  
 3. Other Request Types
-  - POST, PUT, PATCH, and DELETE: what are they commonly used for
-  - Other types exist, but we won't cover them
+  - `POST`, `PUT`, `PATCH`, and `DELETE`: what are they commonly used for
   
 ## Testing
 
@@ -44,11 +43,11 @@ As I'm sure you can tell from the name, testing is the method used to help prove
 it is expected to. If you haven't encountered tests before, whether that's because you're new to development or just never thought 
 that tests were important enough to spend time on, just know that they're extremely important in helping you 
 diagnose issues in your code (if you write meaningful tests) before releases or after making significant changes. 
-For smaller projects, they have less of an impact (even if they're still helpful), but as your project grows, and as
+For smaller projects, they have less of an impact, even if they're still helpful. As your project grows, however, and as
 you work with more people, they'll save you a lot of time in tracking down and preventing a lot of bugs that come from
-unexpected interactions or mistakes that were made in trying to solve the problem.
+unexpected interactions or mistakes that were made in trying to solve a problem.
 
-In the software development side of things, there are around seven tests that you'll probably interact with throughout 
+In the software development side of things, there are around seven types of tests that you'll probably interact with throughout 
 your career, and different organizations may combine or rename a lot of these. We're calling them 'unit', 'integration', 
 'functional', 'end-to-end', 'acceptance', 'performance', and 'smoke' tests.
 
@@ -60,9 +59,10 @@ different pieces of the modules can be checked to verify that the system is work
 logic when testing, so testing expected behavior, while integration tests are there to make sure multiple modules
 can work together as expected. One example is connecting to a database (integration) vs. getting specific values from 
 the database (functional).
-- *End-To-End* tests are test which try to act as a user and go through different workflows to ensure large
+- *End-To-End* tests are try to act as a user and go through different workflows to ensure large
 parts of the application are working as expected.
-- *Acceptance* tests verify business requirements (and sometime performance).
+- *Acceptance* tests verify business requirements (and sometime performance) in a formal way to determine if business 
+goals were met.
 - *Performance* tests measure the performance of the system under heavy load. They determine speed, reliability,
 stability, availability, and other attributes of the application when thoroughly stressed.
 - *Smoke* tests check basic functionality quickly to prove that major systems are working as expected.
@@ -106,8 +106,8 @@ public void testUsingAssertEquals() {
 
 Tests are usually placed in a directory in <module>/src/test/, which mirrors the <module>/src/main/ directory.
 Test classes are placed in the same package (within the test directory) of the class they are testing.
-For example, the `PostsProcessor` class in service/src/main/java/com.codeforcommunity/processor/ will be tested by a 
-class named something like `PostsProcessorTest` in the service/src/test/java/com.codeforcommunity/processor/ directory.
+For example, the `PostsProcessor` class in service/src/**main**/java/com.codeforcommunity/processor/ will be tested by a 
+class named something like `PostsProcessorTest` in the service/src/**test**/java/com.codeforcommunity/processor/ directory.
 
 To run these tests once they've been added, you can just run `mvn` or `mvn install` if you want to do it through Maven.
 The tests will be found and run automatically for you, since Maven is set up to look for IntelliJ tests.
@@ -117,7 +117,8 @@ If you'd prefer to do it in IntelliJ, all you have to do is hit the green play b
 
 JUnit provides `@BeforeEach`, `@BeforeAll`, `@AfterEach`, and `@AfterAll` annotations. These allow you to perform 
 methods before/after every/each test if it helps to set up or clean up tests without you having to call them manually.
-Note: for the "Each" methods, the methods have to be static to work.
+
+>Note: for the "All" methods, the methods have to be static to work.
 
 Here is an example:
 ```java
@@ -141,9 +142,11 @@ array type), and the combination `@NullAndEmptySource`. Those can be combined wi
 alone if that suits your needs better) to test with a simple set of values.
 
 The `@ValueSource` annotation allows you to provide a list of values of any atomic type (short, byte, int, long, float,
-double, char, boolean), as well as String and `Class` types. Note: the input to the annotation must be the pluralized
-name of the type you're inputting. As an example, a list of integer inputs would be 
-`@ValueSource(ints = {1, 2, 3, ...})`, and booleans would be `@ValueSource(booleans = {true, false})`.
+double, char, boolean), as well as String and `Class` types. 
+
+>Note: the input to the annotation must be the pluralized name of the type you're inputting. As an example, a list of 
+>integer inputs would be `@ValueSource(ints = {1, 2, 3, ...})`, and booleans would 
+>be `@ValueSource(booleans = {true, false})`.
 
 The `@EnumSource` conveniently provides all sub-types of a provided enum class.
 
@@ -179,10 +182,10 @@ object which we want to supply for testing purposes, we need a way to substitute
 An `Externals` class (sometimes abbreviated to `externs`) can allow us to do that. We can define a 
 `public static class Externals` as a nested class in `PostsRouter`, which has a method 
 `public Router getRouter(Vertx vertx)`, which we'll use to do so. In the default `Externals` (the one in `PostsRouter`), 
-for now we'll just have that single `getRouter` method. Then, in our test class,
+we'll start out just having that single `getRouter` method. Then, in our test class,
 we'll extend that `Externals` class with a new `TestExternals` class, and override the `getRouter` method to have it 
 return our custom router object. This can be applied in many different ways for times where you need to override 
-behavior in dependencies which is hard to test with.
+behavior in dependencies needed for testing.
 
 This is what our `PostsRouter` looked like initially:
 ```java
@@ -211,6 +214,7 @@ public class PostsRouter implements IRouter {
     // The basic constructor.
     public PostsRouter(IPostsProcessor processor) {
         this.processor = processor;
+        this.externs = new Externals();
     }
 
     // The override constructor.
@@ -265,7 +269,7 @@ try {
 }
 catch (TheExpectedExceptionType e) {
     assertEquals("My exception message", e.getMessage());
-    assertEquals(otherThingsAboutException, e.doSomething());
+    assertEquals(otherThingsAboutExceptionIfYouWant, e.doSomething());
 }
 ```
 
@@ -282,7 +286,8 @@ does, and then just override/verify/mock what you want!
 
 #### Mocking an Object and Overriding Returns
 
-To mock an object, all you have to do is call (the static method) `mock(Thing.class)`. By default, it will return null 
+To mock an object, all you have to do is call (the static method) `mock(Thing.class)`, which will return a fake
+instance of that `Thing` class/interface. By default, it will return null 
 for every non-void method you call, but you can override that using `thenReturn`, `thenThrow`, `then` (`thenAnswer`, 
 allows you to do custom stuff), or `doReturn`, `doThrow`, `doAnswer`, `doNothing`, `doCallRealMethod` in the case of 
 void returns. You can also chain them together to have it return/throw/do things one after the other in the order 
@@ -312,9 +317,10 @@ assertEquals("Hello World!", res);
 If you're interested in having the thing you want to do be done only when certain parameters are entered, then you can 
 do that with argument matchers. You can do things like `any()` for anything, `anyInt()` for any integer, 
 `any(MyClass.class)` for that specific class, or even just enter your own number/string for specific entries.
-The result you specify will only be returned/done when that matcher is satisfied. Note: if there's another condition
-you need satisfied, you can also create your own matcher if the default ones aren't enough (I've never done that though,
-they're usually good enough).
+The result you specify will only be returned/done when that matcher is satisfied. 
+
+>Note: if there's another condition you need satisfied, you can also create your own matcher if the default ones aren't 
+>enough (I've never done that though, the default ones are usually good enough).
 
 Example:
 ```java 
@@ -323,6 +329,7 @@ when(myMock.do(anyInt()).thenReturn(5);
 myMock.do(5); // returns 5
 myMock.do(-1); // returns 5
 myMock.do(anyInt()); // you can't do this though, it only works in the "when" or "do..." methods
+// This is because you're actually calling the method (or the mocked version), so you need to pass in a real value
 
 when(myMock.other(any(Other.class)).thenReturn(5);
 myMock.other(myOther); // returns 5
@@ -346,7 +353,8 @@ verify(thing).callSomeMethod(6); // this will throw an exception
 By default, the above `verify` will only pass if the method was called _exactly_ once. To verify that it wasn't called,
 you can use `verify(thing, never())`. To verify that it was called exactly 5 times, you can use 
 `verify(thing, times(5))`. To verify that it was called at least/most 2 times, you can use 
-`verify(thing, atLeast(2))` or `verify(thing, atMost(2))`.
+`verify(thing, atLeast(2))` or `verify(thing, atMost(2))`. There are other call count matchers available in the Mockito
+documentation.
 
 #### ArgumentCaptors
 
@@ -369,8 +377,9 @@ assertEquals("Hey!", arg.getMessage());
 #### A Full Mockito Example
 
 Because this topic can be pretty complicated, we'll be providing an extensive example below. Please note, we don't 
-expect you to actually write these tests. There's not much to test with Mockito (unless you want to mock the 
-database interfaces). Writing tests for the router is also a bit much, so Mockito is included in this project more as an
+expect you to actually write these tests (you can if you want though). There's not much to test with Mockito on this 
+project (unless you want to mock the 
+database interfaces as an exercise). Writing tests for the router is also a bit much, so Mockito is included in this project more as an
 example of what is available to you if you end up doing more projects in Java. 
 
 Example from `PostsRouterTest`:
@@ -455,6 +464,14 @@ public class SampleDTO {
   public String getName() {
     return this.name;
   }
+
+  // Sometimes this is included for making sure the object is valid (see below, really only done on incoming requests).
+  public void validate() {
+    if (name == null) {
+      throw ...
+    }
+    ...
+  }
   ...
 ```
 
@@ -486,10 +503,10 @@ String input = "{'name':'me','id':1'}";
 SampleDTO dto = new JsonObject(input).mapTo(SampleDTO.class); // returns the unmarshalled object
 ```
 
-Note: In the `SampleDTO` class above, there is an empty, private constructor. This is required by your unmarshallers
-(as far as we're aware, both JsonObject and Jackson require it) to instantiate a class before using 
-[introspection](https://www.oracle.com/technical-resources/articles/java/javareflection.html) to find all of the 
-required fields and load them into the class.
+>Note: In the `SampleDTO` class above, there is an empty, private constructor. This is required by your unmarshallers
+>(as far as we're aware, both JsonObject and Jackson require it) to instantiate a class before using 
+>[introspection/reflection](https://www.oracle.com/technical-resources/articles/java/javareflection.html) to find all of 
+>the required fields and load them into the class.
 
 ### Validating Unmarshalled Objects
 
@@ -528,6 +545,23 @@ when you submit a form/log in or perform other operations. Because of this, `POS
 are more closely related to each other than to `GET` requests.
 
 See the [comparison between GET and POST requests](https://www.w3schools.com/tags/ref_httpmethods.asp).
+
+On the backend side, to create a route for one of those other method types, you just substitute `router.get()` for
+the request method you want to use. 
+
+Examples:
+```java 
+Route route = router.post("/post/route");
+```
+```java 
+Route route = router.put("/put/route");
+```
+```java 
+Route route = router.patch("/patch/route");
+```
+```java 
+Route route = router.delete("/delete/route");
+```
 
 ### Other Request Types
 
