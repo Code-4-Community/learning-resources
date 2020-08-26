@@ -33,10 +33,10 @@
     - `DEFAULT`
   - Creating a Table
   - Query structure
-    - `INSERT` statements
-    - `SELECT` statements
-    - `UPDATE` statements
-    - `DELETE` statements
+    - The `INSERT` statement
+    - The `SELECT` statement
+    - The `UPDATE` statement
+    - The `DELETE` statement
 2. Backend + DB Connection
   - JDBC and Working with the DB in Java
     - Properties Files
@@ -55,14 +55,14 @@ now.
 
 ### Excel Sheets to Database Tables
 
-When you think of Excel, you think of a bunch of rows and columns which make up a sheet. In terms of DBs, each table is
-like a separate sheet containing pretty uniform data. Each column (the up/down ones) acts like a separate field. You
-specify a datatype and name for your columns, and then as data gets entered, rows (the long left/right) ones get 
-created, read, updated, and deleted (remember CRUD). One thing to note is that in relational databases, unlike Excel,
-you don't have an unlimited amount of columns that can be automatically added. When you create your table, it has a 
-set structure, meaning you can only add/remove/update columns by changing the structure of the table. You can, however,
-add an unlimited number of rows in theory, though you'll run out of space and your queries will start to slow down after
-a while. 
+When you think of Excel, you think of a bunch of rows/entries and columns/fields which make up a sheet. In terms of DBs, 
+each table is like a separate sheet containing pretty uniform data. Each column (the up/down ones) acts like a separate 
+field. You specify a datatype and name for your columns, and then as data gets entered, rows (the long left/right) ones 
+get created, read, updated, and deleted (remember CRUD). One thing to note is that in relational databases, unlike 
+Excel, you don't have an unlimited amount of columns that can be automatically added. When you create your table, it has 
+a set structure, meaning you can only add/remove/update columns by changing the structure of the table. You can, 
+however, add an unlimited number of rows in theory, though you'll run out of space and your queries will start to slow 
+down after a while. 
 
 Here's a diagram of what a table can look like:
 
@@ -153,7 +153,7 @@ are a few of the common ones (some that you may need soon too!).
 
 The `PRIMARY KEY` modifier declares a column or combination of columns as the ID for a given row. The database also uses
 a `PRIMARY KEY` to speed up some search functions that use those fields (see Indexes if you're interested TODO GET LINK FOR THIS). If used, all primary 
-keys must be unique on the given table.
+keys must be unique on the given table. This column is also not nullable.
 
 #### NOT NULL
 
@@ -173,4 +173,62 @@ The `DEFAULT` modifier lets you specify a default value for this column if nothi
 
 ### Creating a Table
 
+Creating a table follows a simple formula. Declare the table and add all columns by stating the column name, data type,
+and any modifiers if applicable. If you have any constraints (we'll cover that in a later lesson), then those get added
+at the bottom. Note: the spacing we use where each statement is lined up is used for readability, you don't have to do 
+it if you don't want to.
 
+Example of a table:
+```sql
+CREATE TABLE people (
+-- Declare an ID as a serial with a primary key.
+    id          SERIAL          PRIMARY KEY,
+-- Create a name column with a max size of 50 characters which cannot be null (but it can be "").
+    name        VARCHAR(50)     NOT NULL,
+-- Create a bio column which allows an unlimited size body of text. This is nullable.
+    bio         TEXT,
+    age         INT             NOT NULL,
+-- Create a timestamp which is automatically set using the built-in function "CURRENT_TIMESTAMP"
+    signup_date TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
+-- Notice how this is closed with a semicolon. If this is run in a script with following statements, it will fail 
+-- without this.
+);
+```
+
+### Query Structure
+
+Now that you know how to create a table, we'll go through how to CRUD data on that table. Similar to how there's a 
+formula for creating a table, there are formulae for the other data manipulation tools.
+
+#### The INSERT Statement
+
+The `INSERT` statement is the statement used for creating new data (**C**RUD). This is used whenever you want to enter 
+new data into your table. It has this basic structure. Note: the indentation is also for readability. We're starting a 
+new statement normally, and then the rest of the lines for the same statement use a hanging indent.
+
+Example of insert statements:
+```sql
+-- Tell the DB you're inserting data into the specific table.
+INSERT INTO table_name VALUES 
+-- Insert data into every column in the order the columns appear in the structure.
+    (values, for, every, column, in, table, structrue, order), 
+-- Add commas at the end of the groups to add more than one row. Otherwise just terminate the first one with a ";".
+    (more, values, ...), 
+    ...;
+
+-- Another way of inserting into tables where you insert into only the columns you want (columns you leave out will just
+-- get null or its default value) in the order you want.
+INSERT INTO other_table_name (columns, you, want, to, supply) VALUES
+    (columns, you, want, to supply),
+    (null, "hello", 5, "2020-08-26 10:20:00.918963-07");
+```
+
+#### The SELECT Statement
+
+The `SELECT` statement is the statement used for reading data that already exists (C**R**UD). This is probably the most 
+commonly used SQL statement, and we hope that you'll be pretty used to it by the end.
+
+Example of a select statement:
+```sql
+SELECT columns, by, name, or, just, *
+```
