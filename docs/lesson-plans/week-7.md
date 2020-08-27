@@ -122,13 +122,21 @@ length generally won't be longer than a certain length should be stored as that.
 
 #### INTEGER/BIGINTEGER
 
-The `INTEGER` or `INT` type is an integer with min/max values of TODO FIND MIN/MAX VALUES. The `BIGINTEGER`/`BIGINT`
-is an integer value with extended min/max values of TODO FIND MIN/MAX VALUES.
+The `INTEGER` or `INT` type is an integer with a range of [-2147483648, 2147483647]. The `BIGINTEGER`/`BIGINT`
+is an integer value with an extended range of [-9223372036854775808, 9223372036854775807] (wow that was terrible to type
+out). 
 
 #### DECIMAL
 
 The `DECIMAL` type is similar to a double/float in other programming languages. You can usually specify the precision
-of the column by writing it like this: `DECIMAL(19, 2)` TODO MAKE SURE THIS IS RIGHT AND EXPLAIN WHAT "19, 2" MEANS. 
+and scale of the column by writing it like this: `DECIMAL(19, 2)`. 
+
+**Precision** defines the total count of significant digits in the number (total number of digits on *both sides* of the
+decimal point).
+**Scale** defines the count of digits to the right of the decimal.
+
+The range of this data type is *up to 131072 digits before the decimal point; up to 16383 digits after the decimal 
+point*.
 
 #### TIMESTAMP
 
@@ -142,7 +150,14 @@ instead (they are the same thing).
 
 #### ENUM
 
-The `ENUM` type allows you to specify a small set of possible values for a column. TODO FIND MORE ABOUT ENUMS
+The `ENUM` type allows you to specify a small set of possible values for a column. In PostgreSQL, enums are created as
+a new datatype and then used in tables afterward. In other DB management systems, enums are usually just written as 
+you're declaring a column type.
+
+Here's an example of creating an enum type, which is shown used in a table later on:
+```sql
+CREATE TYPE personality AS ENUM ('nice', 'mean', 'neither');
+```
 
 ### Column Modifiers
 
@@ -152,7 +167,8 @@ are a few of the common ones (some that you may need soon too!).
 #### PRIMARY KEY
 
 The `PRIMARY KEY` modifier declares a column or combination of columns as the ID for a given row. The database also uses
-a `PRIMARY KEY` to speed up some search functions that use those fields (see Indexes if you're interested TODO GET LINK FOR THIS). If used, all primary 
+a `PRIMARY KEY` to speed up some search functions that use those fields (see 
+[Indexes](https://www.postgresql.org/docs/9.1/indexes.html) if you're interested ). If used, all primary 
 keys must be unique on the given table. This column is also not nullable.
 
 #### NOT NULL
@@ -219,6 +235,8 @@ CREATE TABLE people (
     age         INT             NOT NULL,
 -- Create a timestamp which is automatically set using the built-in function "CURRENT_TIMESTAMP"
     signup_date TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
+-- An example of how an enum is used (see the ENUM section above).
+    personality PERSONALITY
 -- Notice how this is closed with a semicolon. If this is run in a script with following statements, it will fail 
 -- without this.
 );
