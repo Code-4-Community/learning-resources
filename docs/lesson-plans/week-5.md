@@ -32,7 +32,7 @@
   - Marshalling/Unmarshalling
   - Validating unmarshalled objects/why it's necessary
  
-3. Other Request Types
+3. New Request Types
   - `POST`, `PUT`, `PATCH`, and `DELETE`: what are they commonly used for
   
 ## Testing
@@ -521,7 +521,7 @@ not a bad idea to put that into an interface which your DTOs will inherit). This
 unmarshalling (or marshalling if you're worried about returning bad data to the front end) to check the DTO's fields and
 validate them.
 
-## Other Request Types
+## New Request Types
 
 Last week, we learned about the `GET` request type. There are a lot of other common request types too.
 

@@ -9,6 +9,9 @@ theme:
 
 nav:
   - Home: index.md
+  - Lesson Plans:
+      - Home: lesson-plans/index.md
+      - "Week 5: Advanced Backend and Testing": lesson-plans/week-5.md
   - Guides:
       - Home: guides/index.md
       - Send a POST request: guides/postrequest.md
