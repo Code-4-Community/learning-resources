@@ -39,8 +39,8 @@
 
 ### Types of Tests
 
-As I'm sure you can tell from the name, testing is the method used to help prove that your code works in the way that 
-it is expected to. If you haven't encountered tests before, whether that's because you're new to development or just never thought 
+As I'm sure you can tell from the name, testing is the method used to help prove that your code works the way you expect 
+it to. If you haven't encountered tests before, whether that's because you're new to development or just never thought 
 that tests were important enough to spend time on, just know that they're extremely important in helping you 
 diagnose issues in your code (if you write meaningful tests) before releases or after making significant changes. 
 For smaller projects, they have less of an impact, even if they're still helpful. As your project grows, however, and as
@@ -51,12 +51,11 @@ In the software development side of things, there are around seven types of test
 your career, and different organizations may combine or rename a lot of these. We're calling them 'unit', 'integration', 
 'functional', 'end-to-end', 'acceptance', 'performance', and 'smoke' tests.
 
-- *Unit* tests are your basic tests which are there to determine if the smallest unit of functionality 
-is working correctly.
-- *Integration* tests ensure that multiple different units, modules, or services can work together correctly. Sometimes
-different pieces of the modules can be checked to verify that the system is working correctly.
-- *Functional* tests are very similar to integration tests. The difference is that functional tests apply business
-logic when testing, so testing expected behavior, while integration tests are there to make sure multiple modules
+- *Unit* tests are meant to test functions/methods. They are basic tests and work with the smallest units of 
+functionality in your code.
+- *Integration* tests ensure that multiple different units, modules, or applications can work together correctly. 
+- *Functional* tests are very similar to integration tests. Functional tests apply business
+logic when testing, so testing expected behavior, while integration tests are only there to make sure multiple modules
 can work together as expected. One example is connecting to a database (integration) vs. getting specific values from 
 the database (functional).
 - *End-To-End* tests are try to act as a user and go through different workflows to ensure large
