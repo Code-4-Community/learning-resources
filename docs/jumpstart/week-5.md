@@ -1,4 +1,4 @@
-# Week 4: Server, Requests, and Backend Basics
+# Week 5: Server, Request, and Backend Basics
 
 ## Agenda
 - Server Basics
@@ -53,7 +53,7 @@ The server-client architecture is the way that the web works. In a simple explan
 await requests sent by client programs (like web browsers), and the requests are processed so that a response can 
 be returned.
 
-![Server-client architecture model](./img/server-client-model.png)
+![Server-client architecture model](img/server-client-model.png)
 
 *Gnome-fs-client.svg: David Vignoni Gnome-fs-server.svg: David Vignoni derivative work: Calimo 
 / LGPL (http://www.gnu.org/licenses/lgpl.html)*
@@ -102,7 +102,7 @@ Often, when you navigate to a website by typing in a name, like [https://c4cneu.
 the Domain Name Service (DNS) translates that text into an IP address. If you're interested, check out the [How Stuff 
 Works page](https://computer.howstuffworks.com/dns.htm) on it, but here's a simple image to demonstrate.
 
-![How a DNS lookup works](./img/how-dns-works.png)
+![How a DNS lookup works](img/how-dns-works.png)
 
 *How Stuff Works*
 
