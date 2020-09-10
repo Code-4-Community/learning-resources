@@ -29,23 +29,29 @@
         - Ports
         - Ngrok
 2. HTTP Requests and REST
-    - What is REST (REpresentational State Transfer)
     - What is HTTP
         - Status Codes in HTTP
-            - 200s
-            - 300s
-            - 400s
-            - 500s
+            - Informational Responses
+            - Successful Responses
+            - Redirect Responses
+            - Client Errors
+            - Server Errors
         - JSONs
+            - Values
+            - Arrays
+            - Objects
         - Request types overview
             - GET
-            - Other types (also next week's topic)
-3. Routing on the Backend
-    - What is routing?
-        - Static routing
-        - Routing with Vert.x
-        - Route parameters
+    - What is REST (REpresentational State Transfer)
     - Postman and API clients
+3. Routing on the Backend
+    - Structure of the Backend
+    - What is routing?
+    - Routing with Vert.x
+        - Static routing
+        - Route parameters
+        - Query parameters
+        - Creating a Subrouter
     
 ## Servers
 
@@ -133,7 +139,8 @@ HTTP/HTTPS is how websites are usually served, but
 since those ports are often reserved by our operating system, and since we're not running this in production, it's not
 worth the effort to try and fix that. You'll see that it's common to run programs on ports outside of the well known
 port range, and ports :3000, :8000, and :8081 (what we'll be using) are quite common. Also, when testing locally,
-HTTPS is usually not used since a certificate has to be created, so just focus on using HTTP for now.
+HTTPS is usually not used since a certificate has to be created, so just focus on using HTTP for now. We'll talk about
+HTTP more later.
 
 To access a port at a given address, you write the protocol (optional, http is assumed by default), followed by the 
 address, followed by the colon-prefixed port. So for example, accessing http on port :4000 locally would look something
@@ -149,3 +156,315 @@ servers for your local app and avoids having to deal with those rules. So if you
 download it and check out their [docs](https://ngrok.com/docs). It's really easy and extremely useful!
 
 ## HTTP Requests and REST
+
+### What is HTTP
+
+Hypertext Transfer Protocol (HTTP) is a protocol for requests and responses in a server-client architecture model. In
+the web browser example from earlier, the client's request to the server is an HTTP request, and the server provides an
+HTTP response in the form of actions and resources like HTML files. 
+
+HTTP provides a few useful items of information we'll be using such as headers in both requests and responses, which 
+provide metadata about the request or response, bodies, which contain the actual information to be transferred if any, 
+and status codes, which let you know if any actions were performed, errors occurred, and what the response means.
+
+#### Status Codes in HTTP
+
+Status codes are special numerical codes returned in an HTTP response which indicate the status of the request. There 
+are a couple groups of status codes, which define a high level meaning as to what happened during the server.
+
+| Code Range | Description |
+| :--- | :--- |
+| 100 - 199 | Informational Responses |
+| 200 - 299 | Successful Responses |
+| 300 - 399 | Redirect Responses |
+| 400 - 499 | Client Errors |
+| 500 - 599 | Server Errors |
+
+For more info on the responses outside of what's below, check out [MDN's HTTP Status Code 
+Guide](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) or the [API REST Tutorial 
+Cheat Sheet](https://www.restapitutorial.com/httpstatuscodes.html).
+
+You can also see a lot of these if you open up your browser's developer console and look at the network tab. This 
+network tab can give you information about exactly what's going on when you try to load a webpage. Try it out!
+
+##### Informational Responses
+
+Informational responses are mostly responses that are used as low-level networking responses. In 99% of cases, you will
+not have to deal with these. 
+
+Here are a few of the most common ones:
+
+| Code | Name | Description |
+| :--- | :--- | :--- |
+| 100 | Continue | Everything is OK so far and the request should be continued (or ignored if already finished) |
+| 101 | Switching Protocol | A response to an `Upgrade` request which returns the protocol the server is switching to |
+
+##### Successful Responses
+
+Successful responses are responses that indicate success for whatever request was made. The specific response indicates
+exactly what kind of success was achieved.
+
+Here are a few of the common ones:
+
+| Code | Name | Description |
+| :--- | :--- | :--- |
+| 200 | OK | The most common one, indicates that requested resource is in or described in the body |
+| 201 | Created | A new resource has been created on the server |
+| 204 | No Content | The request was a success but no body was returned (necessary data *might* be in the headers) |
+
+##### Redirect Responses
+
+Indicates that a resource has been moved or that the client should instead go to a different location.
+
+Here are a few of the common ones:
+
+| Code | Name | Description |
+| :--- | :--- | :--- |
+| 301 | Moved Permanently | The URL has been changed **permanently** and is provided in the response |
+| 302 | Found | The URL has been changed **temporarily** and might be changed again in the future (so keep using this to find it) | 
+
+##### Client Errors
+
+These represent errors that a client has made and are used to let it know what went wrong.
+
+Here are a few of the common ones:
+
+| Code | Name | Description |
+| :--- | :--- | :--- |
+| 400 | Bad Request | There was an issue with the request (usually due to invalid syntax) | 
+| 401 | Unauthorized | The client needs to authenticate (log in) before using this resource |
+| 403 | Forbidden | The client is authorized, but doesn't have the right permissions |
+| 404 | Not Found | The requested resource could not be found or the URL is not recognized |
+| 405 | Method Not Allowed | The wrong method is being used for a route (like a POST vs a GET, will be explained later) |
+| 410 | Gone | The requested resource has been permanently deleted from the server |
+| 418 | I'm a teapot | The server refuses the attempt to brew coffee (yes this is real) | 
+
+##### Server Errors
+
+These responses let the client know that there was an issue processing the request by the server. Usually you want to 
+avoid returning these because you properly handle every error that can pop up, but there are times when it's unavoidable 
+or necessary.
+
+Here are a few of the common ones:
+
+| Code | Name | Description |
+| :--- | :--- | :--- |
+| 500 | Internal Server Error | Usually thrown on an exception the server doesn't know how to handle, you want to try and avoid these |
+| 502 | Bad Gateway | The server (acting as a gateway) got an invalid response (usually this happens for certain server configuration errors) |
+| 503 | Service Unavailable | The server isn't ready to handle the request (usually when the server is down or overloaded) |
+| 504 | Gateway Timeout | When the server (acting as a gateway) could not get a response in a specified timeframe |
+
+#### JSONs
+
+JavaScript Object Notation (JSON) is a way of representing data in a very clean and easy to write way. It's commonly 
+compared to XML. You can see an in-depth description of everything on the 
+[JSON website](https://www.json.org/json-en.html).
+
+The JSON data format consists of three main data types; the `value`, `array`, and `object` types.
+
+##### Values
+
+Values are very simple, and there are only about seven main types: strings, numbers, objects, arrays, `true`, `false`,
+and `null`. 
+
+##### Arrays
+
+Arrays are a collection of `value`s commonly also referred to a vector, list, or sequence. See examples below:
+
+```json
+[]
+
+["a", "b", "c", "d", "e"]
+
+[[], ["a"], ["b", "c"]]
+
+[1, 2, ["a"], "b", true, false, null, [[[[]]]]]
+```
+
+##### Objects
+
+Objects are similar to arrays, however, they have keys which are assigned to each value. They're also commonly known as  
+serialized versions of an object, record, struct, dictionary, hash (the data type kind), map, hash table, keyed list, or
+associative array if you've heard of any of those before.
+
+>Serialization refers to the act of taking data from a data type or object state and turning it into a format that can
+>be stored/transmitted/more easily read and reconstructed later.
+
+>Deserialization refers to taking serialized data and turning it back into its original state.
+
+Here are some examples:
+
+```json
+{}
+
+{
+  "simple": "object"
+}
+
+{
+  "key": "value",
+  "other key": 5,
+  "nested object": {
+    "key": true,
+    "value": [1, 2, "a", { "hello": "world" }]
+  }
+}
+```
+
+#### Request Types Overview
+
+In HTTP (and as mentioned previously) there are multiple different request types. A lot of them will be covered in the 
+following lesson, so we'll just have a high level overview here.
+
+Each type of request is supposed to represent a different operation in the idea of [Create, Read, Update, Delete 
+(CRUD)](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete).
+There are a couple outside of those, but in most cases, you'll just stick with those operations.
+
+##### GET
+
+The `GET` method is one of the most commonly used request methods (along with `POST`). It corresponds to the read 
+operation of CRUD, so it's usually used when you're trying to just get information from a server. In fact, whenever you
+load a website using a web browser, you're sending `GET` requests to the website you want to access. 
+
+### What is REST
+
+Representational State Transfer (REST) is a set of constraints for building web services. RESTful web services, or 
+web applications that conform to REST techniques require the following constraints.
+
+- *Server-Client Architecture*: The server-client architecture discussed earlier.
+- *Stateless*: the server can't store any client context on the server, so clients are the only ones that know about 
+their session state and contain all information necessary to make a request. If the server needs to know any of the 
+client context (like authentication information), it should be stored in a database.
+- *Cacheable*: Responses can be marked as cacheable or non-cacheable so that optimizations can be performed for 
+scalability and performance.
+- *Layered System*: A client shouldn't need to know if it's connected directly to the end server or if there are 
+intermediary services.
+- *Uniform Interface*: The server's resources and implementation should be decoupled from what is returned to the 
+client.
+
+### Postman and API Clients
+
+Now that you know some of the basics of web requests and the way that the web works, let's try out some HTTP requests
+and inspect the responses. API clients are programs that nicely let you send any kind of request with any information to
+whatever URLs you define. Some of the nice ones even let you define setup scripts or post request tests for ease of use
+and validation later on.
+
+In terms of being able to be run through the command line and being on almost every computer, 
+[curl](https://curl.haxx.se/) is an extremely useful and functional (but quite complicated) tool. Feel free to try it 
+out with a command like `curl https://curl.haxx.se/`, and you should see the curl webpage in HTML. If you try 
+`curl -o test.html https://curl.haxx.se/`, and then open that file in a web browser, you should see the webpage, but
+downloaded!
+
+Working entirely on the command line like that can get really annoying though, so try out one of our favorite API 
+clients: [Postman](https://www.postman.com/). In here, you can run almost any type of request, authenticate, set
+headers and body (if applicable), run scripts and tests, see the output (in HTML too!), status code, time, size, and
+returned cookies and headers! If you find that you end up using a lot of the same requests, you can also save them and 
+pull them up later on. We've used this for classes, coop, and personal projects, and hopefully you'll find this useful.
+
+## Routing on the Backend
+
+Now we'll get to setting up the individual routes for the backend of our website so that you can access different 
+resources.
+
+### Structure of the Backend
+
+From the root directory, you'll notice that there are three main directories: api, persist, and service. 
+
+The api directory is where all requests will enter through. It is the way that any external program will interact with
+and view the results of our application.
+
+The persist directory is where all *persisting* information will live. Starting out, it is where we'll create our 
+database mocks, and later on, it will be where our database interactivity classes will be placed.
+
+The service directory is what unifies everything together. Since we want to not make the persist and api directories 
+dependent on each other, there will end up being a few interfaces that are made available and implemented in service. 
+This is because some of the operations we want to perform need to know of both persist and api functionality (but 
+remember, they shouldn't know about each other). 
+
+Don't worry about having to figure all of this out yourself though, we'll provide some help to get you started. Also,
+for those of you who know about the 
+[Model-View-Controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) design pattern, this 
+follows that! In this case, persist is our model (since it stores and holds the data), api is our view (since it's what
+the user/external applications use), and service is our controller (since it links everything together and handles
+the interactions between them).
+
+### What is Routing?
+
+Routing is when we define the actual routes/paths of our application and the functionality that they provide. 
+
+![simple-url-example](./img/simple_url.png)
+
+*https://doepud.co.uk/blog/anatomy-of-a-url*
+
+In the image above, when we refer to the path, we're talking about the part from (and including) the slash after the 
+domain name. So, for example, in the [https://c4cneu.com/jumpstart](https://c4cneu.com/jumpstart) URL, `/jumpstart` is 
+the path.
+
+### Routing in Vert.x
+
+Routing in Vertx is done with `Router` and `Route` objects provided by the Vert.x dependency. In the api directory, we 
+have an `ApiMain` class, which handles creating a `Router` Vert.x object, setting up a lot of the routing settings we'll 
+need in the future, creating a home `Route`, and setting the port to start on.
+
+The home `Route` or root route is the path `/`. Using what we learned earlier, if we were hosting a server locally on 
+port :8081, that would be accessible by the URL `http://localhost:8081/`. We can also see that in the `Route` object for
+home produced by the `Router` in `ApiMain.startApi()`, a route handler was set using the `handler()` method and by 
+passing in a [Method Reference](https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html), which is a 
+type of lambda or anonymous function. Down below, you can see a `handleHome()` method that takes in a `RoutingContext`
+from Vert.x, which is an object containing all of the request info we need. We use that to construct a response by 
+getting a new response object from the `RoutingContext`, setting the status code, putting header information, and 
+setting CORS info. Finally, the interaction is ended with the `HttpServerResponse.end()` method.
+
+Since that's a lot of stuff to set when finishing up a response, we've provided some `end()` methods for you in the 
+`rest.IRouter` class, which will add a lot of that for you! A lot of that was done manually in the `handleHome()` method 
+to show what it looks like.
+
+#### Static Routing
+
+Let's go through the exercise of creating a new route. We'll need to start out by creating a new `Route` object from the
+`Router`. First what you should do is create a new one right after the home route's handler is set. We'll do that using 
+a register route method. You'll need to pass in the `Router` object that was created earlier in the method. 
+Let's create a route `/hi`.
+
+```java 
+home.handler(this::homeHandler);
+
+// Create a new Route object from the Router, and do it for a GET request.
+this.registerGetHiRoute(router);
+
+...
+// Down below in a new method.
+private void registerGetHiRoute(Router router) {
+  // Set the route up to respond to GET method requests.
+  Route hiRoute = router.get("/hi");
+  ...
+```
+
+Next we'll set the handler for that request method and finish up the `registerGetHiRoute` method.
+
+```java 
+private void registerGetHiRoute(Router router) {
+  // Set the route up to respond to GET method requests.
+  Route hiRoute = router.get("/hi");
+  // Note: The hiRouteHandler method doesn't exist yet...
+  hiRoute.handler(this::hiRouteHandler);
+}
+```
+
+Finally, we'll return some data for the route in the `hiRouteHandler` method. We'll make sure to do it using our 
+`IRouter.end` method. It's been statically imported, so you should just be able to call `end()` with your data.
+Also, since a string is valid JSON data, we don't need to set the `Content-Type` to `text/plain`, we can just leave it
+as `application/json`.
+
+```java 
+private void hiRouteHandler(RoutingContext ctx) {
+  String resp = "Hey Jumpstarter!";
+  // Don't forget to set the response status!
+  end(ctx.response(), 200, resp);
+```
+
+And now you should be able to access that route at `http://localhost:8081/hi` using your API client when you restart 
+your server.
+
+#### Route Parameters
+
