@@ -51,7 +51,8 @@
         - Static routing
         - Route parameters
         - Query parameters
-        - Creating a Subrouter
+        - Creating a Sub-Router
+    - Processor Interfaces
     
 ## Servers
 
@@ -416,8 +417,8 @@ getting a new response object from the `RoutingContext`, setting the status code
 setting CORS info. Finally, the interaction is ended with the `HttpServerResponse.end()` method.
 
 Since that's a lot of stuff to set when finishing up a response, we've provided some `end()` methods for you in the 
-`rest.IRouter` class, which will add a lot of that for you! A lot of that was done manually in the `handleHome()` method 
-to show what it looks like.
+`com.codeforcommunity.rest.IRouter` interface, which will add a lot of that for you! A lot of that was done manually in 
+the `handleHome()` method to show what it looks like.
 
 #### Static Routing
 
@@ -461,10 +462,145 @@ private void hiRouteHandler(RoutingContext ctx) {
   String resp = "Hey Jumpstarter!";
   // Don't forget to set the response status!
   end(ctx.response(), 200, resp);
+}
 ```
 
 And now you should be able to access that route at `http://localhost:8081/hi` using your API client when you restart 
 your server.
 
+For reference, the final example looks something like this:
+
+```java 
+  ...
+
+  // In startApi().
+  home.handler(this::handleHome);
+
+  // Create a new Route object from the Router, and do it for a GET request.
+  this.registerGetHiRoute(router);
+
+  // Start the server and listen on port :8081
+  // (you can access this locally at http://localhost:8081)
+  server.requestHandler(router).listen(defaultPort);
+
+  // Let the user know the server has started
+  System.out.println("Hey! The server has started on port " + defaultPort);
+}
+
+private void registerGetHiRoute(Router router) {
+  // Set the route up to respond to GET method requests.
+  Route hiRoute = router.get("/hi");
+  // Note: The hiRouteHandler method doesn't exist yet...
+  hiRoute.handler(this::hiRouteHandler);
+}
+
+private void hiRouteHandler(RoutingContext ctx) {
+  String resp = "Hey Jumpstarter!";
+  // Don't forget to set the response status!
+  end(ctx.response(), 200, resp);
+}
+
+private void handleHome(RoutingContext ctx) {
+...
+```
+
 #### Route Parameters
 
+What if you wanted to have a route parameter, that is, what if you wanted to have *dynamic* routes? Dynamic routes are
+routes that don't have to be explicitly declared. These can be in paths like `/jumpstart/hi`, `/<your_name>/hi`, or
+`/c4c/hi`, and then we can also have them return something like "hey <whatever you put in before 'hi'>". That can 
+actually be done pretty easily. Building off of the example above, this is what we would do.
+
+In the `registerGetHiRoute` method, we'll want to adjust the route to add the param.
+
+```java 
+private void registerGetHiRoute(Router router) {
+  // Set the route up to respond to GET method requests.
+  // Notice how we added a colon before the 'name' parameter.
+  Route hiRoute = router.get("/:name/hi");
+  // Note: The hiRouteHandler method doesn't exist yet...
+  hiRoute.handler(this::hiRouteHandler);
+}
+```
+
+And now that Vert.x knows to look for a parameter called 'name', it will be provided in the `RoutingContext`. We can now
+change `hiRouteHandler`. We've also provided the `getRequestParameterAsString` and `getRequestParameterAsInt` methods in 
+the `com.codeforcommunity.rest.RequestUtils` class to make getting that information a little easier (you'll probably 
+have to import it to `ApiMain`). Check it out if you're interested in how it works though!
+
+```java
+private void hiRouteHandler(RoutingContext ctx) {
+  // Request the 'name' param from the request
+  String name = getRequestParameterAsString(ctx.request(), "name");
+  String resp = "Hey " + name + "!";
+  // Don't forget to set the response status!
+  end(ctx.response(), 200, resp);
+}
+```
+
+So now the route should respond "Hey Jumpstarter!" when you navigate to `http://localhost:8081/Jumpstarter/hi`
+
+#### Query Parameters
+
+Query parameters are another kind of parameter that can be included. They are (sometimes optionally) included at the 
+end of the path and don't have to be included when creating the `Route` object from the `Router`. To be able to access 
+them, you can use `getRequestParameterAsString`. They're written in a path by starting with a `?` and chaining multiple
+together with `&`. Here are a some examples: `/some/path?param1=value1&param2=value2&param3=value3` and
+`/some/path?param1=value1&param1=value2&param1=value3` (for multiple values assigned to a single parameter). The way 
+that we currently have it set up, the `getRequestParameterAsString` cannot have an empty value, so if you would like to 
+include query params then you should create a new method which allows empty values.
+
+#### Creating a Sub-Router
+
+A subrouter is a custom router which handles routing for a group of routes with the same path prefix. For example, if 
+you have a bunch of defined routes for `/user/info/...`, then you can create a subrouter for `/user/info/`, and every
+route created in the subrouter will automatically be prefixed with that. This is not only useful because it lets you 
+type less by removing the need to copy the same prefix for similar routes, but it also allows you to separate out 
+the functionality of similar methods. For example, if you have a subrouter for something such as **_posts_** *(hint, 
+hint)*, then all functionality in that subrouter should be related to posts, keeping you more organized.
+
+To create a subrouter, it's not hard at all. All you need to do is call the `Router.mountSubRouter()` method in your
+`ApiMain` and set a few things up in your subrouter class.
+
+```java 
+// Again, in ApiMain BEFORE calling server.requestHandler().
+// Initialize a router (that was probably passed in).
+router.mountSubRouter("/path_prefix", subRouter.initializeRouter(vertx));
+
+server.requestHandler(router).listen(defaultPort);
+```
+
+And then in your subRouter class, create a new router, set up routes, and return the router.
+
+```java 
+public class SubRouter implements IRouter {
+  private final ISomethingProcessor processor;
+
+  public SubRouter(ISomethingProcessor processor) {
+    this.processor = processor;
+  }
+
+  @Override
+  public Router initializeRouter(Vertx vertx) {
+    // Create a new Router object in our subrouter.
+    Router router = Router.router(vertx);
+
+    this.registerRouteA(router);
+    this.registerRouteB(router);
+    ...
+    
+    return router;
+  }
+
+// Other methods for doing route work.
+...
+}
+```
+
+### Processor Interfaces
+
+Since the api shouldn't know anything about the database, a lot of the time processing needs to be done in the service
+directory/module. That makes things complicated though, since the api module needs to be able to call these methods 
+when a route is accessed. This can be accomplished by creating an interface for the processor in the api module and 
+implementing it in the service module. In that way, the service module is able to implement the methods api requires 
+while not needing to know exactly **how** it's implemented. 
