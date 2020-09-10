@@ -399,7 +399,7 @@ Routing is when we define the actual routes/paths of our application and the fun
 
 In the image above, when we refer to the path, we're talking about the part from (and including) the slash after the 
 domain name. So, for example, in the [https://c4cneu.com/jumpstart](https://c4cneu.com/jumpstart) URL, `/jumpstart` is 
-the path.
+the path. Another image with a more complex URL will be shown below which dissects more components.
 
 ### Routing in Vert.x
 
@@ -549,6 +549,12 @@ together with `&`. Here are a some examples: `/some/path?param1=value1&param2=va
 `/some/path?param1=value1&param1=value2&param1=value3` (for multiple values assigned to a single parameter). The way 
 that we currently have it set up, the `getRequestParameterAsString` cannot have an empty value, so if you would like to 
 include query params then you should create a new method which allows empty values.
+
+Here's an example of a dissected URL with query parameters if you're interested in seeing what it looks like.
+
+![complex-url](./img/complex_url.png)
+
+*https://doepud.co.uk/blog/anatomy-of-a-url*
 
 #### Creating a Sub-Router
 
