@@ -39,10 +39,12 @@
 
 ### Types of Tests
 
-As I'm sure you can tell from the name, testing is the method used to help prove that your code works the way you expect 
+You may be able to tell from the name that testing a method used to help prove that your code works the way you expect 
 it to. If you haven't encountered tests before, whether that's because you're new to development or just never thought 
 that tests were important enough to spend time on, just know that they're extremely important in helping you 
 diagnose issues in your code (if you write meaningful tests) before releases or after making significant changes. 
+By the way, if you've heard of check-expects, they're basically the same thing if you've taken fundies and that makes it 
+more familiar to you!
 For smaller projects, they have less of an impact, even if they're still helpful. As your project grows, however, and as
 you work with more people, they'll save you a lot of time in tracking down and preventing a lot of bugs that come from
 unexpected interactions or mistakes that were made in trying to solve a problem.
@@ -180,11 +182,32 @@ object which we want to supply for testing purposes, we need a way to substitute
 
 An `Externals` class (sometimes abbreviated to `externs`) can allow us to do that. We can define a 
 `public static class Externals` as a nested class in `PostsRouter`, which has a method 
-`public Router getRouter(Vertx vertx)`, which we'll use to do so. In the default `Externals` (the one in `PostsRouter`), 
-we'll start out just having that single `getRouter` method. Then, in our test class,
+`public Router getRouter(Vertx vertx)`, and that will allow us to do so. In the default `Externals` 
+(the one in `PostsRouter`),  we'll start out just having that single `getRouter` method. Then, in our test class,
 we'll extend that `Externals` class with a new `TestExternals` class, and override the `getRouter` method to have it 
 return our custom router object. This can be applied in many different ways for times where you need to override 
 behavior in dependencies needed for testing.
+
+>Extending a class is when you create a 'subclass' which inherits all of the functions and fields of another 
+>'superclass' (but it only has access to `public` and `protected` fields and methods (unless it's in the same package, 
+>then it also has access to package-private fields and methods)). It's then able to define new functionality and 
+>'override' existing functionality with the `@Override` annotation. In a really simple explanation, it allows you to
+>take an existing class with all of their existing functionality, and lets you change parts you want about that.
+>This can be done for both non-final classes and abstract classes if you know what either of those are.
+>See more information on [extending classes](https://www.tutorialspoint.com/java/java_inheritance.htm).
+
+>Overriding a method (using the `@Override` annotation) allows you to define an implementation for a declared method
+>of an interface or superclass which the given class is planning on implementing (for interfaces) or changing the 
+>implementation of (for extended classes or interface default methods). The `@Override` lets your compiler perform some 
+>checks for you to make sure that you're actually overriding methods that you're expecting to override.
+>See more information on [overriding class or interface 
+>methods](https://www.tutorialspoint.com/java/java_overriding.htm).
+
+>Dependencies are external classes (in the case of Java and other Object-Oriented languages) or functions/methods that 
+>are imported and which your code depends on. In compiled languages and sometimes 
+>[linting](https://stackoverflow.com/questions/8503559/what-is-linting), your code cannot be complied without access to 
+>the dependencies (since it needs to know what functionality is provided). In the case of our 
+>backend code, we have dependencies on Vert.x, Mockito, JUnit, and a few other libraries.
 
 This is what our `PostsRouter` looked like initially:
 ```java
@@ -291,6 +314,9 @@ for every non-void method you call, but you can override that using `thenReturn`
 allows you to do custom stuff), or `doReturn`, `doThrow`, `doAnswer`, `doNothing`, `doCallRealMethod` in the case of 
 void returns. You can also chain them together to have it return/throw/do things one after the other in the order 
 they're called.
+
+>An 'instance' of an object is a constructed value of the object created by its constructor. So for the class `Thing`, 
+>it's the difference between referring to `Thing.staticMethod()` as a static method and `new Thing().instanceMethod()`.
 
 Here are examples of the `then...` and `do...` styles of mocking:
 ```java 
