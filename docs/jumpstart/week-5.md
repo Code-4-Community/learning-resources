@@ -389,6 +389,17 @@ follows that! In this case, persist is our model (since it stores and holds the 
 the user/external applications use), and service is our controller (since it links everything together and handles
 the interactions between them).
 
+>For those of you who don't know, Model View Controller (or MVC) is a design pattern which separates out functionality 
+>into three different main functionalities. 
+>
+>- Model: deals with handling the data and functionality with processing data
+>
+>- View: deals with presenting data (whether visually, textually, or in any other way) in a way that an external entity 
+>(like you or another program) can understand what is happening and interact with your program
+>
+>- Controller: deals with linking up interactions between the model and view, and is the mastermind behind running your 
+>program and handling external entity interactions (like you clicking a button or something else sending requests)
+
 ### What is Routing?
 
 Routing is when we define the actual routes/paths of our application and the functionality that they provide. 
