@@ -552,8 +552,11 @@ Last week, we learned about the `GET` request type. There are a lot of other com
 
 ### Common Request Types
 
-The most common request types (other than `GET`) are `POST`, `PUT`, `PATCH`, and `DELETE`. When thinking in terms
-of CRUD (create, read, update, delete), this is what those types represent:
+The most common request types (other than `GET`) are `POST`, `PUT`, `PATCH`, and `DELETE`. Of these, the one you 
+probably see the most is `POST`. Every time you send a form by hitting a submit button, like when entering credit card 
+information, typing in an address, or signing up for something, a `POST` request is sent with your data in the request 
+body to the server. The other types aren't as common, but you've probably used them all a bunch without realizing it! 
+When thinking in terms of CRUD (create, read, update, delete), this is what those types represent:
 
 | Method | CRUD type | What it does |
 | :---   | :---      | :-----       |
