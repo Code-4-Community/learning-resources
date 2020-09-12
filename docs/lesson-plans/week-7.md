@@ -76,10 +76,10 @@ Here's a reminder of what an Excel sheet can look like:
 ### Data Types in SQL
 
 In SQL, when making new columns on a table, altering columns, and dealing with table data, you need to be aware of the
-data types of the data you're working with. It's somewhat similar to working with types in Java, however, you don't need
-to declare types all over the place. It matters most when you're trying to perform operations on types and getting the 
-data using the JDBC/ODBC. For example, if you try to perform a query where you're adding two strings, you'll receive an 
-error since strings can't be added. You can concatenate two strings, but addition is for number types. 
+data types of the variables you're working with. It's somewhat similar to working with types in Java, however, you don't
+need to declare types all over the place. It matters most when you're trying to perform operations on types and getting 
+the data using the JDBC/ODBC. For example, if you try to perform a query where you're adding two strings, you'll receive 
+an error since strings can't be added. You can concatenate two strings, but addition is for number types. 
 
 There are many types available, especially in PostgreSQL, but below are a few of the most commonly used ones.
 
@@ -87,13 +87,14 @@ There are many types available, especially in PostgreSQL, but below are a few of
 
 The `SERIAL` type is an `INTEGER` under the hood, usually used as an ID. It's a 
 PostgreSQL specific data type, which is usually just an `INTEGER` with the `AUTO INCREMENT` modifier in most other 
-databases.
+databases. This is really useful for integer-typed
+`PRIMARY KEYS` in other databases, since it automatically creates a new unique ID for you.
 
 #### CHAR
 
 The `CHAR(x)` type is actually a string of max length `x`. If a value you insert isn't the full length `x`, then the 
 value will be right-padded with spaces. For example, if the column type is `CHAR(5)`, then "hello" would be saved as 
-"hello", but "hey" would be saved as "hey__" (pretend the underscores are spaces".
+"hello", but "hey" would be saved as "hey__" (pretend the underscores are spaces).
 
 #### VARCHAR
 
@@ -141,12 +142,31 @@ point*.
 #### TIMESTAMP
 
 The `TIMESTAMP` type is one of the date/time types commonly seen in SQL databases. There's also a `TIMESTAMP` type with
-a time zone, if that suits your needs better. 
+a time zone, if that suits your needs better. The regular `TIMESTAMP` type looks like this `2020-09-17 04:05:06` (note 
+that it always has 19 characters, the leading 0s are part of the format), and
+the `TIMESTAMP` with a time zone looks like `2020-09-12 13:50:20.633239-07` (there are other ways of formatting this 
+though). You can read more about date/time types on the [PostgreSQL 
+documentation](https://www.postgresql.org/docs/9.1/datatype-datetime.html).
+
+##### CURRENT_TIMESTAMP
+
+The `CURRENT_TIMESTAMP` function returns the current timestamp. This makes things a lot easier for default values or
+when you need the current time in SQL. You can try it out with `SELECT CURRENT_TIMESTAMP;`.
+
+##### DATE
+
+The `DATE` type is a `TIMESTAMP` with only the date component. The default format looks like this `2020-09-08`.
+
+##### TIME
+
+The `TIME` type is a `TIMESTAMP` with only the time component. The default format looks like these without time zone
+`04:05:06.789`, `04:05:06`, or `04:05`, and these with time zone `04:05:06.789-08`, `04:05:06-08`, or `04:05-08`
 
 #### BOOLEAN/TINYINTEGER
 
 The `BOOLEAN` is a type which is available in PostgreSQL. In many other DBs, `TINYINTEGER` or `TINYINT` is commonly used
-instead (they are the same thing). 
+instead (they are the same thing). The possible negative values are `false` and `0`, and the possible positive values 
+are `true`, and `1`.
 
 #### ENUM
 
@@ -179,7 +199,8 @@ where you can, since it can help with preventing nulls from being entered where 
 #### AUTO INCREMENT
 
 The `AUTO INCREMENT` modifier lets the database that it should automatically enter this column as the default value
-(last value + 1) if the value isn't provided when entering data into the table. 
+(last value + 1) if the value isn't provided when entering data into the table. This is really useful for integer-typed
+`PRIMARY KEYS` in other databases, since it automatically creates a new unique ID for you.
 
 >Note: on PostgreSQL, this is actually 
 >the data type `SERIAL` instead, and the `AUTO INCREMENT` modifier isn't available.
@@ -286,18 +307,23 @@ INSERT INTO other_table_name (columns, you, want, to, supply) VALUES
 
 An example using the `people` table:
 ```sql
+-- Remember,
 -- Insert into our table from earlier.
 INSERT INTO people VALUES
 -- Usually we'd just want to let the DB manager enter the next SERIAL value for us.
     (0, "Jumpstart Team", "Hey, this is the Jumpstart team, and we're really excited you could join us!", 0, 
-    CURRENT_TIMESTAMP),
-    (1, "You", "Hey, put a description here!", 19, CURRENT_TIMESTAMP);
+    CURRENT_TIMESTAMP, 'nice'),
+-- We think you're nice, but we'll leave that up to you :)
+    (1, "You", "Hey, put a description here!", 19, CURRENT_TIMESTAMP, null);
 
 -- Insert values into only the name and age columns. The id and signup_date will be handled for us, and bio will just be
 -- null.
 INSERT INTO people (name, age) VALUES
     ("Your friend", 20);
 ```
+
+>Remember, this is what the PERSONALITY column looks like
+>CREATE TYPE personality AS ENUM ('nice', 'mean', 'neither');
 
 #### The SELECT Statement
 
@@ -336,14 +362,42 @@ An example using the `people` table:
 -- Select all fields from every record in people.
 SELECT * FROM people;
 
--- Select all fields from every record in people who are less than 20.
+-- Select all fields from every record in people who are greater than 5.
 SELECT * FROM people 
-    WHERE age < 20;
+    WHERE age > 5;
 
--- Select the name and id fields (in that order) from every record where the name is 'like' jump.
-SELECT name, id FROM people 
+-- Select the name and id fields (in that order) from every record where the name is 'like' jump. 
+-- Also, we don't like the name of the id column, so we're going to rename it to 'other_name'
+SELECT name, id AS other_name FROM people 
     WHERE name LIKE 'jump%';
 ```
+    
+The above `SELECT` statements will probably look something like this:
+
+>Result 1:
+>All rows and columns on the table are returned.
+
+| id | name | bio | age | signup_date | personality |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 0 | "Jumpstart Team" | "Hey, this is the Jumpstart team, and we're really excited you could join us!" | 0 | 2020-09-12 14:08:00 | nice |
+| 1 | "You" | "Hey, put a description here!" | 19 | 2020-09-12 15:00:00 | null |
+| 2 | "Your friend | null | 20 | 2020-09-13 14:08:00 | null |
+
+>Result 2:
+>It only selects you and your friend since we're not even a year old yet!
+
+| id | name | bio | age | signup_date | personality |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | "You" | "Hey, put a description here!" | 19 | 2020-09-12 15:00:00 | null |
+| 2 | "Your friend | null | 20 | 2020-09-13 14:08:00 | null |
+
+>Result 3:
+>It only returns Jumpstart, since it's the only record with "jump..." as part of its name. Also, since we only selected
+>two columns, those are the only to show up.
+
+| name | other_name |
+| :--- | :--- |
+| "Jumpstart Team" | 0 |
 
 #### The UPDATE Statement
 
