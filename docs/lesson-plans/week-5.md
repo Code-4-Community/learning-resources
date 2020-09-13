@@ -180,13 +180,54 @@ Sometimes you end up testing things where you need to supply your own value (esp
 is static). For example, when getting a `Router` object in `PostsRouter`. If we have our own version of a `Router` 
 object which we want to supply for testing purposes, we need a way to substitute that in.
 
-An `Externals` class (sometimes abbreviated to `externs`) can allow us to do that. We can define a 
+An `Externals` class (sometimes abbreviated to `externs`) can allow us to do that. We can define a 'nested'
 `public static class Externals` as a nested class in `PostsRouter`, which has a method 
 `public Router getRouter(Vertx vertx)`, and that will allow us to do so. In the default `Externals` 
 (the one in `PostsRouter`),  we'll start out just having that single `getRouter` method. Then, in our test class,
 we'll extend that `Externals` class with a new `TestExternals` class, and override the `getRouter` method to have it 
 return our custom router object. This can be applied in many different ways for times where you need to override 
 behavior in dependencies needed for testing.
+
+>A nested class is a class that is created inside of another one. In general, having separate classes can be better, but
+>some reasons to nest classes are because:
+>
+>- It's a way of logically grouping related classes together
+>- The nested class is allowed access to the outer class' private fields/methods
+>- The nested class can be private (available to only the outer class) 
+>- It can be more readable and maintainable 
+>
+>Here's an example of one
+>```java 
+>public class OuterClass {
+>  public class NestedClass { }
+>}
+>```
+
+>A **_static_** nested class is a nested class which doesn't depend on an instance of the outer class to be created.
+>Usually, when creating a nested class, you need to create/have an outer class to create the nested class from, but
+>static nested classes bypass that. However, if a nested class is declared static, then it can't access any non-static
+>methods of its outer class.
+>
+>For example, if we have the `OuterClass` and `NestedClass` above, and we added the following `StaticNestedClass` to 
+>the outer class, here is how we would access them.
+>
+>The StaticNestedClass.
+>
+>```java 
+>... // in OuterClass
+>  public static class StaticNestedClass { }
+>```
+>
+>How to get instances of them.
+>
+>```java 
+>// Non-static
+>OuterClass outerClass = new OuterClass();
+>OuterClass.NestedClass nestedClass = outerClass.new NestedClass();
+>
+>// Static
+>OuterClass.StaticNestedClass staticNestedClass = new OuterClass.StaticNestedClass();
+>```
 
 >Extending a class is when you create a 'subclass' which inherits all of the functions and fields of another 
 >'superclass' (but it only has access to `public` and `protected` fields and methods (unless it's in the same package, 
