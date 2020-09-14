@@ -9,6 +9,8 @@ theme:
 
 nav:
   - Home: index.md
+  - Lesson Plans:
+      - Week 1: lesson-plans/week-1.md
   - Guides:
       - Home: guides/index.md
       - Send a POST request: guides/postrequest.md
