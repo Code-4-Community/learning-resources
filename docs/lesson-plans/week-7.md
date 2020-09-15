@@ -307,7 +307,6 @@ INSERT INTO other_table_name (columns, you, want, to, supply) VALUES
 
 An example using the `people` table:
 ```sql
--- Remember,
 -- Insert into our table from earlier.
 INSERT INTO people VALUES
 -- Usually we'd just want to let the DB manager enter the next SERIAL value for us.
