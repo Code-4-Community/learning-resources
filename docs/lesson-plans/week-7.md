@@ -28,6 +28,7 @@
     - `ENUM`
   - Column modifiers
     - `PRIMARY KEY`
+    - `FOREIGN KEY`
     - `NOT NULL`
     - `AUTO INCREMENT` (`SERIAL`)
     - `DEFAULT`
@@ -190,6 +191,12 @@ The `PRIMARY KEY` modifier declares a column or combination of columns as the ID
 a `PRIMARY KEY` to speed up some search functions that use those fields (see 
 [Indexes](https://www.postgresql.org/docs/9.1/indexes.html) if you're interested ). If used, all primary 
 keys must be unique on the given table. This column is also not nullable.
+
+#### FOREIGN KEY
+
+The `FOREIGN KEY` modifier is very similar to a `PRIMARY KEY` in that it defines a unique way to identify records on a 
+table. The main difference, though, is that a foreign key creates a link between a given table's columns and another
+table's `PRIMARY KEY`. We'll talk about this more in the next lesson.
 
 #### NOT NULL
 
