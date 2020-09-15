@@ -3,9 +3,6 @@
 ## Agenda
 
 - Project Overview
-    - Separation of Concerns 
-    - MVC Model
-    - End Goal
 - Project Setup
     - Installing Required Software
     - Clone the repositories
@@ -20,39 +17,35 @@
     - Who is this program for?
     - How should I prepare?
     - What am I going to be building?
+        - End Goal
     - What technologies will I be learning?
     - How are the projects organized?
-        - Separation of concerns
-        - MVC model
-        - End Goal
+        - Common Files
+        - Frontend
+        - Backend
     - What will each week look like?
     - Important Links
+        - Making edits to the dictionary
 - Project Setup
-    - Installation
-        - Node/NPM
-        - Java 11
-        - Git
-        - Maven
-        - IntelliJ
-            - Extra setup for Windows
-        - PostgreSQL
-    - Cloning the repository with Git
+    - Installing IntelliJ
+    - Cloning the repositories with Git
+    - Installing required apps
 - Terminal Basics
     - Common Commands 
         - cd and filepaths
         - ls
         - pwd
-        - mv 
-        - mkdir
+        - mv
         - cp
+        - mkdir
         - rm
         - cat
         - vim
-        - ls
+        - nano
         - sudo
         - man
     - Build Tools
-        - NPM
+        - npm
         - Maven
         
 ## Jumpstart Overview
@@ -102,42 +95,541 @@ every week may not end up helping you as much as it would for our project, and y
 issues and concepts we won't be covering, however, feel free to use us as a resource for fixing
 and understanding them as they pop up.
 
+#### End Goal
+
+If you're watching the class online, here's where we'll show an example of the final project.
+
 ### What technologies will I be learning?
 
 During this time, we'll be teaching and providing demonstrations for a Java backend 
 using a Vert.x framework and Typescript frontend using a React framework with a PostgreSQL 
-database. The frontend
+database. 
 
----
+The frontend will use packages such as [Material-UI](https://material-ui.com/) for
+UI components, [Jest](https://jestjs.io/) for testing the frontend, 
+[Axios](https://github.com/axios/axios) as an HTTP client, and [React](https://reactjs.org/).
 
-What we’ll be doing over this time is building out a single page application for a 
-social networking site (think Reddit). We’ll be focusing on creating a Java/Vertx backend 
-with a React/Redux frontend and some other dependencies on each to help out with some 
-functionality. We’ll cover a lot of things like git/terminal commands, HTML/CSS/Javascript, 
-the idea of a server, HTTP and REST requests, testing, databases, and cloud deployment. 
-Don’t worry if some of that is unfamiliar to you, we’ll be sure to cover it at a fairly 
-high level in our explanations and examples. 
+The backend will use libraries such as [Vert.x and Vert.x-Web](https://vertx.io/),
+a PostgreSQL database driver, [Jackson](https://github.com/FasterXML/jackson)
+JSON utilities, [JUnit 5](https://junit.org/junit5/) for a testing framework, and
+[Mockito](https://site.mockito.org/) for a mocking framework.
 
-This program is for anyone who is interested in learning about how a modern web 
-application works, but it helps if you’ve written programs before. If you haven’t, or 
-if you haven’t used Java, check out codecademy’s Java course, and it should teach you 
-pretty much everything you’ll need to know about Java before we start. It will probably 
-take a couple hours, but you can split it up over however long you need. And before we 
-start the course, we’ll be adding you all to a Slack channel that you can use if you get 
-stuck or have questions about anything. For those of you who may know Java and programming 
-concepts pretty well, we also encourage you to try out our program if you’re interested 
-and think there’s something you can learn from us. 
+Throughout the course, we'll be covering a lot of topics like Git and terminal commands,
+HTML, CSS, and JavaScript, servers, HTTP and REST requests, testing, databases, APIs, and
+cloud deployment. 
 
-Every week, we’ll be building out the concepts taught. You’ll be given access to what 
-we’re calling (for now at least) ‘catch-up code’, which is our implementation of the 
-concepts, and which should show the progression of our app over time. This catch-up 
-code is also to help out those of you who miss a meeting, are stuck trying to figure 
-out what to do next, or have a busy week where you’re not able to do any work, but 
-want to be prepared for the examples that will be shown in the next meeting. We will 
-also be encouraging you to extend the application by implementing ideas for improvement 
-that you come up with or things that we suggest but won’t end up covering in our 
-examples. Also, if you decide that you want to take your project in a direction 
-different from where we decide to take ours, or even want to work on your own idea, 
-we’ll be here to help you work through issues and provide you with a lot of the concepts 
-you’ll need to build it.
+Don't worry if any of this seems unfamiliar or new to you, we'll be sure to cover all of this
+and answer any questions you may have.
 
+### How are the projects organized?
+
+When you open up the project root folders, you'll see a bunch of different files and folders,
+probably a lot with strange names and filetypes you've never seen before. We'll go over quick
+descriptions of the files right now. You'll learn a lot more about everything below in the 
+coming weeks, so don't worry if you don't know what we're saying.
+
+#### Common Files
+
+.gitignore is a file containing regular expressions to describe files we don't want Git
+to keep track of when we make commits or push to GitHub.
+
+>A regular expression (regex) is a syntax used to define text matching the given pattern. 
+>Check out [regexr](https://regexr.com/) and [regex101](https://regex101.com/) for some 
+>common regexes, descriptions, and a playground to test some out.
+
+LICENSE is a file detailing licensing information. In our case, we're using the GPL-3.0
+License, which means anyone can use or modify our code for whatever they want (with some
+conditions). You'll rarely have to deal with this in practice, but we wanted to add one
+so that you can see what it looks like.
+
+README.md is sort of like the introduction file. It's written in a format called 
+[Markdown](https://en.wikipedia.org/wiki/Markdown) (the .md filetype), which allows for 
+simple and easy formatting. Usually this file has descriptions of the software, instructions
+for setting it up, and any other information the developer(s) would like to provide to the
+end user.
+
+#### Frontend
+
+node_modules/ is a directory which houses all of the JavaScript packages you'll need. You should
+never have do anything with that directory (other than deleting it if you're getting weird issues,
+but that should be __*RARE*__). This will appear after you've run `npm install` later on. This
+directory is also usually not included in a Git repository.
+
+public/ is a directory to store unique files and images like manifest files, HTML files, or
+special image files. They're put here for easy reference and access.
+
+src/ is the directory with your actual project files. All of your React components,
+views, tests, and code will be inside here.
+
+package.json is a file containing dependency/package information, scripts to be run using npm,
+and other data about your project.
+
+package-lock.json holds information on dependencies which dependencies require and special 
+information that should rarely change. You should never have to do anything with this file, and
+it should **_definitely_** be included in a Git repository.
+
+tsconfig.json holds information about your Typescript configuration.
+
+#### Backend
+
+pom.xml is a file with project build instructions, dependencies, and other project information.
+
+api/ is a directory handling routing information and data transfer objects (DTOs).
+
+persist/ is a directory for handling and saving data.
+
+service/ is the entry point for your project, so you'll start it up from there. It handles
+connecting everything together and basically 'running' your project.
+
+### What will each week look like?
+
+Every week, we'll have one of these meetings where we'll go over new concepts that
+you'll need to build your project. After the meetings, we may give out a description, starter
+code, and other resources for what we think you should work on during the upcoming week. 
+You're always free to work on other parts of your project or not do it at all if that's
+what you want to do. The following weekend before the next meeting, we'll send out
+what we're calling 'catch-up code', which is our implementation of the concepts and
+descriptions we told you to work on during the week. This catch-up code will show
+the current state of the project and the progression of our app over time. The
+reason we're doing this is because we understand that there are weeks that you may 
+be sick, drowning in work, just not in the mood to work on your project, or stuck on some 
+issues, but you'll probably want to stay caught up with the material. This is our way of 
+ensuring everyone has the opportunity to be on the same page.
+
+### Important Links
+
+Just in case you don't have the links or dont't know where they are, here are some 
+important course resources.
+
+>Note: there is also a dictionary of common terms we've compiled for you which should be
+>available in the Jumpstart Docs
+[C4C Jumpstart Docs](https://learn.c4cneu.com) (where this should be)
+
+[C4C Slack](https://c4cneu.slack.com/)
+
+[C4C GitHub Repository](https://github.com/Code-4-Community)
+
+[C4C Website](https://c4cneu.com)
+
+[C4C Dev Docs](https://docs.c4cneu.com)
+
+#### Making edits to the dictionary
+
+If there's a term you'd like to see added to the dictionary, updated, or formatted differently, you
+can click on the pencil icon in the upper right to make an edit (you can do this to the script pages
+too if there's a change you want there instead). You will probably need an account, 
+and then it should take you to an in-browser edit page. Once you're ready to make the change,
+you should be able to go to the bottom to leave a quick message detailing what you changed
+(you don't have to do the extended description). Then you'll be able to create a branch, and we'll
+review it to make sure it's a good edit, and let you merge it in. Then you'll have successfully 
+contributed to the C4C dictionary.
+
+## Project Setup
+
+Now we'll be setting up your project. If you want to see videos for setting up the 
+frontend and backend, see below.
+
+The overall setup process will just involve cloning the repos on your computer and 
+then reading the READMEs to see how to set up each individual project.
+
+![frontend-setup-video]()
+
+![backend-setup-video]()
+
+### Installing IntelliJ
+
+The way that you'll be interacting with a lot of the code for this project will be through IntelliJ.
+Go to the [install link](https://www.jetbrains.com/idea/download/) and download the
+'Ultimate' edition. Since you're a student, you aren't limited to the 30-day trial that would otherwise
+be applied.
+
+Once you've downloaded an installed it (you'll probably need to create an account with your student 
+email), open it so that the welcome page shows up.
+
+>Note: some people prefer to use text editors like [Microsoft's VSCode](https://code.visualstudio.com/) or
+>[GitHub's Atom](https://atom.io/) instead of IntelliJ for working on the frontend. We'll be focusing
+>on using IntelliJ for all of this, but feel free to try those out if you're interested.
+
+### Cloning the repositories with Git
+
+Now that you've gotten IntelliJ set up, we'll get to cloning the repositories on your computer.
+
+>Note: you may need a GitHub account to do this. If you encounter an error trying to clone it,
+>then then just sign up and and retry the steps after logging into GitHub in IntelliJ.
+
+Inside of IntelliJ, go to File > New... > Project From Version Control..., make sure the 
+`Version Control` box is set to `Git`, paste in the following links, and choose where you 
+want them to be downloaded to. 
+
+The links you'll want to use are 
+- Backend: https://github.com/Code-4-Community/jumpstart-backend/tree/starter-code
+- Frontend: __*GET STARTER CODE TAG DONE*__
+
+Once you've done that, you're ready to install other programs we'll need and build the projects.
+
+### Installing required apps
+
+There are a few other programs you'll need to install before we're done here. 
+
+For the frontend and backend, open up the projects and start reading the README.md files by 
+double clicking them in the project pane on the upper left. If you don't see it, you may have to
+expand the pane by clicking on the vertically spelled "project" tab, and then opening up
+the dropdowns indicating folders.
+
+To make sure the formatted text pops up, once you open the README.md files, click on the image-like 
+icon in the upper right to view the formatted markdown. You can also try viewing it side-by-side as
+plaintext and formatted markdown if you're interested to see what it looks like.
+
+Troubleshooting: 
+- For the frontend, don't forget to install your dependencies before starting the project, or you'll
+get errors. 
+- For the backend, make sure that you set the `JAVA_HOME` variable and that everything else required
+is installed.
+- For Git bash, the terminal needs to be manually set in every project. Don't forget to do that, or
+else you'll end up running commands that don't exist in Windows.
+
+## Terminal Basics
+
+The terminal is a really important tool, which you'll find extremely useful throughout your 
+developer career. Not only does it allow you to access settings and commands which you would otherwise
+not have access to, it sometimes is just easier to be able to do some things by typing out commands
+rather than pointing and clicking with a mouse. 
+
+Learning how to use the terminal well may take a while, but we'll get you started with a few commands
+we think every developer should know. We'll also show you how to build your projects if you 
+haven't tried doing that yet.
+
+>Note: we'll be showing you how to use unix-based bash commands, which means that these commands will 
+>work for Mac and Linux computers. If you have a Windows computer, either download the Linux subsystem
+>or follow the commands in the backend README.md to install Git bash and start using that in your 
+>IntelliJ projects.
+
+### Common Commands
+
+#### cd
+
+`cd` is arguable one of the most used commands in the terminal. It stands for 'change directory', and it
+allows you to navigate around your computer. 
+
+Format:
+```shell script
+cd <directory>
+```
+
+- You can chain multiple directories together by adding '/' between each directory if you would like
+to jump to a specific one.
+- You can jump up directories with the '..' notation.
+- You can jump to your home directory (the one with Desktop, Documents, ... inside of it) by just typing `cd` or
+`cd ~/`
+
+Examples:
+```shell script
+# Go to your desktop
+cd Desktop
+
+# Go to back to your root directory
+cd ..
+
+# Go up multiple directories
+cd ../../../
+
+# Go back to your root directory
+cd ~/
+```
+
+#### ls
+
+`ls` is also a very commonly used commands. It lists all of the contents of a directory (both files and 
+sub-directories).
+
+Format:
+```shell script
+ls <optional filepath>
+```
+
+- You can list hidden files in a directory with the `-a` flag
+
+Examples:
+```shell script
+# List files in the current directory
+ls
+
+# List all files in the current directory
+ls -a
+
+# List files in the Desktop directory
+ls Desktop
+```
+
+#### pwd
+
+`pwd` stands for 'print working directory', and it logs the current directory you're located at.
+
+Format:
+```shell script
+pwd
+```
+
+#### mv
+
+`mv` is a command that lets you move a file or directory to another location. It can also be used
+to rename a file or directory (since that's the same thing as moving it in a way).
+
+Format:
+```shell script
+mv <from filepath> <to filepath>
+```
+
+- You can't move a file inside of itself or one of its subdirectories (without messing 
+around with symbolic links, but that's way outside of the material of this course).
+
+Example:
+```shell script
+# Move the README.md file to the parent directory without renaming it
+mv README.md ../
+
+# Rename the test.txt file to test.md
+mv test.txt test.md
+
+# Move the test.txt file to the Desktop from Documents and rename it to hello.world
+mv Documents/test.txt Desktop/hello.world
+```
+
+#### cp
+
+`cp` copies a file, and it's very similar to `mv`. 
+
+Format:
+```shell script
+cp <exiting file or directory> <new file or directory>
+```
+
+- If you're copying a directory, you need to make sure to include the `-r` flag so that it 
+copies everything in the directory too.
+
+Examples:
+```shell script
+# Copy test.txt to Desktop
+cp test.txt Desktop
+
+# Copy the Desktop directory to Documents 
+cp Desktop Documents -r
+```
+
+#### mkdir
+
+`mkdir` creates a directory.
+
+Format:
+```shell script
+mkdir <directory name>
+```
+
+Examples:
+```shell script
+# Create a Desktop2 directory
+mkdir Desktop2
+```
+
+#### rm
+
+`rm` deletes a file or a directory.
+
+```shell script
+rm <path to file or directory>
+```
+
+- Be careful using this command. Once it's used, files are pretty much unrecoverable without special software.
+- If you're deleting a directory, you'll need to pass in the `-rf` flags.
+    - The `-r` flag makes it recursive, it will delete all subdirectories.
+    - The `-f` flag is called force, and it's sometimes required to delete a non-empty directory.
+- Never try to delete the `/` directory using `rm -rf /`. It is a very dangerous command that will
+end up deleting your entire computer (there are a couple protections, but would you really want
+to test them out?).
+
+```shell script
+# Delete the test.txt file
+rm test.txt
+
+# Delete the test directory
+rm -rf test
+```
+
+#### cat
+
+`cat` prints out the contents of a file. It technically stands for 'concatenate' file to 
+standard output (your console).
+
+Format:
+```shell script
+cat <filepath>
+```
+
+```shell script
+# Print out contents of test.txt
+cat test.txt
+```
+
+#### vim
+
+`vim` is a text editor that usually comes preinstalled on most terminals. It allows you
+to open files, edit them using quick key binds, and write/close the files. It's notorious
+for having a really steep learning curve, so people tend to avoid it, but it can be a 
+powerful tool if you do end up spending time trying to learn it.
+
+![text-editor-learning-curves](./img/text-editor-learning-curves.png)
+
+We're showing this since you'll have to at some point learn a terminal-based text editor.
+It's also faster sometimes for quick edits to a file.
+
+Before you even try to open it, though, you need to know how to exit it. The easiest way to
+do that is to type <esc>, then ":q!".
+
+Format:
+```shell script
+# Open a file using vim
+vim <filepath>
+
+# vimtutor (see below)
+vimtutor
+```
+
+- You start in 'normal' mode
+- To edit a file, type 'i' to go into 'insert' mode.
+- To get back into normal mode, type <esc>
+- To save a file, type ":w" in normal mode
+- (again) To exit, type ":q!" in normal mode
+- The "q!" means quit without saving, so you can also do ":wq" to write and then quit
+- Try out the `vimtutor` command if you want to learn how to actually use vim.
+
+#### nano
+
+`nano` is another terminal-based text editor. It's easier to use compared to vim and it has the 
+controls on the bottom of the screen, but it's (in Conner's opinion) a horrible experience 
+that leaves him annoyed every time he uses it. If you're dedicated to learning a really fast
+text editor, learn vim, but I'm leaving this here for people who don't want to.
+
+Example:
+```shell script
+nano <filepath>
+```
+
+#### sudo
+
+`sudo` stand for "super-user do", and it's required at times where elevated permissions are required.
+This may be when you're dealing with system configurations or programs that need access to possibly 
+sensitive information, so your password will be required to allow it to make changes. This is sometimes a good
+thing, but you should definitely not just start using it whenever a program isn't working in a way
+you want it to. Again, remember that this gives permission to whatever program you're calling it with,
+so you should be a little careful about using it. You can read a little bit more about that 
+[here](https://www.linux.com/news/sudo-or-not-sudo-question/).
+
+Format:
+```shell script
+sudo <some other command>
+```
+
+- An example of a time where it may be useful to use it is when globally installing an npm package. 
+npm will need access to special folders, and so sudo will likely need to be used.
+
+Example:
+```shell script
+# Globally install the create-react-app package using npm
+sudo npm install -g create-react-app
+```
+
+#### man
+
+`man` shows the manual for a command. A lot of times, it can be the same as just calling 
+a command with the `--help` or `-h` flags, but it will often provide more information.
+It will usually show other flags, how the command should be formatted, and general
+options for its use.
+
+Format:
+```shell script
+man <command>
+```
+
+- When you use `man`, it will open up a program called `less`, which is very similar to `vim`.
+The difference between `vim` and `less` is that `vim` is an editor, while `less` is more of
+a viewer. Therefore, `less` has much fewer commands. Basically the only commands for that
+you need to know are the up/down arrow keys (or "j"/"k" if you're used to `vim`) and "q" to quit 
+(notice how there's no ":" preceding or "!" following it).
+- It seems like `man` may not come with Git bash, so just stick with `--help` and `-h` for now.
+    - The `--help` and `-h` flags are the same, but sometimes some programs will only implement
+    one or the other, so it's useful to know both.
+
+Example:
+```shell script
+# Show the manual for ls
+man ls 
+
+# Use the --help flag
+ls --help
+
+# Use the -h flag
+ls -h
+```
+
+### Build Tools
+
+You'll probably have seen the following terms used quite a bit, so we'll go over the basics of
+what they do and how to use them.
+
+#### npm
+
+npm stands for the Node Package Manager, and it's what's commonly used to install 
+dependencies/packages and run servers/scripts. It's also used for Typescript 'transpilation'
+and linting. The settings for how npm works on a specific project are set in the package.json
+file, and the settings for Typescript are in the tsconfig.json file.
+
+>Transpilation is when instead of 'compiling' code, the code gets translated to a different language.
+>In this case, Typescript is being converted to Javascript.
+
+>Linting is when the code is checked for formatting and against common style guides.
+
+Common commands include:
+- `npm install`: install dependencies for a project
+- `npm install -g`: install a global dependency (typically needs `sudo`)
+- `npm start`: starts a server
+- `npm test`: runs tests
+- `npm run <command>`: runs a command in the package.json scripts section
+- `npm run build`: a React command (can be supplied with other things though) to prepare your
+project for a production environment (compress everything and set up resources).
+
+#### Maven
+
+Maven is very similar to npm in a lot of ways. It is one of the popular project build
+and dependency managers for Java. Similarly to npm, it allows you to import plugins 
+(lets you run programs outside of your own program) to format code and adjust how
+your project is built. It also allows you to create these sort-of sub-projects, which 
+provide modularity and flexibility within your code. 
+
+If you take a look though the project, you might notice multiple pom.xml files.
+One main pom.xml in the project root, and three more (one in the subdirectories api/, persist/,
+and /service). The way we set up this project is so that each of the subdirectories are
+modules, and therefore sub-projects of the main backend project. 
+
+>Modules are groups of code that are compiled separately of each other, however, they can be used 
+>as depedndencies of other modules. If you take a look at the service pom.xml, you'll notice that
+>there are dependencies on the persist and api modules.
+
+Each command in Maven is called a 'goal', and goals can make up parts of other goals. You 
+can also run goals individually or together. For example, `mvn`, `mvn clean install`, 
+and `mvn clean spotless:apply install` all have the same result.
+
+Common commands include:
+- `mvn`: the default 'goal'. This runs 2 important tasks in the Maven 
+['lifecycle'](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html);
+`mvn clean` and `mvn install`
+- `mvn clean`: deletes built artifacts and compiled code so that it can be rebuilt later
+- `mvn install`: compiles code so that it can be run later on (and also applies the 
+`mvn spotless:apply` command)
+- `mvn spotless:apply`: performs code formatting to nicely and uniformly clean up your code
+
+A flag which you may want to use every once in a while when you're having trouble compiling a
+code because of a test, but you want to have it compiled so that you can run the test
+using the IntelliJ debugger is the `-DskipTests` flag. You can append it to the end
+of the `install` goal above, and it will skip tests so that you can successfully compile
+(if you're not able to compile because of a test). Remember though, this is not a command
+you want to be using often, since tests are there to help you catch issues in your code.
