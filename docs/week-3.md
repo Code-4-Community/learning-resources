@@ -210,7 +210,7 @@ import React from 'react';
 const LuckyNum = (props) => (
 
     <div>
-        <h1>My Lucky Number is {props.luckNumber}</h1>
+        <h1>My Lucky Number is {props.luckyNumber}</h1>
     </div>
 
 )
@@ -258,25 +258,266 @@ const Profile = (props) => (
 export default Profile;
 ```
 
-##State Management
+## State Management
+Alright. So John is now super happy with his profile and wants to see if other people like his profile as much
+as he does. To do this John adds a like button on his profile. 
+
+```
+import React from 'react';
+import LuckyNum from './LuckyNum';
+
+const Profile = () => (
+
+    <div>
+        <img src="profileImage.jpg"/>
+        <h1>Hi, my name is John! My favorite color is blue.</h1>
+        <LuckyNum />
+        <button>Likes: </button>
+    </div>
+);
+
+export default Profile;
+```
+
+John is now perplexed. How can I keep track of the number of likes and how can I keep the number consistent
+through each render? Welcome to state management John.
 
 ### What is managing state?
+You can think of state as the data that persist through each clock render of your application. Under the hood,
+your react application renders the screen on clock ticks. In order to make your non-constant data persist we
+have to manage the state of our application. We manage the state in our componetns using the react hook 
+`useState`. There are other ways of managing state in react, but this is a simple and easy way.
 
-### useState()
+### useState Hook
+`useState` allows us to add and keep track of data in the state. In order to use this hook we must import 
+it from react. We use {} when importing useState because it is not a default export but a named one. We will
+discuss default and named exports in Week 6.
+
+```import { useState } from 'react';```
+
+Let us add that import into John's profile component.
+
+```
+import React, { useState} from 'react';
+import LuckyNum from './LuckyNum';
+
+const Profile = () => (
+
+    <div>
+        <img src="profileImage.jpg"/>
+        <h1>Hi, my name is John! My favorite color is blue.</h1>
+        <LuckyNum />
+        <button>Likes: </button>
+    </div>
+);
+
+export default Profile;
+```
+
+Now in order to use `useState` we make a `const` array with the a variable and a setter. We then set this equal
+to a call to useState and pass in the type of data we want to keep track of. For example if we want to keep 
+track of someones message we would write this:
+
+```const [message, setMessage] = useState("Hello World")```
+
+We have initialized `message` to be "Hello World". If we want to change our message we would simply use 
+`setMessage`.
+
+```setMessage("This is our new message")```
+
+Now John can simply implement `useState` into his profile.
+
+```
+import React, { useState } from 'react';
+import LuckyNum from './LuckyNum';
+
+const Profile = () => (
+
+    //initialize the state to 0 because we start with 0 likes
+    const [profileLikes, setProfileLikes] = useState(0);
+
+    <div>
+        <img src="profileImage.jpg"/>
+        <h1>Hi, my name is John! My favorite color is blue.</h1>
+        <LuckyNum />
+        <button>Likes: {profileLikes}</button>
+    </div>
+);
+
+export default Profile;
+```
+
+Now all we have to do is create an `onClick` event to know when to increment the likes.
+
+```
+import React, { useState } from 'react';
+import LuckyNum from './LuckyNum';
+
+const Profile = () => (
+
+    //initialize the state to 0 because we start with 0 likes
+    const [profileLikes, setProfileLikes] = useState(0);
+
+    //handles incrementing the likes of John's profile
+    function handleLikes {
+        setProfileLikes(profileLikes + 1);
+    }    
+
+    <div>
+        <img src="profileImage.jpg"/>
+        <h1>Hi, my name is John! My favorite color is blue.</h1>
+        <LuckyNum />
+        <button onClick="handleLikes()">Likes: {profileLikes}</button>
+    </div>
+);
+
+export default Profile;
+```
 
 ## Typing with Typescript
+As you may have noticed, react is normally implement with Javascript. The only downside to using Javascript is 
+that we do not get type enforcement.
 
 ### Why use Typescript in the first place?
+When developing an application with a lot of contributors it is important to have some sort of structure to 
+your code. Typing allows us to not create errors and mess up a project with other contributors on it. Typescript
+gives us the functionality of typing our components and data! 
 
 ### How to type in React
+It is as easy as it seems. For example lets type the `useState` that John used for likes on his profile and the
+`useState` for our message example:
+
+```
+const [profileLikes, setProfileLikes] = useState<Number>(0);
+const [message, setMessage] = useState<String>("Hello World")
+```
+
+When typing components, we have to make sure to type the props that we are taking in (if applicable). The way
+we do this is with an interface with the name and the type of the prop we are expecting. For example lets 
+take the `LuckyNum` component as an example.
+
+```
+import React from 'react'; 
+
+/*
+    We specify luckyNumber as readonly because we do not need to modify
+    it anywhere in our component. All we need is to be able to read the value.
+*/
+
+interface LuckyNumProps {
+    readonly luckyNumber: number;
+}
+
+/*
+    React.FC = react functional component
+*/
+
+const LuckyNum: React.FC<LuckyNumProps> = (props) => (
+
+    <div>
+        <h1>My Lucky Number is {props.luckyNumber}</h1>
+    </div>
+
+)
+
+export default LuckyNum;
+```
 
 ## Material UI: a lifesaver
+We all hate having to style our components for hours on end to make them look beautiful and actually work
+properly. Do not worry because Material UI is here to save the day!
 
 ### What is Material UI?
-
-### Why is it good?
+Material UI is a popular framework in react. It is a library filled with pre-styled components that are super
+helpful. There are many different components that basically replace the need for any pure html components in
+your project. Each of the pre-made components will save you a ton of time on styling and formatting.
 
 ### How can I use it?
+All you have to do is import any component you want from the list found 
+[here](https://material-ui.com/components/box/). For example let us replace the html `<button>` for John's 
+likes with a Material UI Button component.
+
+```
+import React, { useState } from 'react';
+import LuckyNum from './LuckyNum';
+import { Button } from '@material-ui/core'
+
+const Profile = () => (
+
+    //initialize the state to 0 because we start with 0 likes
+    const [profileLikes, setProfileLikes] = useState(0);
+
+    //handles incrementing the likes of John's profile
+    function handleLikes {
+        setProfileLikes(profileLikes + 1);
+    }    
+
+    <div>
+        <img src="profileImage.jpg"/>
+        <h1>Hi, my name is John! My favorite color is blue.</h1>
+        <LuckyNum />
+        <Button onClick={()=>handleLikes}>Likes: {profileLikes}</Button>
+    </div>
+);
+
+export default Profile;
+```
+
+### Styling Material UI Components
+If you wanted to style the components in Material UI a little more to taylor your specific needs you can do that!
+For example let us make the newly imported Button component on John's profile to be black.
+
+We first have to import `makeStyles` from `@material-ui/core/styles`. We then make an object for each class we 
+want to apply to our components. We make a lambda function called `useStyles` that is equal to `makeStyles`
+and pass in our objects to the `makeStyles` function as one big object. We then call `useStyles` in our 
+component to apply in `className`.
+
+```
+import React, { useState } from 'react';
+import LuckyNum from './LuckyNum';
+import { Button } from '@material-ui/core'
+
+const useStyles = makeStyles({
+    
+    makeButtonBlack: {
+        color: 'black',
+        font: '30px'
+    }
+})
+
+const Profile = () => (
+
+    //allows us to use our custom styles
+    const classes = useStyles();
+
+    //initialize the state to 0 because we start with 0 likes
+    const [profileLikes, setProfileLikes] = useState(0);
+
+    //handles incrementing the likes of John's profile
+    function handleLikes {
+        setProfileLikes(profileLikes + 1);
+    }    
+
+    <div>
+        <img src="profileImage.jpg"/>
+        <h1>Hi, my name is John! My favorite color is blue.</h1>
+        <LuckyNum />
+        <Button 
+                className={classes.makeButtonBlack} 
+                onClick={()=>handleLikes}>Likes: {profileLikes}
+        </Button>
+    </div>
+);
+
+export default Profile;
+```
 
 ## Other Learning Sources
+Here are some sources that should help your understanding. Also you can always search on Google or Youtube
+if you need more explanation.
 
+- [React Tutorial](https://reactjs.org/tutorial/tutorial.html)
+
+- [Matieral UI](https://material-ui.com/) 
+
+- [Typescript](https://www.typescriptlang.org/docs/handbook/intro.html)
