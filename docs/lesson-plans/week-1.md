@@ -203,7 +203,12 @@ important course resources.
 
 >Note: there is also a dictionary of common terms we've compiled for you which should be
 >available in the Jumpstart Docs
+
 [C4C Jumpstart Docs](https://learn.c4cneu.com) (where this should be)
+
+[Jumpstart Frontend Starter Code (not yet done)]()
+
+[Jumpstart Backend Starter Code](https://github.com/Code-4-Community/jumpstart-backend/tree/starter-code)
 
 [C4C Slack](https://c4cneu.slack.com/)
 
@@ -232,10 +237,13 @@ frontend and backend, see below.
 The overall setup process will just involve cloning the repos on your computer and 
 then reading the READMEs to see how to set up each individual project.
 
-[Check out our Windows Setup 
-Video](https://drive.google.com/file/d/1S7MC9T52kpLTLFJfahayczOvMtDNI6gg/view?usp=sharing)
+If you prefer video format, here are some setup videos we've created for setting up the frontend and backend on both 
+Mac/Linux and Windows computers.
 
 [Check out our Mac/Linux Setup Video (not ready yet)]()
+
+[Check out our Windows Setup 
+Video](https://drive.google.com/file/d/1S7MC9T52kpLTLFJfahayczOvMtDNI6gg/view?usp=sharing)
 
 ### Installing IntelliJ
 
@@ -262,9 +270,14 @@ Inside of IntelliJ, go to File > New... > Project From Version Control..., make 
 `Version Control` box is set to `Git`, paste in the following links, and choose where you 
 want them to be downloaded to. 
 
-The links you'll want to use are 
-- Backend: https://github.com/Code-4-Community/jumpstart-backend/tree/starter-code
-- Frontend: __*GET STARTER CODE TAG DONE*__
+The links you'll want to use are in the __Important Links__ section above.
+
+After the projects are open, you'll want to view the starter code by entering the following command into the terminal
+at the bottom of your IntelliJ window for both the frontend and backend projects.
+
+```shell script
+git checkout starter-code
+```
 
 Once you've done that, you're ready to install other programs we'll need and build the projects.
 
