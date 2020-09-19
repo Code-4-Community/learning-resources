@@ -232,9 +232,10 @@ frontend and backend, see below.
 The overall setup process will just involve cloning the repos on your computer and 
 then reading the READMEs to see how to set up each individual project.
 
-![frontend-setup-video]()
+[Check out our Windows Setup 
+Video](https://drive.google.com/file/d/1S7MC9T52kpLTLFJfahayczOvMtDNI6gg/view?usp=sharing)
 
-![backend-setup-video]()
+[Check out our Mac/Linux Setup Video (not ready yet)]()
 
 ### Installing IntelliJ
 
