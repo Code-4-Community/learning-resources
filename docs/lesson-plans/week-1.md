@@ -272,6 +272,7 @@ Video](https://drive.google.com/file/d/1S7MC9T52kpLTLFJfahayczOvMtDNI6gg/view?us
 You've probably heard the words 'Git' and 'GitHub' a few times, so we'll take the time to describe them, and a few
 other important terms now. You can read more about git on [Atlassian's git 
 tutorial](https://www.atlassian.com/git/tutorials/what-is-version-control).
+
 - Git is a form of version control for your code, which means it tracks changes to a project over time.
 This is really useful, and it provides two main benefits: 1) if you ever make a mistake in your work and have
 to undo a bunch of changes you made, it's really easy to do, and 2) you can work on multiple different features
