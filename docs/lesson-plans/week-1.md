@@ -72,7 +72,7 @@ inner workings of a basic web application. Non-computer science majors are welco
 background in computer programming is recommended, as long as you complete the recommended 
 preparation down below, you'll probably be well prepared for this course. We'll also be here 
 with dedicated tutors monitoring a special Slack channel and weekly office hours if you have
-any questions, no matter how silly they may seem.
+any questions because __there are no dumb questions__.
 
 ### How should I prepare?
 
@@ -115,8 +115,13 @@ it to the frontend when requested, sending emails, and actually moving your emai
 trash, spam, archive, or wherever else.
 
 During this time, we'll be teaching and providing demonstrations for a Java backend 
-using a Vert.x framework and Typescript frontend using a React framework with a PostgreSQL 
+using a Vert.x framework (a dependency which handles setting up a lot of boilerplate stuff, or stuff which is
+commonly set up the same way) and Typescript frontend using a React framework with a PostgreSQL 
 database. 
+
+>Note: in the Important Links section of this document, we're providing access to the learning resources webpage
+>which contains our 'Jumpstart Dictionary'. If you come across any terminology not explained here, be sure to check
+>that out!
 
 The frontend will use packages such as [Material-UI](https://material-ui.com/) for
 UI components, [Jest](https://jestjs.io/) for testing the frontend, 
@@ -180,8 +185,9 @@ views, tests, and code will be inside here.
 package.json is a file containing dependency/package information, scripts to be run using npm,
 and other data about your project.
 
-package-lock.json holds information on dependencies which dependencies require and special 
-information that should rarely change. You should never have to do anything with this file, and
+package-lock.json holds information on requested dependencies, which dependencies are required for 
+the requested dependencies, and special information that should rarely change. You should never have 
+to do anything with this file, and
 it should **_definitely_** be included in a Git repository.
 
 tsconfig.json holds information about your Typescript configuration.
@@ -204,7 +210,7 @@ you'll need to build your project. After the meetings, we may give out a descrip
 code, and other resources for what we think you should work on during the upcoming week. 
 You're always free to work on other parts of your project or not do it at all if that's
 what you want to do. The following weekend before the next meeting, we'll send out
-what we're calling 'catch-up code', which is our implementation of the concepts and
+what we're calling 'catch-up code,' which is our implementation of the concepts and
 descriptions we told you to work on during the week. This catch-up code will show
 the current state of the project and the progression of our app over time. The
 reason we're doing this is because we understand that there are weeks that you may 
@@ -291,7 +297,7 @@ Go to the [install link](https://www.jetbrains.com/idea/download/) and download 
 'Ultimate' edition. Since you're a student, you aren't limited to the 30-day trial that would otherwise
 be applied.
 
-Once you've downloaded an installed it (you'll probably need to create an account with your student 
+Once you've downloaded and installed it (you'll probably need to create an account with your student 
 email), open it so that the welcome page shows up.
 
 >Note: some people prefer to use text editors like [Microsoft's VSCode](https://code.visualstudio.com/) or
@@ -340,8 +346,10 @@ Troubleshooting:
 get errors. 
 - For the backend, make sure that you set the `JAVA_HOME` variable and that everything else required
 is installed.
-- For Git bash, the terminal needs to be manually set in every project. Don't forget to do that, or
-else you'll end up running commands that don't exist in Windows.
+    - `JAVA_HOME` is a system-level variable which lets programs know where to look for the JDK (Java Development Kit). 
+- For Git bash, the terminal may need to be manually set in every project. Don't forget to do that, or
+else you'll end up running commands that don't exist in Windows Command Prompt.
+    - Git bash is a program which lets you run a Mac/Linux like terminal on Windows. We describe it  little more below.
 
 ## Terminal Basics
 
@@ -367,6 +375,10 @@ files in the given directory or a subdirectory. The actual terminal syntax depen
 command language/interface, is being used. The Windows operating system uses the Command Prompt as a shell,
 while Mac and Linux often use BASH (Bourne Again SHell) as a shell.
 
+If you want to learn more about the terminal, check out [this video](https://www.youtube.com/watch?v=oxuRxtrO2Ag).
+It's a bit long, but it should give you a pretty solid understanding of how to use the terminal and some
+common commands.
+
 #### cd
 
 `cd` is arguable one of the most used commands in the terminal. It stands for 'change directory', and it
@@ -388,14 +400,17 @@ Examples:
 # Go to your desktop
 cd Desktop
 
-# Go to back to your root directory
+# Go to back to your home directory (the one where all your stuff is)
 cd ..
 
 # Go up multiple directories
 cd ../../../
 
-# Go back to your root directory
+# Go back to your home directory
 cd ~/
+
+# Go to the root directory (the parent directory of all parent directories)
+cd /
 ```
 
 #### ls
@@ -577,7 +592,7 @@ nano <filepath>
 
 #### sudo
 
-`sudo` stand for "super-user do", and it's required at times where elevated permissions are required.
+`sudo` stand for "super-user do," and it's required at times where elevated permissions are required.
 This may be when you're dealing with system configurations or programs that need access to possibly 
 sensitive information, so your password will be required to allow it to make changes. This is sometimes a good
 thing, but you should definitely not just start using it whenever a program isn't working in a way
@@ -666,7 +681,7 @@ and dependency managers for Java. Similarly to npm, it allows you to import plug
 your project is built. It also allows you to create these sort-of sub-projects, which 
 provide modularity and flexibility within your code. 
 
-If you take a look though the project, you might notice multiple pom.xml files.
+If you take a look through the project, you might notice multiple pom.xml files.
 One main pom.xml in the project root, and three more (one in the subdirectories api/, persist/,
 and /service). The way we set up this project is so that each of the subdirectories are
 modules, and therefore sub-projects of the main backend project. 
@@ -675,7 +690,7 @@ modules, and therefore sub-projects of the main backend project.
 >as dependencies of other modules. If you take a look at the service pom.xml, you'll notice that
 >there are dependencies on the persist and api modules.
 
-Each command in Maven is called a 'goal', and goals can make up parts of other goals. You 
+Each command in Maven is called a 'goal,' and goals can make up parts of other goals. You 
 can also run goals individually or together. For example, `mvn`, `mvn clean install`, 
 and `mvn clean spotless:apply install` all have the same result.
 
@@ -691,6 +706,6 @@ Common commands include:
 A flag which you may want to use every once in a while when you're having trouble compiling a
 code because of a test, but you want to have it compiled so that you can run the test
 using the IntelliJ debugger is the `-DskipTests` flag. You can append it to the end
-of the `install` goal above, and it will skip tests so that you can successfully compile
-(if you're not able to compile because of a test). Remember though, this is not a command
+of the `install` goal above, and it will skip tests so that you can successfully compile. 
+Remember though, this is not a command
 you want to be using often, since tests are there to help you catch issues in your code.
