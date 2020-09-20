@@ -119,7 +119,7 @@ using a Vert.x framework (a dependency which handles setting up a lot of boilerp
 commonly set up the same way) and Typescript frontend using a React framework with a PostgreSQL 
 database. 
 
->Note: in the Important Links section of this document, we're providing access to the learning resources webpage
+>Note: in the Important Links section of this document, we're providing access to the Jumpstart Docs webpage
 >which contains our 'Jumpstart Dictionary'. If you come across any terminology not explained here, be sure to check
 >that out!
 
