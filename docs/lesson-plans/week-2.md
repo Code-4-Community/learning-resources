@@ -1,58 +1,63 @@
 # Frontend Basics and Introduction to git
 
-Terminal cont.
-Git basics
-  - idea of version control
-  - local vs remote repos
-  - commit, push, pull
-Front end basics
-- HTML
-    - elements
-    - tags
-    - attributes
-- Basic CSS
-- Javascript
+- Terminal cont.
+- Git basics
+    - idea of version control
+    - local vs remote repos
+    - commit, push, pull
+- Front end basics
+    - HTML
+        - elements
+        - tags
+        - attributes
+    - Basic CSS
+    - Javascript
 
 
-Basic plan
+### Basic plan
+
 1. Have everyone clone the git repository
-- Open terminal
-- Go to a folder
-- Run a git clone
+    - Open terminal
+    - Go to a folder
+    - Run a git clone
 
 2. Tell everyone to ignore most of the boiler plate, get everyone to be able to run our base code
-- Introduce the idea of node
-- npm install
-- npm run start
-- Open localhost, explain the idea
+    - Introduce the idea of node
+    - npm install
+    - npm run start
+    - Open localhost, explain the idea
 
 3. Use our example code to lecture about the basics of HTML
-- Bring up file for the homepage
-- Talk about format of HTML
-- Introduce tags, attributes
-- divs & spans
+    - Bring up file for the homepage
+    - Talk about format of HTML
+    - Introduce tags, attributes
+    - divs & spans
 
 4. Add some basic color and positioning CSS to make a basic layout
-- Have a stylesheet that is imported into homepage
-- Introduce className and id and css selector syntax
-- Have a CSS to define a layout already, have students use class names to insert elements into the layout
+    - Have a stylesheet that is imported into homepage
+    - Introduce className and id and css selector syntax
+    - Have a CSS to define a layout already, have students use class names to insert elements into the layout
 
 5. Walk through building out a simple post component
 
 
 ## What is HTML, CSS and Javascript?
 
-HTML provides the basic structure of sites. What is on the page?
+**HTML** provides the basic structure of sites.
 
-CSS is used to control presentation, formatting, and layout. How does the page look?
+**CSS** is used to control presentation, formatting, and layout.
 
-JavaScript is used to control the behavior of different elements. What can the page do?
+**JavaScript** is used to control the behavior of different elements.
+
+HTML decides what is on the page, CSS decides what the page looks like, and Javascript decides what the page can do.
 
 HTML, CSS, and Javascript are ever evolving technologies that were created around the year 2000, practically ancient in web development terms. They all have their own systems for adding new features and aren't always consistent with each other or even within themselves. Because of this, there are often dozens of ways to do the same thing with HTML, CSS and Javascript. This can be confusing to beginners or even experienced developers, but it's important to not get discouraged and to always keep an open mind to alternative approaches even if you don't need them.
 
 To learn more, [this blog](https://blog.hubspot.com/marketing/web-design-html-css-javascript) gives a good overview.
 
 > Side Note: Javascript is a programming language, HTML and CSS have their own syntax and can do some similar things, but they are *not* programming languages.
+
+</>
 
 > Side Note: Browsers are essentially parsers of HTML, CSS, and Javascript. The reason the development of HTML, CSS, and Javascript are so distributed / hard to follow is because for a new feature to be added, browsers have to update their engines to support the feature. You'll often see compatibility charts for newer features that show which browser versions support the feature and which do not (this is why you hear web developers curse internet explorer so much).
 
