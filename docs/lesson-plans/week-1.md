@@ -316,6 +316,9 @@ Inside of IntelliJ, go to File > New... > Project From Version Control..., make 
 `Version Control` box is set to `Git`, paste in the following links, and choose where you 
 want them to be downloaded to. 
 
+>Note: if you're on Windows, you may also need to install git (it should give you a button to do so)
+>to be able to clone the projects.
+
 The links you'll want to use are in the __Important Links__ section above.
 
 After the projects are open, you'll want to view the starter code by entering the following command into the terminal
@@ -324,6 +327,10 @@ at the bottom of your IntelliJ window for both the frontend and backend projects
 ```
 git checkout starter-code
 ```
+
+If you don't run the above command, then what you'll probably be working with is a later-stage version of the project.
+That's alright, and you're free to use that later-stage version for help, inspiration, or even if you don't want to
+do the project but are still interested in seeing examples of it. 
 
 Once you've done that, you're ready to install other programs we'll need and build the projects. If you've encountered
 any issues, please don't hesitate to reach out to us so we can help. It's really common to run into errors
@@ -343,6 +350,7 @@ icon in the upper right to view the formatted markdown. You can also try viewing
 plaintext and formatted markdown if you're interested to see what it looks like.
 
 Troubleshooting: 
+
 - For the frontend, don't forget to install your dependencies before starting the project, or you'll
 get errors. 
 - For the backend, make sure that you set the `JAVA_HOME` variable and that everything else required
@@ -547,9 +555,9 @@ cat <filepath>
 cat test.txt
 ```
 
-#### vim
+#### vim/vi
 
-`vim` is a text editor that usually comes preinstalled on most terminals. It allows you
+`vim` (sometimes also `vi`) is a text editor that usually comes preinstalled on most terminals. It allows you
 to open files, edit them using quick key binds, and write/close the files. It's notorious
 for having a really steep learning curve, so people tend to avoid it, but it can be a 
 powerful tool if you do end up spending time trying to learn it.
