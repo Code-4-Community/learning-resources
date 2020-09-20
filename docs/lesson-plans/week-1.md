@@ -27,6 +27,7 @@
     - Important Links
         - Making edits to the dictionary
 - Project Setup
+    - What is Git
     - Installing IntelliJ
     - Cloning the repositories with Git
     - Installing required apps
@@ -101,6 +102,18 @@ If you're watching the class online, here's where we'll show an example of the f
 
 ### What technologies will I be learning?
 
+Really quickly, let's start off by getting some terminology out of the way. You'll be seeing 
+these terms really often over the rest of the course, and they're really important in 
+distinguishing the two main sides of the application. The frontend is the part that a user
+will see and interact with; it's the code that runs in a web browser in this case (like the Gmail 
+webpage), and it will usually be provided to every user. The backend is the part of the application that isn't often
+accessed by users, and the frontend will connect with the backend for performing calculations,
+storing data, and providing interactions between multiple frontend applications; the backend code
+is rarely provided to users, and is often held on a small set of servers. In the Gmail example, the
+backend would be the part of the application that deals with storing the actual email data, returning
+it to the frontend when requested, sending emails, and actually moving your email from inbox to
+trash, spam, archive, or wherever else.
+
 During this time, we'll be teaching and providing demonstrations for a Java backend 
 using a Vert.x framework and Typescript frontend using a React framework with a PostgreSQL 
 database. 
@@ -110,7 +123,8 @@ UI components, [Jest](https://jestjs.io/) for testing the frontend,
 [Axios](https://github.com/axios/axios) as an HTTP client, and [React](https://reactjs.org/).
 
 The backend will use libraries such as [Vert.x and Vert.x-Web](https://vertx.io/),
-a PostgreSQL database driver, [Jackson](https://github.com/FasterXML/jackson)
+[PostgreSQL's](https://jdbc.postgresql.org/) database driver, 
+[Jackson](https://github.com/FasterXML/jackson)
 JSON utilities, [JUnit 5](https://junit.org/junit5/) for a testing framework, and
 [Mockito](https://site.mockito.org/) for a mocking framework.
 
@@ -152,7 +166,9 @@ end user.
 
 node_modules/ is a directory which houses all of the JavaScript packages you'll need. You should
 never have do anything with that directory (other than deleting it if you're getting weird issues,
-but that should be __*RARE*__). This will appear after you've run `npm install` later on. This
+but that should be __*RARE*__), since everything having to do with this directory will be handled
+for you. This will appear after you've run `npm install` later on, which is a program to download and
+handle external dependencies and packages to be used in your code. This
 directory is also usually not included in a Git repository.
 
 public/ is a directory to store unique files and images like manifest files, HTML files, or
@@ -234,7 +250,7 @@ contributed to the C4C dictionary.
 Now we'll be setting up your project. If you want to see videos for setting up the 
 frontend and backend, see below.
 
-The overall setup process will just involve cloning the repos on your computer and 
+The overall setup process will just involve cloning the repositories on your computer and 
 then reading the READMEs to see how to set up each individual project.
 
 If you prefer video format, here are some setup videos we've created for setting up the frontend and backend on both 
@@ -244,6 +260,29 @@ Mac/Linux and Windows computers.
 
 [Check out our Windows Setup 
 Video](https://drive.google.com/file/d/1S7MC9T52kpLTLFJfahayczOvMtDNI6gg/view?usp=sharing)
+
+### What is Git
+
+You've probably heard the words 'Git' and 'GitHub' a few times, so we'll take the time to describe them, and a few
+other important terms now. You can read more about git on [Atlassian's git 
+tutorial](https://www.atlassian.com/git/tutorials/what-is-version-control).
+- Git is a form of version control for your code, which means it tracks changes to a project over time.
+This is really useful, and it provides two main benefits: 1) if you ever make a mistake in your work and have
+to undo a bunch of changes you made, it's really easy to do, and 2) you can work on multiple different features
+at once without worrying about them interfering with each other (which also means that multiple different
+people can work on the same thing at the same time while providing a way to combine their changes together).
+- GitHub is a website that hosts git 'repositories' for many major companies and open-source projects (meaning their 
+code is open to anyone to view/edit/use). It provides useful features, like allowing people to review changes before
+they're accepted and being a remote server that people can use for storing their code and collaborating with 
+others.
+- Repositories (or 'repos') represent an individual 'project' in git.
+- Cloning is when you download a repository from an external host (such as GitHub) to your computer.
+- Checkout is a command in git that lets you switch the current code to a different branch.
+- Branches are the way that a different history is created for a specific feature or bug that is being worked on.
+They allow you to split off from a specific point and make isolated changes without having to worry that you're 
+changing the code you split off from. 
+![git-branches](./img/git-branch.svg)
+*Git Branches/Atlassian*
 
 ### Installing IntelliJ
 
@@ -279,7 +318,9 @@ at the bottom of your IntelliJ window for both the frontend and backend projects
 git checkout starter-code
 ```
 
-Once you've done that, you're ready to install other programs we'll need and build the projects.
+Once you've done that, you're ready to install other programs we'll need and build the projects. If you've encountered
+any issues, please don't hesitate to reach out to us so we can help. It's really common to run into errors
+when setting up a new environment.
 
 ### Installing required apps
 
@@ -319,6 +360,12 @@ haven't tried doing that yet.
 >IntelliJ projects.
 
 ### Common Commands
+
+The terminal is a tool which uses specific commands to perform system-level actions. The way that it works
+is each terminal instance (tab/window) works in a specific directory, and a lot of the commands utilize the
+files in the given directory or a subdirectory. The actual terminal syntax depends on which 'shell', or 
+command language/interface, is being used. The Windows operating system uses the Command Prompt as a shell,
+while Mac and Linux often use BASH (Bourne Again SHell) as a shell.
 
 #### cd
 
@@ -497,7 +544,7 @@ We're showing this since you'll have to at some point learn a terminal-based tex
 It's also faster sometimes for quick edits to a file.
 
 Before you even try to open it, though, you need to know how to exit it. The easiest way to
-do that is to type <esc>, then ":q!".
+do that is to type `<esc>`, then `:q!`.
 
 Format:
 ```shell script
@@ -566,8 +613,8 @@ man <command>
 
 - When you use `man`, it will open up a program called `less`, which is very similar to `vim`.
 The difference between `vim` and `less` is that `vim` is an editor, while `less` is more of
-a viewer. Therefore, `less` has much fewer commands. Basically the only commands for that
-you need to know are the up/down arrow keys (or "j"/"k" if you're used to `vim`) and "q" to quit 
+a viewer. Therefore, `less` has much fewer commands. The only commands you need to know for less
+are the up/down arrow keys (or "j"/"k" if you're used to `vim`) and "q" to quit 
 (notice how there's no ":" preceding or "!" following it).
 - It seems like `man` may not come with Git bash, so just stick with `--help` and `-h` for now.
     - The `--help` and `-h` flags are the same, but sometimes some programs will only implement
@@ -615,7 +662,7 @@ project for a production environment (compress everything and set up resources).
 
 Maven is very similar to npm in a lot of ways. It is one of the popular project build
 and dependency managers for Java. Similarly to npm, it allows you to import plugins 
-(lets you run programs outside of your own program) to format code and adjust how
+(lets you use outside code to setup and run your own program) to format code and adjust how
 your project is built. It also allows you to create these sort-of sub-projects, which 
 provide modularity and flexibility within your code. 
 
@@ -625,7 +672,7 @@ and /service). The way we set up this project is so that each of the subdirector
 modules, and therefore sub-projects of the main backend project. 
 
 >Modules are groups of code that are compiled separately of each other, however, they can be used 
->as depedndencies of other modules. If you take a look at the service pom.xml, you'll notice that
+>as dependencies of other modules. If you take a look at the service pom.xml, you'll notice that
 >there are dependencies on the persist and api modules.
 
 Each command in Maven is called a 'goal', and goals can make up parts of other goals. You 
