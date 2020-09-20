@@ -320,7 +320,7 @@ The links you'll want to use are in the __Important Links__ section above.
 After the projects are open, you'll want to view the starter code by entering the following command into the terminal
 at the bottom of your IntelliJ window for both the frontend and backend projects.
 
-```shell script
+```
 git checkout starter-code
 ```
 
@@ -385,7 +385,7 @@ common commands.
 allows you to navigate around your computer. 
 
 Format:
-```shell script
+```
 cd <directory>
 ```
 
@@ -396,7 +396,7 @@ to jump to a specific one.
 `cd ~/`
 
 Examples:
-```shell script
+```
 # Go to your desktop
 cd Desktop
 
@@ -419,14 +419,14 @@ cd /
 sub-directories).
 
 Format:
-```shell script
+```
 ls <optional filepath>
 ```
 
 - You can list hidden files in a directory with the `-a` flag
 
 Examples:
-```shell script
+```
 # List files in the current directory
 ls
 
@@ -442,7 +442,7 @@ ls Desktop
 `pwd` stands for 'print working directory', and it logs the current directory you're located at.
 
 Format:
-```shell script
+```
 pwd
 ```
 
@@ -452,7 +452,7 @@ pwd
 to rename a file or directory (since that's the same thing as moving it in a way).
 
 Format:
-```shell script
+```
 mv <from filepath> <to filepath>
 ```
 
@@ -460,7 +460,7 @@ mv <from filepath> <to filepath>
 around with symbolic links, but that's way outside of the material of this course).
 
 Example:
-```shell script
+```
 # Move the README.md file to the parent directory without renaming it
 mv README.md ../
 
@@ -476,7 +476,7 @@ mv Documents/test.txt Desktop/hello.world
 `cp` copies a file, and it's very similar to `mv`. 
 
 Format:
-```shell script
+```
 cp <exiting file or directory> <new file or directory>
 ```
 
@@ -484,7 +484,7 @@ cp <exiting file or directory> <new file or directory>
 copies everything in the directory too.
 
 Examples:
-```shell script
+```
 # Copy test.txt to Desktop
 cp test.txt Desktop
 
@@ -497,12 +497,12 @@ cp Desktop Documents -r
 `mkdir` creates a directory.
 
 Format:
-```shell script
+```
 mkdir <directory name>
 ```
 
 Examples:
-```shell script
+```
 # Create a Desktop2 directory
 mkdir Desktop2
 ```
@@ -511,7 +511,7 @@ mkdir Desktop2
 
 `rm` deletes a file or a directory.
 
-```shell script
+```
 rm <path to file or directory>
 ```
 
@@ -523,7 +523,7 @@ rm <path to file or directory>
 end up deleting your entire computer (there are a couple protections, but would you really want
 to test them out?).
 
-```shell script
+```
 # Delete the test.txt file
 rm test.txt
 
@@ -537,11 +537,11 @@ rm -rf test
 standard output (your console).
 
 Format:
-```shell script
+```
 cat <filepath>
 ```
 
-```shell script
+```
 # Print out contents of test.txt
 cat test.txt
 ```
@@ -562,7 +562,7 @@ Before you even try to open it, though, you need to know how to exit it. The eas
 do that is to type `<esc>`, then `:q!`.
 
 Format:
-```shell script
+```
 # Open a file using vim
 vim <filepath>
 
@@ -586,7 +586,7 @@ that leaves him annoyed every time he uses it. If you're dedicated to learning a
 text editor, learn vim, but I'm leaving this here for people who don't want to.
 
 Example:
-```shell script
+```
 nano <filepath>
 ```
 
@@ -601,7 +601,7 @@ so you should be a little careful about using it. You can read a little bit more
 [here](https://www.linux.com/news/sudo-or-not-sudo-question/).
 
 Format:
-```shell script
+```
 sudo <some other command>
 ```
 
@@ -609,7 +609,7 @@ sudo <some other command>
 npm will need access to special folders, and so sudo will likely need to be used.
 
 Example:
-```shell script
+```
 # Globally install the create-react-app package using npm
 sudo npm install -g create-react-app
 ```
@@ -622,7 +622,7 @@ It will usually show other flags, how the command should be formatted, and gener
 options for its use.
 
 Format:
-```shell script
+```
 man <command>
 ```
 
@@ -636,7 +636,7 @@ are the up/down arrow keys (or "j"/"k" if you're used to `vim`) and "q" to quit
     one or the other, so it's useful to know both.
 
 Example:
-```shell script
+```
 # Show the manual for ls
 man ls 
 
