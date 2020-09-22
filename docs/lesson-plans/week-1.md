@@ -1,6 +1,6 @@
 # Week 1: Project Setup and Terminal Basics
 
-## Agenda
+## Topics
 
 - Project Overview
 - Project Setup
@@ -12,42 +12,42 @@
     
 ## Basic Plan
 
-- Jumpstart Overview
-    - What is Jumpstart?
-    - Who is this program for?
-    - How should I prepare?
-    - What am I going to be building?
-        - End Goal
-    - What technologies will I be learning?
-    - How are the projects organized?
-        - Common Files
-        - Frontend
-        - Backend
-    - What will each week look like?
-    - Important Links
-        - Making edits to the dictionary
-- Project Setup
-    - What is Git
-    - Installing IntelliJ
-    - Cloning the repositories with Git
-    - Installing required apps
-- Terminal Basics
-    - Common Commands 
-        - cd and filepaths
-        - ls
-        - pwd
-        - mv
-        - cp
-        - mkdir
-        - rm
-        - cat
-        - vim
-        - nano
-        - sudo
-        - man
-    - Build Tools
-        - npm
-        - Maven
+1. Jumpstart Overview
+    1. What is Jumpstart?
+    2. Who is this program for?
+    3. How should I prepare?
+    4. What am I going to be building?
+        1. End Goal
+    5. What technologies will I be learning?
+    6. How are the projects organized?
+        1. Common Files
+        2. Frontend
+        3. Backend
+    7. What will each week look like?
+    8. Important Links
+        1. Making edits to the dictionary
+2.  Project Setup
+    1. What is Git
+    2. Installing IntelliJ
+    3. Cloning the repositories with Git
+    4. Installing required apps
+3. Terminal Basics
+    1. Common Commands 
+        1. cd and filepaths
+        2. ls
+        3. pwd
+        4. mv
+        5. cp
+        6. mkdir
+        7. rm
+        8. cat
+        9. vim
+        10. nano
+        11. sudo
+        12. man
+    2. Build Tools
+        1. npm
+        2. Maven
         
 ## Jumpstart Overview
 
@@ -62,16 +62,16 @@ From [our website](https://c4cneu.com/jumpstart).
 
 Over the next couple of weeks (we have 9-10 sessions planned including this one), we'll 
 be going through a lot of the fundamentals you'll need to know for developing an interactive 
-web application. Our aim is to help you understand and have the tools for developing a
-personal project of your own in the future.
+web application. Our aim is to give you the tools you'll need and help you understand 
+how to develop a personal project of your own in the future.
 
 ### Who is this program for?
 
-This program is honestly for anyone interested in software development or interested in the
+This program is for anyone interested in software development or interested in the
 inner workings of a basic web application. Non-computer science majors are welcome! While a 
 background in computer programming is recommended, as long as you complete the recommended 
-preparation down below, you'll probably be well prepared for this course. We'll also be here 
-with dedicated tutors monitoring a special Slack channel and weekly office hours if you have
+preparation down below, you'll probably be well prepared for this course. We'll also have
+dedicated tutors to monitor a special Slack channel if you have
 any questions because __there are no dumb questions__.
 
 ### How should I prepare?
@@ -81,19 +81,24 @@ course](https://www.codecademy.com/learn/learn-java). The free course is more th
 teach the understanding of Java we're expecting you to have. If you already know Java, then you'll
 probably be fine without taking it, but for anyone who feels they could benefit from the course,
 we highly recommend it. Also, it says it should take ~25 hours to complete, but that includes
-all of the paid content too, so expect it to take around 5-6 hours max.
+all of the paid content too, so expect it to take around 5-6 hours max. If you finish that and
+are still looking for ways to prepare, the [JavaScript Codecademy 
+course](https://www.codecademy.com/learn/introduction-to-javascript) is another great way to 
+prepare. Learning Java will help you better understand the JavaScript and Typescript 
+syntaxes, so we recommend learning that first and coming to this later if you have time.
 
 ### What are we going to be building?
 
-Throughout this course, you'll have the opportunity (but you're not required) to build a project
-we've designed. It's a social media website similar to a blog, think of something like Reddit,
+Throughout this course, you'll have the opportunity (but you're not required) to develop a project
+through our weekly assignments. It's a social media website similar to a blog, think of something like 
+[Medium](https://medium.com/topic/popular),
 with posts, comments, likes (we're calling them claps though), and a bit of other functionality.
 
 If you have an idea of a project you want to try and make instead of ours, feel free to join us
 and work on your project instead. Like it was said earlier, you're not required to make the 
 project. If you do end up working on your own project, be aware that the materials we give out 
-every week may not end up helping you as much as it would for our project, and you may encounter
-issues and concepts we won't be covering, however, feel free to use us as a resource for fixing
+every week may not end up helping you as much as it would for the Jumpstart project, and you may encounter
+issues and concepts we won't be covering. However, feel free to use us as a resource for addressing
 and understanding them as they pop up.
 
 #### End Goal
@@ -102,22 +107,20 @@ If you're watching the class online, here's where we'll show an example of the f
 
 ### What technologies will I be learning?
 
-Really quickly, let's start off by getting some terminology out of the way. You'll be seeing 
+Let's start off by getting some terminology out of the way. You'll be seeing 
 these terms really often over the rest of the course, and they're really important in 
-distinguishing the two main sides of the application. The frontend is the part that a user
-will see and interact with; it's the code that runs in a web browser in this case (like the Gmail 
-webpage), and it will usually be provided to every user. The backend is the part of the application that isn't often
-accessed by users, and the frontend will connect with the backend for performing calculations,
-storing data, and providing interactions between multiple frontend applications; the backend code
-is rarely provided to users, and is often held on a small set of servers. In the Gmail example, the
+distinguishing the two main sides of the application. The __frontend__ is the part of the application that a user
+will see and interact with. It's the code that runs in a web browser in this case (like the Gmail 
+webpage). The __backend__ is the part of the application that isn't often
+accessed by users. Instead the frontend will connect with the backend for performing calculations,
+storing data, and providing interactions between multiple frontend applications. For Gmail, the
 backend would be the part of the application that deals with storing the actual email data, returning
 it to the frontend when requested, sending emails, and actually moving your email from inbox to
 trash, spam, archive, or wherever else.
 
-During this time, we'll be teaching and providing demonstrations for a Java backend 
-using a Vert.x framework (a dependency which handles setting up a lot of boilerplate stuff, or stuff which is
-commonly set up the same way) and Typescript frontend using a React framework with a PostgreSQL 
-database. 
+Throughout the course, we'll be teaching and providing demonstrations for a Java backend 
+using the Vert.x framework (a dependency which handles setting up a lot of boilerplate stuff, or stuff which is
+commonly set up the same way) with a PostgreSQL database, and a Typescript frontend using the React framework.
 
 >Note: in the Important Links section of this document, we're providing access to the Jumpstart Docs webpage
 >which contains our 'Jumpstart Dictionary'. If you come across any terminology not explained here, be sure to check
@@ -134,10 +137,10 @@ JSON utilities, [JUnit 5](https://junit.org/junit5/) for a testing framework, an
 [Mockito](https://site.mockito.org/) for a mocking framework.
 
 Throughout the course, we'll be covering a lot of topics like Git and terminal commands,
-HTML, CSS, and JavaScript, servers, HTTP and REST requests, testing, databases, APIs, and
+HTML, CSS, JavaScript, servers, HTTP and REST requests, testing, databases, APIs, and
 cloud deployment. 
 
-Don't worry if any of this seems unfamiliar or new to you, we'll be sure to cover all of this
+Don't worry if any of this is unfamiliar or new to you, we'll be sure to cover all of this
 and answer any questions you may have.
 
 ### How are the projects organized?
@@ -149,19 +152,19 @@ coming weeks, so don't worry if you don't know what we're saying.
 
 #### Common Files
 
-.gitignore is a file containing regular expressions to describe files we don't want Git
+__.gitignore__ is a file containing regular expressions to describe files we don't want Git
 to keep track of when we make commits or push to GitHub.
 
 >A regular expression (regex) is a syntax used to define text matching the given pattern. 
 >Check out [regexr](https://regexr.com/) and [regex101](https://regex101.com/) for some 
 >common regexes, descriptions, and a playground to test some out.
 
-LICENSE is a file detailing licensing information. In our case, we're using the GPL-3.0
+__LICENSE__ is a file detailing licensing information. In our case, we're using the GPL-3.0
 License, which means anyone can use or modify our code for whatever they want (with some
 conditions). You'll rarely have to deal with this in practice, but we wanted to add one
 so that you can see what it looks like.
 
-README.md is sort of like the introduction file. It's written in a format called 
+__README.md__ is sort of like the introduction file. It's written in a format called 
 [Markdown](https://en.wikipedia.org/wiki/Markdown) (the .md filetype), which allows for 
 simple and easy formatting. Usually this file has descriptions of the software, instructions
 for setting it up, and any other information the developer(s) would like to provide to the
@@ -169,38 +172,39 @@ end user.
 
 #### Frontend
 
-node_modules/ is a directory which houses all of the JavaScript packages you'll need. You should
+__node_modules/__ is a directory which houses all of the JavaScript packages you'll need. You should
 never have do anything with that directory (other than deleting it if you're getting weird issues,
 but that should be __*RARE*__), since everything having to do with this directory will be handled
 for you. This will appear after you've run `npm install` later on, which is a program to download and
 handle external dependencies and packages to be used in your code. This
 directory is also usually not included in a Git repository.
 
-public/ is a directory to store unique files and images like manifest files, HTML files, or
+__public/__ is a directory to store unique files and images like manifest files, HTML files, or
 special image files. They're put here for easy reference and access.
 
-src/ is the directory with your actual project files. All of your React components,
+__src/__ is the directory with your actual project files. All of your React components,
 views, tests, and code will be inside here.
 
-package.json is a file containing dependency/package information, scripts to be run using npm,
+__package.json__ is a file containing dependency/package information, scripts to be run using npm,
 and other data about your project.
 
-package-lock.json holds information on requested dependencies, which dependencies are required for 
-the requested dependencies, and special information that should rarely change. You should never have 
-to do anything with this file, and
-it should **_definitely_** be included in a Git repository.
+__package-lock.json__ holds information on requested dependencies, which dependencies are required for 
+the requested dependencies, and special information that should rarely change. It's generated from the
+package.json file, and any changes you make there will eventually be reflected in package-lock. 
+You should never have to change anything with this file, and it should **_definitely_** be 
+included in a Git repository. 
 
-tsconfig.json holds information about your Typescript configuration.
+__tsconfig.json__ holds information about your Typescript configuration.
 
 #### Backend
 
-pom.xml is a file with project build instructions, dependencies, and other project information.
+__pom.xml__ is a file with project build instructions, dependencies, and other project information.
 
-api/ is a directory handling routing information and data transfer objects (DTOs).
+__api/__ is a directory handling routing information and data transfer objects (DTOs).
 
-persist/ is a directory for handling and saving data.
+__persist/__ is a directory for handling and saving data.
 
-service/ is the entry point for your project, so you'll start it up from there. It handles
+__service/__ holds the main method for your project, so you'll start it up from there. It handles
 connecting everything together and basically 'running' your project.
 
 ### What will each week look like?
@@ -209,7 +213,7 @@ Every week, we'll have one of these meetings where we'll go over new concepts th
 you'll need to build your project. After the meetings, we may give out a description, starter
 code, and other resources for what we think you should work on during the upcoming week. 
 You're always free to work on other parts of your project or not do it at all if that's
-what you want to do. The following weekend before the next meeting, we'll send out
+what you want to do. The following weekend, and before the next meeting, we'll send out
 what we're calling 'catch-up code,' which is our implementation of the concepts and
 descriptions we told you to work on during the week. This catch-up code will show
 the current state of the project and the progression of our app over time. The
@@ -228,7 +232,7 @@ important course resources.
 
 [C4C Jumpstart Docs](https://learn.c4cneu.com) (where this should be)
 
-[Jumpstart Frontend Starter Code (not yet done)]()
+[Jumpstart Frontend Starter Code]()
 
 [Jumpstart Backend Starter Code](https://github.com/Code-4-Community/jumpstart-backend/tree/starter-code)
 
@@ -244,7 +248,7 @@ important course resources.
 
 If there's a term you'd like to see added to the dictionary, updated, or formatted differently, you
 can click on the pencil icon in the upper right to make an edit (you can do this to the script pages
-too if there's a change you want there instead). You will probably need an account, 
+too if there's a change you want there instead). You will need to log in with an account, 
 and then it should take you to an in-browser edit page. Once you're ready to make the change,
 you should be able to go to the bottom to leave a quick message detailing what you changed
 (you don't have to do the extended description). Then you'll be able to create a branch, and we'll
@@ -319,7 +323,9 @@ want them to be downloaded to.
 >Note: if you're on Windows, you may also need to install git (it should give you a button to do so)
 >to be able to clone the projects.
 
-The links you'll want to use are in the __Important Links__ section above.
+The links you'll want to use are:
+- Frontend: `https://github.com/Code-4-Community/jumpstart-frontend.git`
+- Backend: `https://github.com/Code-4-Community/jumpstart-backend.git`
 
 After the projects are open, you'll want to view the starter code by entering the following command into the terminal
 at the bottom of your IntelliJ window for both the frontend and backend projects.
