@@ -9,6 +9,7 @@ theme:
 
 nav:
   - Home: index.md
+  - Jumpstart Dictionary: dictionary.md
   - Guides:
       - Home: guides/index.md
       - Send a POST request: guides/postrequest.md
