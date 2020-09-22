@@ -217,9 +217,7 @@ Defining layouts can be one of the hardest parts of mastering CSS and figuring o
 
 The two prominent CSS systems for creating flexible layouts are called 'flexbox' and 'grid'. Flexbox is great for items that should be grouped together but don't need to have a particular size or strict spacing. Grid is great when there are very clear boundaries for where elements should be. These layouts can be used together as well for more complicated layout patterns. To learn more about these layouts and how to implement themselves you can visit [here](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) for flexbox and [here](https://css-tricks.com/snippets/css/complete-guide-grid/) for grid.
 
-For now, we will use the CSS we have already designed to fill in a layout. <Go into demo here>
-
-<Mention that CSS can be written in many different places>
+For now, we will use the CSS we have already designed to fill in a web page layout.
 
 ## Javascript
 
