@@ -31,6 +31,7 @@
     2. Installing IntelliJ
     3. Cloning the repositories with Git
     4. Installing required apps
+        1. Troubleshooting
 3. Terminal Basics
     1. Common Commands 
         1. cd and filepaths
@@ -284,7 +285,7 @@ at once without worrying about them interfering with each other (which also mean
 people can work on the same thing at the same time while providing a way to combine their changes together).
 - GitHub is a website that hosts git 'repositories' for many major companies and open-source projects (meaning their 
 code is open to anyone to view/edit/use). It provides useful features, like allowing people to review changes before
-they're accepted and being a remote server that people can use for storing their code and collaborating with 
+they're accepted and acting as a remote server people can use for both storing their code and collaborating with 
 others.
 - Repositories (or 'repos') represent an individual 'project' in git.
 - Cloning is when you download a repository from an external host (such as GitHub) to your computer.
@@ -297,8 +298,8 @@ changing the code you split off from.
 
 ### Installing IntelliJ
 
-The way that you'll be interacting with a lot of the code for this project will be through IntelliJ.
-Go to the [install link](https://www.jetbrains.com/idea/download/) and download the
+We recommend using IntelliJ as a code editor for all the code you work with over the semester.
+Go to this [install link](https://www.jetbrains.com/idea/download/) and download the
 'Ultimate' edition. Since you're a student, you aren't limited to the 30-day trial that would otherwise
 be applied.
 
@@ -355,7 +356,10 @@ To make sure the formatted text pops up, once you open the README.md files, clic
 icon in the upper right to view the formatted markdown. You can also try viewing it side-by-side as
 plaintext and formatted markdown if you're interested to see what it looks like.
 
-Troubleshooting: 
+Follow the instructions in the README.md file to set up all of the programs you'll need throughout
+the semester.
+
+#### Troubleshooting: 
 
 - For the frontend, don't forget to install your dependencies before starting the project, or you'll
 get errors. 
@@ -373,7 +377,7 @@ developer career. Not only does it allow you to access settings and commands whi
 not have access to, it sometimes is just easier to be able to do some things by typing out commands
 rather than pointing and clicking with a mouse. 
 
-Learning how to use the terminal well may take a while, but we'll get you started with a few commands
+Learning how to use the terminal may take a while, but we'll get you started with a few commands
 we think every developer should know. We'll also show you how to build your projects if you 
 haven't tried doing that yet.
 
@@ -412,16 +416,16 @@ to jump to a specific one.
 
 Examples:
 ```
-# Go to your desktop
+# Go to the directory named desktop
 cd Desktop
 
-# Go to back to your home directory (the one where all your stuff is)
+# Go to back up a directory
 cd ..
 
 # Go up multiple directories
 cd ../../../
 
-# Go back to your home directory
+# Go back to your home directory (the one where all your stuff is, where your terminal starts)
 cd ~/
 
 # Go to the root directory (the parent directory of all parent directories)
@@ -430,7 +434,7 @@ cd /
 
 #### ls
 
-`ls` is also a very commonly used commands. It lists all of the contents of a directory (both files and 
+`ls` is also a very commonly used command. It lists all of the contents of a directory (both files and 
 sub-directories).
 
 Format:
@@ -561,9 +565,9 @@ cat <filepath>
 cat test.txt
 ```
 
-#### vim/vi
+#### vim
 
-`vim` (sometimes also `vi`) is a text editor that usually comes preinstalled on most terminals. It allows you
+`vim` is a text editor that usually comes preinstalled on most terminals. It allows you
 to open files, edit them using quick key binds, and write/close the files. It's notorious
 for having a really steep learning curve, so people tend to avoid it, but it can be a 
 powerful tool if you do end up spending time trying to learn it.
@@ -589,9 +593,11 @@ vimtutor
 - To edit a file, type 'i' to go into 'insert' mode.
 - To get back into normal mode, type <esc>
 - To save a file, type ":w" in normal mode
-- (again) To exit, type ":q!" in normal mode
-- The "q!" means quit without saving, so you can also do ":wq" to write and then quit
+- (again) To exit, type ":q" in normal mode
 - Try out the `vimtutor` command if you want to learn how to actually use vim.
+
+>Note: there's another editor called `vi`. It's the predecessor to `vim`, and a lot of the time now,
+>running `vi` is set to open up `vim` instead.
 
 #### nano
 
@@ -665,7 +671,11 @@ ls -h
 ### Build Tools
 
 You'll probably have seen the following terms used quite a bit, so we'll go over the basics of
-what they do and how to use them.
+what they do and how to use them. These commands work only in directories with your projects
+and require special files to tell them how to work and which dependencies to install.
+
+- NPM is for the frontend, and it requires the package.json file
+- Maven is for the backend, and it requires the pom.xml file
 
 #### npm
 
@@ -696,7 +706,7 @@ and dependency managers for Java. Similarly to npm, it allows you to import plug
 your project is built. It also allows you to create these sort-of sub-projects, which 
 provide modularity and flexibility within your code. 
 
-If you take a look through the project, you might notice multiple pom.xml files.
+If you take a look through the backend project, you might notice multiple pom.xml files.
 One main pom.xml in the project root, and three more (one in the subdirectories api/, persist/,
 and /service). The way we set up this project is so that each of the subdirectories are
 modules, and therefore sub-projects of the main backend project. 
