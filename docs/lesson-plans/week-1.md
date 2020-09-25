@@ -197,6 +197,12 @@ included in a Git repository.
 
 __tsconfig.json__ holds information about your Typescript configuration.
 
+__.travis.yml__ holds information for deployment on [Travis-CI](https://travis-ci.com/), which handles
+continuous integration and continuous deployment for applications. Basically, it builds and deploys
+your apps to wherever you configure it to do that. For this project, we have it to double
+check our work and make sure there are no styling issues before we push our catch-up code for the 
+week, so it's not anything you have to worry about.
+
 #### Backend
 
 __pom.xml__ is a file with project build instructions, dependencies, and other project information.
