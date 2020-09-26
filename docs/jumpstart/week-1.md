@@ -239,6 +239,8 @@ important course resources.
 
 [C4C Jumpstart Docs](https://learn.c4cneu.com) (where this should be)
 
+[C4C Jumpstart Important Links](/jumpstart/important_links)
+
 [Jumpstart Frontend Starter Code]()
 
 [Jumpstart Backend Starter Code](https://github.com/Code-4-Community/jumpstart-backend/tree/starter-code)
@@ -250,6 +252,10 @@ important course resources.
 [C4C Website](https://c4cneu.com)
 
 [C4C Dev Docs](https://docs.c4cneu.com)
+
+[Codecademy Java Course](https://www.codecademy.com/learn/learn-java)
+
+[Codecademy JavaScript Course](https://www.codecademy.com/learn/introduction-to-javascript)
 
 #### Making edits to the dictionary
 
