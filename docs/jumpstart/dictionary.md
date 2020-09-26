@@ -242,27 +242,55 @@ actually runs your command.
 
 ## Week 2
 
-### XML
-
-- Extensible Markup Language, a syntax of expressing data in both a human and machine readable way.
-- [XML Introduction - MDN](https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction)
-
-#### Tag/Element
-
-- A basic unit in XML/HTML. They can either be self closing or wrap child tags/elements.
-
-#### Child
-
-- A tag/element that is wrapped in a parent element.
-
-#### Parent
-
-- A tag/element that wraps at least one child element.
-
-#### Attribute
+### Attribute
 
 - An aspect of XML which allows you to specify extra information about an element 
 without having to create children to represent properties.
+
+### Border
+
+- The border of the element. This can be made visible if you want a border 
+around your element (with different styles).
+
+### Box Model
+
+- Each HTML element has three boxes around it to provide padding, borders, and margin 
+(described below) which can be controlled through CSS.
+- [Box Model - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+
+### Child
+
+- A tag/element in XML/HTML that is wrapped in a parent element.
+
+### Class (The HTML kind)
+
+- A way of identifying specific HTML elements based off of a developer-provided attribute. 
+Class attribute values can be the same between multiple different elements; 
+this serves as a way to group elements together.
+
+### CSS
+
+- A list of rules for a given set of HTML elements specified by a selector. 
+CSS provides styling information like size, positioning, color, border, and many other properties.
+- In a comparison between HTML, CSS, and JavaScript, CSS would be like the skin of a body.
+- [CSS - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS)
+
+### Div
+
+- An HTML-specific element.
+- A block/box element which wraps other elements.
+
+### Flexbox
+
+- A method of creating a flexible layout for items that should be grouped together 
+but don't need to have a specific size. Can be used with the grid method.
+- [Flexbox Guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
+### Grid
+
+- A method of creating a flexible layout for items that should have very clear 
+boundaries. Can be used with the flexbox method.
+- [Grid Guide](https://css-tricks.com/snippets/css/complete-guide-grid/)
 
 ### HTML
 
@@ -274,86 +302,11 @@ pre-defined tags/elements to be used (all HTML is valid XML, not all XML is vali
 - [HTML Overview](http://csis.pace.edu/~wolf/HTML/htmlnotepad.htm)
 - [Elements in HTML - MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element)
 
-#### Div
-
-- An HTML-specific element.
-- A block/box element which wraps other elements.
-
-#### Span
-
-- An HTML-specific element.
-- An inline element. This element can be placed inside of text to allow special 
-operations on the wrapped text.
-
-#### P (Paragraph)
-
-- An HTML-specific element.
-- A generic text element
-
-### CSS
-
-- A list of rules for a given set of HTML elements specified by a selector. 
-CSS provides styling information like size, positioning, color, border, and many other properties.
-- In a comparison between HTML, CSS, and JavaScript, CSS would be like the skin of a body.
-- [CSS - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS)
-
-#### Selector
-
-- Provides a way of selecting HTML elements based off of a special set of rules. 
-The three most common are ID, Class, and element type.
-- [Selectors in CSS - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors)
-
-#### ID
+### ID
 
 - A way of identifying specific HTML elements based off of a developer-provided attribute. 
 All ID attribute values should be unique (there should only be at most one of every value) 
 on a given HTML document.
-
-#### Class
-
-- A way of identifying specific HTML elements based off of a developer-provided attribute. 
-Class attribute values can be the same between multiple different elements; 
-this serves as a way to group elements together.
-
-#### Properties 
-
-- The keywords CSS provides so that you can modify the styling of HTML elements. 
-There are a lot of these, so just looking up the general functionality you’re looking 
-for will probably be easier than scrolling through the list of all elements below. The 
-second link is a list of common properties.
-- [CSS Properties - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
-- [Common CSS Properties - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference)
-
-#### Box Model
-
-- Each HTML element has three boxes around it to provide padding, borders, and margin 
-(described below) which can be controlled through CSS.
-- [Box Model - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-
-##### Padding
-
-- The space between the actual content/element and the border.
-
-##### Border
-
-- The border of the element. This can be made visible if you want a border 
-around your element (with different styles).
-
-##### Margin
-
-- The empty space between the element’s border and the next closest element.
-
-#### Flexbox
-
-- A method of creating a flexible layout for items that should be grouped together 
-but don't need to have a specific size. Can be used with the grid method.
-- [Flexbox Guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
-
-#### Grid
-
-- A method of creating a flexible layout for items that should have very clear 
-boundaries. Can be used with the flexbox method.
-- [Grid Guide](https://css-tricks.com/snippets/css/complete-guide-grid/)
 
 ### JavaScript (JS)
 
@@ -365,181 +318,76 @@ make learning/using it easier.
 - [Intro to Javascript - Codecademy](https://www.codecademy.com/learn/introduction-to-javascript)
 - [Javascript - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
+### Margin
+
+- The empty space between the element’s border and the next closest element.
+
+### P (Paragraph)
+
+- An HTML-specific element.
+- A generic text element
+
+### Padding
+
+- The space between the actual content/element and the border.
+
+### Parent
+
+- A tag/element in XML/HTML that wraps at least one child element.
+
+### Properties 
+
+- The keywords CSS provides so that you can modify the styling of HTML elements. 
+There are a lot of these, so just looking up the general functionality you’re looking 
+for will probably be easier than scrolling through the list of all elements below. The 
+second link is a list of common properties.
+- [CSS Properties - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
+- [Common CSS Properties - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference)
+
+### Tag/Element
+
+- A basic unit in XML/HTML. They can either be self closing or wrap child tags/elements.
+
+### Selector
+
+- Provides a way of selecting HTML elements based off of a special set of rules. 
+The three most common are ID, Class, and element type.
+- [Selectors in CSS - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors)
+
+### Span
+
+- An HTML-specific element.
+- An inline element. This element can be placed inside of text to allow special 
+operations on the wrapped text.
+
+### XML
+
+- Extensible Markup Language, a syntax of expressing data in both a human and machine readable way.
+- [XML Introduction - MDN](https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction)
+
 ## Week 3
-
-### Stylesheet
-
-### User Interface
 
 ### Component
 
-### JSX
-
-### Framework
+### Declarative Code
 
 ### DOM
 
-### Virtual Browser
-
-### Declarative Code
-
-### .tsx
+### Framework
 
 ### Functional Component
 
+### JSX
+
+### Stylesheet
+
+### .tsx
+
+### User Interface
+
+### Virtual Browser
+
 ## Week 4
-
-### Server
-
-- Servers (not the hardware kind) are the programs which power every website and remote service you use. 
-- [Server Definition](https://whatis.techtarget.com/definition/server)
-
-#### Client
-
-- A program that makes requests to servers.
-- [Client - Wikipedia](https://en.wikipedia.org/wiki/Client_(computing))
-
-#### Hosting
-
-- Hosting is the act of starting a server and making available a resource for connections.
-- [What is Hosting](https://www.website.com/beginnerguide/webhosting/6/1/what-is-web-hosting?.ws)
-- [GoDaddy Hosting Description](https://www.godaddy.com/hosting)
-
-#### Localhost
-
-- Localhost (or http://127.0.0.1) is the address that locally hosted servers can be 
-accessed at. It’s called a loopback address, since any requests sent to or received 
-from localhost don’t ever leave your computer.
-- [Localhost - WhatIsMyIPAddress](https://whatismyipaddress.com/localhost)
-- [What is Localhost](https://www.hostinger.com/tutorials/what-is-localhost)
-- [What is Localhost - GeeksForGeeks](https://www.geeksforgeeks.org/what-is-local-host/)
-
-#### Port
-
-- A port is an individual endpoint at a specific address.
-- [Ports - WhatIsMyIPAddress](https://whatismyipaddress.com/port)
-
-#### Ngrok
-
-- An app which routes requests through an external server so people not on your 
-local network can access a port on your computer.
-- [Ngrok Homepage](https://ngrok.com/)
-- [What is Ngrok](https://www.pubnub.com/learn/glossary/what-is-ngrok/)
-
-#### IP Address
-
-- An IP address is an identification number assigned to every device in a computer network 
-which uses the Internet Protocol (IP) to communicate and relay information.
-- [WhatIsMyIP Homepage](https://www.whatismyip.com/)
-- [IP Address Lookup - WhatIsMyIP](https://www.whatismyip.com/ip-address-lookup/)
-
-### HTTP
-
-- Hypertext Transfer Protocol, a method for sending data between applications.
-- [HTTP - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP)
-
-#### Request
-
-- A network interaction with a server to create a connection and send data, then receive a 
-response after server processing. A request is made by a client.
-
-#### Response
-
-- A network interaction following a request, after the server finishes processing the 
-request, a response is returned containing headers, a status code, and sometimes a 
-body. A response is returned by a server.
-
-#### Headers
-
-- A collection of data about the request or response.
-- [Headers - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
-
-#### Body
-
-- The actual data the request or response consists of.
-
-### Status Codes
-
-- Codes returned with a HTTP request which notify the client of the status of the request.
-- [Status Codes - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
-- [Status Code Cheat Sheet](https://www.restapitutorial.com/httpstatuscodes.html)
-
-### REST
-
-- Representational State Transfer, a software architecture style which defines a set of 
-constraints for web services.
-- [REST API Description](https://restfulapi.net/)
-- Constraints:
-    - Server-Client Architecture: an architecture where clients make requests to servers
-    - Stateless: the server doesn’t store any client context on the server (except for some info in a database)
-    - Cacheable: responses can be cached (or marked as not cacheable) for optimizations
-    - Layered System: a client shouldn’t need to know if it’s connected to a specific layer of the server system
-    - Uniform Interface: the server’s resources and implementation should be decoupled from the client
-
-### JSON
-
-- JavaScript Object Notation, a data representation method similar to XML which 
-cleanly describes data in a JavaScript-like way.
-- [JSON](https://www.json.org/json-en.html)
-
-### Protocol
-
-- A standard set of rules that allow electronic devices to communicate with each other. 
-- [Protocol Definition](https://techterms.com/definition/protocol)
-
-### Routing
-
-- In terms of the backend, routing is the process of setting up different paths for an 
-application which can be accessed by a client. An example of two different routes 
-could be [c4cneu.com/jumpstart](https://c4cneu.com/jumpstart) and 
-[c4cneu.com/apply](https://c4cneu.com/apply) (/jumpstart and /apply are different routes).
-
-#### Router and Sub-Router
-
-- In terms of the backend, a router is a class/object which creates and handles routes 
-and route handlers. A sub-router is a router which can be provided to another router to 
-add functionality to a subset of routes.
-
-#### Route Handler
-
-- A function/method which performs some developer-defined action when a specific route is
-called.
-
-#### Route/Path
-
-- A specific route. In the Routing section above, /apply and /jumpstart are different routes or path.
-
-#### Static Routing
-
-- Static routing is a process in which we have to manually add routes to the router. This kind of 
-route doesn't have a route format which defines more dynamic functionality (see Route Parameter).
-
-#### Route Parameter/Dynamic Route
-
-- A route parameter is a parameter that can be added to a route (making it a dynamic route 
-instead of a static route) which captures information at the specific position. 
-- A dynamic route is a route which has route parameters in it.
-- If we have a route like /jumpstart/:user or /jumpstart/:user/session/:session_id, the 
-parts of the route which are prefixed with a semicolon (e.g. :user, :session_id) are route 
-parameters and can take in text or a number to be used in processing later on. Examples of 
-those routes with values filled in could be /jumpstart/c4c (which would provide ‘c4c’ 
-as the :user param) or /jumpstart/your_name/session/1 (which would provide ‘your_name’
-as :user and 1 as :session_id).
-
-#### Query Parameter
-
-- A query parameter is information that can be passed in along with a route to 
-provide additional information to that route. The parameters are started with a question 
-mark ‘?’ and multiple are linked together using a “&”. Each parameter has a key and a 
-value, linked with an equals sign “=”. An example of a route with queries could be 
-/jumpstart?hello=world&myKey=some_words.
-- [Query Parameter - Wikipedia](https://en.wikipedia.org/wiki/Query_string)
-
-#### Vert.x
-
-- Eclipse Vert.x is an event driven application framework for Java. We’re using it 
-for handling server and routing related stuff.
-- [Vert.x Docs/Homepage](https://vertx.io/docs/)
 
 #### API
 
@@ -553,23 +401,65 @@ interactions between multiple software applications.
 You can also have setup scripts and response validators (and there are a lot of other nice 
 features for some of them too!).
 
-##### curl
+### Body
+
+- The actual data a request or response carries.
+
+### Client
+
+- A program that makes requests to servers.
+- [Client - Wikipedia](https://en.wikipedia.org/wiki/Client_(computing))
+
+### curl
 
 - curl is a tool which allows you to send requests from the command line.
 - [curl Homepage](https://curl.haxx.se/)
 
-##### Postman
+### Headers
 
-- Postman is a really nice API client which a lot of people in C4C use when developing!
-- [Postman Homepage](https://www.postman.com/)
+- A collection of data about the request or response.
+- [Headers - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
 
-#### GET Request
+### GET Request
 
 - The GET method refers to a REST method that is applied while requesting information 
 from a particular source. In terms of CRUD, this usually corresponds to the read operation.
 - [GET Request Description](https://rapidapi.com/blog/api-glossary/get/)
 
-#### Model-View-Controller (MVC)
+### Hosting
+
+- Hosting is the act of starting a server and making available a resource for connections.
+- [What is Hosting](https://www.website.com/beginnerguide/webhosting/6/1/what-is-web-hosting?.ws)
+- [GoDaddy Hosting Description](https://www.godaddy.com/hosting)
+
+### HTTP
+
+- Hypertext Transfer Protocol, a method for sending data between applications.
+- [HTTP - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP)
+
+### IP Address
+
+- An IP address is an identification number assigned to every device in a computer network 
+which uses the Internet Protocol (IP) to communicate and relay information.
+- [WhatIsMyIP Homepage](https://www.whatismyip.com/)
+- [IP Address Lookup - WhatIsMyIP](https://www.whatismyip.com/ip-address-lookup/)
+
+### JSON
+
+- JavaScript Object Notation, a data representation method similar to XML which 
+cleanly describes data in a JavaScript-like way.
+- [JSON](https://www.json.org/json-en.html)
+
+### Localhost
+
+- Localhost (or http://127.0.0.1) is the address that locally hosted servers can be 
+accessed at. It’s called a loopback address, since any requests sent to or received 
+from localhost don’t ever leave your computer.
+- [Localhost - WhatIsMyIPAddress](https://whatismyipaddress.com/localhost)
+- [What is Localhost](https://www.hostinger.com/tutorials/what-is-localhost)
+- [What is Localhost - GeeksForGeeks](https://www.geeksforgeeks.org/what-is-local-host/)
+
+### Model-View-Controller (MVC)
 
 - A software design pattern used in separating functionality into three main objectives.
     - Model: parts of the software responsible for handling 'data', data storage, and data
@@ -579,6 +469,116 @@ from a particular source. In terms of CRUD, this usually corresponds to the read
     - Controller: parts of teh software responsible for handling external input and connecting
     functionality between the model and view.
 - [MVC Description - Wikipedia](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
+
+### Ngrok
+
+- An app which routes requests through an external server so people not on your 
+local network can access a port on your computer.
+- [Ngrok Homepage](https://ngrok.com/)
+- [What is Ngrok](https://www.pubnub.com/learn/glossary/what-is-ngrok/)
+
+### Port
+
+- A port is an individual endpoint at a specific address.
+- [Ports - WhatIsMyIPAddress](https://whatismyipaddress.com/port)
+
+### Protocol
+
+- A standard set of rules that allow electronic devices to communicate with each other. 
+- [Protocol Definition](https://techterms.com/definition/protocol)
+
+### Postman
+
+- Postman is a really nice API client which a lot of people in C4C use when developing!
+- [Postman Homepage](https://www.postman.com/)
+
+### Query Parameter
+
+- A query parameter is information that can be passed in along with a route to 
+provide additional information to that route. The parameters are started with a question 
+mark ‘?’ and multiple are linked together using a “&”. Each parameter has a key and a 
+value, linked with an equals sign “=”. An example of a route with queries could be 
+/jumpstart?hello=world&myKey=some_words.
+- [Query Parameter - Wikipedia](https://en.wikipedia.org/wiki/Query_string)
+
+### Request
+
+- A network interaction with a server to create a connection and send data, then receive a 
+response after server processing. A request is made by a client.
+
+### Response
+
+- A network interaction following a request, after the server finishes processing the 
+request, a response is returned containing headers, a status code, and sometimes a 
+body. A response is returned by a server.
+
+### REST
+
+- Representational State Transfer, a software architecture style which defines a set of 
+constraints for web services.
+- [REST API Description](https://restfulapi.net/)
+- Constraints:
+    - Server-Client Architecture: an architecture where clients make requests to servers
+    - Stateless: the server doesn’t store any client context on the server (except for some info in a database)
+    - Cacheable: responses can be cached (or marked as not cacheable) for optimizations
+    - Layered System: a client shouldn’t need to know if it’s connected to a specific layer of the server system
+    - Uniform Interface: the server’s resources and implementation should be decoupled from the client
+
+### Route/Path
+
+- A specific route. In the Routing section above, /apply and /jumpstart are different routes or path.
+
+### Route Handler
+
+- A function/method which performs some developer-defined action when a specific route is
+called.
+
+### Route Parameter/Dynamic Route
+
+- A route parameter is a parameter that can be added to a route (making it a dynamic route 
+instead of a static route) which captures information at the specific position. 
+- A dynamic route is a route which has route parameters in it.
+- If we have a route like /jumpstart/:user or /jumpstart/:user/session/:session_id, the 
+parts of the route which are prefixed with a semicolon (e.g. :user, :session_id) are route 
+parameters and can take in text or a number to be used in processing later on. Examples of 
+those routes with values filled in could be /jumpstart/c4c (which would provide ‘c4c’ 
+as the :user param) or /jumpstart/your_name/session/1 (which would provide ‘your_name’
+as :user and 1 as :session_id).
+
+### Router and Sub-Router
+
+- In terms of the backend, a router is a class/object which creates and handles routes 
+and route handlers. A sub-router is a router which can be provided to another router to 
+add functionality to a subset of routes.
+
+### Routing
+
+- In terms of the backend, routing is the process of setting up different paths for an 
+application which can be accessed by a client. An example of two different routes 
+could be [c4cneu.com/jumpstart](https://c4cneu.com/jumpstart) and 
+[c4cneu.com/apply](https://c4cneu.com/apply) (/jumpstart and /apply are different routes).
+
+### Server
+
+- Servers (not the hardware kind) are the programs which power every website and remote service you use. 
+- [Server Definition](https://whatis.techtarget.com/definition/server)
+
+### Static Routing
+
+- Static routing is a process in which we have to manually add routes to the router. This kind of 
+route doesn't have a route format which defines more dynamic functionality (see Route Parameter).
+
+### Status Codes
+
+- Codes returned with a HTTP request which notify the client of the status of the request.
+- [Status Codes - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+- [Status Code Cheat Sheet](https://www.restapitutorial.com/httpstatuscodes.html)
+
+### Vert.x
+
+- Eclipse Vert.x is an event driven application framework for Java. We’re using it 
+for handling server and routing related stuff.
+- [Vert.x Docs/Homepage](https://vertx.io/docs/)
 
 ## Week 5
 
