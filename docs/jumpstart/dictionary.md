@@ -4,10 +4,6 @@ Jumpstarters may not know when starting out*
 
 ## General Terminology
 
-### Architecture
-
-- The fundamental structure of a software project.
-
 ### Anonymous Functions/Lambdas
 
 - Anonymous functions are functions that are created inline or over a few lines within 
@@ -17,6 +13,10 @@ another function, and are not named.
     - Method Reference
         - Method references are a special type of lambda which only pass in a reference to an already created method. 
         - [Method References in Java](https://www.baeldung.com/java-method-references)
+        
+### Architecture
+
+- The fundamental structure of a software project.
 
 ### Backend
 
@@ -410,21 +410,29 @@ features for some of them too!).
 - A program that makes requests to servers.
 - [Client - Wikipedia](https://en.wikipedia.org/wiki/Client_(computing))
 
+### Compile
+
+The act of taking a programming language and translating it into bytecode, or the language your processor speaks.
+
+### Compiler
+
+A program which compiles code.
+
 ### curl
 
 - curl is a tool which allows you to send requests from the command line.
 - [curl Homepage](https://curl.haxx.se/)
-
-### Headers
-
-- A collection of data about the request or response.
-- [Headers - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
 
 ### GET Request
 
 - The GET method refers to a REST method that is applied while requesting information 
 from a particular source. In terms of CRUD, this usually corresponds to the read operation.
 - [GET Request Description](https://rapidapi.com/blog/api-glossary/get/)
+
+### Headers
+
+- A collection of data about the request or response.
+- [Headers - MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
 
 ### Hosting
 
@@ -582,7 +590,23 @@ for handling server and routing related stuff.
 
 ## Week 5
 
-### Test suite
+### Abstract Class
+
+### Data Transfer Objects (DTOs)
+
+### DELETE
+
+### Enum
+
+### Exception
+
+### Extended Class
+
+### GET
+
+### Final Class
+
+### Inheritance
 
 ### JUnit
 
@@ -605,7 +629,29 @@ test, use the `@Test` (or `@ParameterizedTest`) annotation.
 
 - [JUnit Homepage](https://junit.org/junit5/)
 
+### Marshalling
+
 ### Mockito 
+
+### Nested Class
+
+### Override
+
+### PATCH
+
+### POST
+
+### PUT
+
+### Request types
+
+### Static Class
+
+#### Subclass
+
+#### Superclass
+
+### Test suite
 
 ### Test types
 
@@ -617,100 +663,59 @@ test, use the `@Test` (or `@ParameterizedTest`) annotation.
 - Performance
 - Smoke 
 
-### Exceptions
+### Try/Catch
 
-#### Try/Catch
-
-### Data Transfer Objects (DTOs)
-
-### Marshalling
-
-#### Unmarshalling
-
-### Request types
-
-#### POST
-
-#### PUT
-
-#### PATCH
-
-#### DELETE
-
-#### GET
-
-### Enum
-
-### Static Class
-
-### Nested Class
-
-### Final Class
-
-### Abstract Class
-
-### Inheritance
-
-### Extended Class
-
-#### Subclass
-
-#### Superclass
-
-### Override
-
-### Compiler
+### Unmarshalling
 
 ## Week 6
 
 ## Week 7
 
-
-### Persistent Storage
-
-### ODBC/JDBC
-
-### SQL
-
-### Row
+### Auto Increment/Serial
 
 ### Column
 
-### Precision
-
-### Scale
-
-### Primary Key
-
-### Not Null
-
-### Auto Increment/Serial
+### CURRENT_TIMESTAMP
 
 ### Default
 
+### DELETE
+
+### DROP
+
+### Environment/Properties File
+
 ### Index
 
-### CURRENT_TIMESTAMP
+### INSERT
+
+### Not Null
+
+### ODBC/JDBC
+
+### Persistent Storage
 
 ### Query
 
 ### Query structure
 
-#### INSERT
+### Row
 
-#### SELECT
+### SQL
 
-#### DELETE
-
-#### DROP
-
-#### UPDATE
-
-#### TRUNCATE
-
-### Environment/Properties File
+### Precision
 
 ### Prepared Statements
+
+### Primary Key
+
+### Scale
+
+### SELECT
+
+### TRUNCATE
+
+### UPDATE
 
 ## Week 8
 
