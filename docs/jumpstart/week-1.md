@@ -241,7 +241,7 @@ important course resources.
 
 [C4C Jumpstart Important Links](/jumpstart/important_links)
 
-[Jumpstart Frontend Starter Code]()
+[Jumpstart Frontend Starter Code](https://github.com/Code-4-Community/jumpstart-frontend/tree/starter-code)
 
 [Jumpstart Backend Starter Code](https://github.com/Code-4-Community/jumpstart-backend/tree/starter-code)
 
@@ -279,10 +279,18 @@ then reading the READMEs to see how to set up each individual project.
 If you prefer video format, here are some setup videos we've created for setting up the frontend and backend on both 
 Mac/Linux and Windows computers.
 
-[Check out our Mac/Linux Setup Video (not ready yet)]()
-
 [Check out our Windows Setup 
 Video](https://drive.google.com/file/d/1S7MC9T52kpLTLFJfahayczOvMtDNI6gg/view?usp=sharing)
+
+>If you're on Mac/Linux, a lot of what's in the video is similar. Here are a couple of differences:
+>
+>- Instead of doing `echo %JAVA_HOME%`, you'll do `echo $JAVA_HOME`
+>- You add something to your path by running the following command
+>`export PATH=<the path to the bin directory>:$PATH`
+>     - The `:$PATH` at the end is really important
+>     - You'll probably use a path similar the ones showed in the video
+>     - You may have to do this for Java and Maven
+>- Git may already be installed
 
 ### What is Git
 
@@ -305,6 +313,7 @@ others.
 - Branches are the way that a different history is created for a specific feature or bug that is being worked on.
 They allow you to split off from a specific point and make isolated changes without having to worry that you're 
 changing the code you split off from. 
+
 ![git-branches](./img/git-branch.svg)
 *Git Branches/Atlassian*
 
@@ -337,6 +346,7 @@ want them to be downloaded to.
 >to be able to clone the projects.
 
 The links you'll want to use are:
+
 - Frontend: `https://github.com/Code-4-Community/jumpstart-frontend.git`
 - Backend: `https://github.com/Code-4-Community/jumpstart-backend.git`
 
