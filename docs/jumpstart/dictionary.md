@@ -4,12 +4,20 @@ Jumpstarters may not know when starting out*
 
 ## General Terminology
 
-### Frontend
+### Architecture
 
-- The part of the application that the user will see and interact with. It’s the code 
-that is provided to users and runs in a browser in the case of web applications. 
-- An example of a frontend application is the webpage for Gmail.
-    
+- The fundamental structure of a software project.
+
+### Anonymous Functions/Lambdas
+
+- Anonymous functions are functions that are created inline or over a few lines within 
+another function, and are not named. 
+- [Lambdas in Java](https://www.w3schools.com/java/java_lambda.asp)
+- [Lambda Overview](https://stackoverflow.com/questions/16501/what-is-a-lambda-function)
+    - Method Reference
+        - Method references are a special type of lambda which only pass in a reference to an already created method. 
+        - [Method References in Java](https://www.baeldung.com/java-method-references)
+
 ### Backend
 
 - The part of the application that isn’t often accessed by users. The frontend will 
@@ -22,6 +30,57 @@ emails, and actually moving your email from inbox to trash, spam, archive, or wh
 else you want it to go.
 - [The difference between frontend and backend](https://www.geeksforgeeks.org/frontend-vs-backend/)
 
+### Branch
+
+- The way a different history is created for a specific feature or bug being worked on in git. 
+It allows you to split off from a specific point in the project and make isolated 
+changes without having to worry that you’re changing the code you split off from.
+- [Atlassian Git Tutorial - Branches](https://www.atlassian.com/git/tutorials/using-branches)
+
+### Catch-Up Code
+
+- Code that we’ll provide you at the end of the week to catch you up to where many of 
+the people who are working on the project should be. We’re providing this because we 
+know that sometimes life can be a lot, so we want to make sure those who are sick, have 
+a busy week, or who are stuck can stay caught up with and invested in the course.
+
+### Checkout
+
+- A command in git which lets you switch to a different branch.
+
+### Class
+
+- A structured collection of data representing anything, which is extremely common 
+and one of the most important concepts in programming. An example of this can be a 
+‘person’ class, which can contain information such as a name, birthday, height, 
+related people, and so on.
+
+### Clone
+
+- When a project is downloaded from an external host (like Github) to your computer using git.
+
+### CRUD (Create, Read, Update, and Delete)
+
+- The four fundamental operations of databases and handling data.
+
+### Database (DB/DBMS)
+
+- An organized collection of data which is used for storing information long 
+term. This is commonly used interchangeably with a Database Management System (DBMS), 
+which also manages databases so that multiple systems can create, read, update, and 
+delete (CRUD) data concurrently and efficiently without causing weird data issues.
+- [Databases - Wikipedia](https://en.wikipedia.org/wiki/Database)
+
+### Frontend
+
+- The part of the application that the user will see and interact with. It’s the code 
+that is provided to users and runs in a browser in the case of web applications. 
+- An example of a frontend application is the webpage for Gmail.
+
+### Function
+
+- A set of instructions which can be called to perform a series of steps.
+
 ### Git
 
 - A form of version control for your code. That means it tracks changes to a project over 
@@ -33,10 +92,6 @@ time, which provides 2 main benefits.
     thing at the same time while providing a way to combine their changes when they’re ready.
 - [Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/what-is-version-control)
 
-#### .gitignore
-
-- A file containing regular expressions describing files and directories that git won’t keep track of.
-
 #### GitHub
 
 - A website for hosting git repositories. It’s used  by many major companies and 
@@ -44,28 +99,15 @@ open source projects, and it allows multiple people to contribute to the same
 project in a really cohesive manner.
 - [GitHub.com](https://github.com/)
 
-##### Open Source
+#### .gitignore
 
-- Code that is openly available for viewing, editing, and use.
+- A file containing regular expressions describing files and directories that git won’t keep track of.
 
-#### Repositories (Repos)
+### Integrated Development Environment (IDE)
 
-- An individual 'project' in git.
-
-#### Clone
-
-- When a project is downloaded from an external host (like Github) to your computer using git.
-
-#### Checkout
-
-- A command in git which lets you switch to a different branch.
-
-#### Branch
-
-- The way a different history is created for a specific feature or bug being worked on. 
-It allows you to split off from a specific point in the project and make isolated 
-changes without having to worry that you’re changing the code you split off from.
-- [Atlassian Git Tutorial - Branches](https://www.atlassian.com/git/tutorials/using-branches)
+- Text editing software which provides extremely helpful capabilities for software 
+development. This can include stuff like formatting, text prediction, compiling and 
+running your code, error checking, hints, and many other useful features.
 
 ### IntelliJ
 
@@ -73,11 +115,14 @@ changes without having to worry that you’re changing the code you split off fr
 with our frontend and backend code. It's a commonly used IDE for Java development.
 - [IntelliJ - JetBrains](https://www.jetbrains.com/idea/)
 
-#### Integrated Development Environment (IDE)
+### Main Class
 
-- Text editing software which provides extremely helpful capabilities for software 
-development. This can include stuff like formatting, text prediction, compiling and 
-running your code, error checking, hints, and many other useful features.
+- A class which is the entrypoint of a program in Object-Oriented 
+languages. This class has a Main Method.
+
+### Main Method/Function
+
+- A method or function which is the entrypoint of a program.
 
 ### Maven
 
@@ -85,6 +130,10 @@ running your code, error checking, hints, and many other useful features.
 programs used to help build/check/do something to your code), rebuild, deal with 
 dependencies, and manage your project.
 - [Maven Homepage](https://maven.apache.org/)
+
+### Method
+
+- A function tied to a particular class.
 
 ### Node
 
@@ -97,65 +146,23 @@ dependencies, and manage your project.
 programs, install dependencies, and allows for plugins too.
 - [NPM Homepage](https://www.npmjs.com/)
 
-### Architecture
-
-- The fundamental structure of a software project.
-
-### Database (DB/DBMS)
-
-- An organized collection of data which is used for storing information long 
-term. This is commonly used interchangeably with a Database Management System (DBMS), 
-which also manages databases so that multiple systems can create, read, update, and 
-delete (CRUD) data concurrently and efficiently without causing weird data issues.
-- [Databases - Wikipedia](https://en.wikipedia.org/wiki/Database)
-
-#### CRUD (Create, Read, Update, and Delete)
-
-- The four fundamental operations of databases and handling data.
-
-### Class
-
-- A structured collection of data representing anything, which is extremely common 
-and one of the most important concepts in programming. An example of this can be a 
-‘person’ class, which can contain information such as a name, birthday, height, 
-related people, and so on.
-
 ### Object
 
 - An ‘instance’ of a class. An instance is a class which has been constructed and 
 filled in with information, and is separate from other instances of the same class.
-
-### Function
-
-- A set of instructions which can be called to perform a series of steps.
-
-#### Method
-
-- A function tied to a particular class.
-
-### Main Class
-
-- A class which is the entrypoint of a program in Object-Oriented 
-languages. This class has a Main Method.
-
-#### Main Method/Function
-
-- A method or function which is the entrypoint of a program.
 
 ### Object-Oriented (OO)
 
 - A style of programming which relies on objects to be created and describes 
 transformation, states, and interactions entirely through the created objects.
 
-### Anonymous Functions/Lambdas
+##### Open Source
 
-- Anonymous functions are functions that are created inline or over a few lines within 
-another function, and are not named. 
-- [Lambdas in Java](https://www.w3schools.com/java/java_lambda.asp)
-- [Lambda Overview](https://stackoverflow.com/questions/16501/what-is-a-lambda-function)
-    - Method Reference
-        - Method references are a special type of lambda which only pass in a reference to an already created method. 
-        - [Method References in Java](https://www.baeldung.com/java-method-references)
+- Code that is openly available for viewing, editing, and use.
+
+#### Repositories (Repos)
+
+- An individual 'project' in git.
 
 ### Starter Code
 
@@ -164,55 +171,20 @@ do work. This can either be providing you with functionality we wouldn't expect 
 be able to figure out on your own (without a bit of help), or pre-written code if what 
 we want you to do during the week ends up being a lot of work.
 
-### Catch-Up Code
-
-- Code that we’ll provide you at the end of the week to catch you up to where many of 
-the people who are working on the project should be. We’re providing this because we 
-know that sometimes life can be a lot, so we want to make sure those who are sick, have 
-a busy week, or who are stuck can stay caught up with and invested in the course.
-
 ## Week 1
 
-### Framework
-
-- A dependency which handles setting up the boilerplate stuff. This is usually stuff which 
-doesn't often change, and may end up taking a lot of work to set up, so it's nice to have 
-frameworks which handle that for you.
-- [Software Framework - Wikipedia](https://en.wikipedia.org/wiki/Software_framework)
-
-#### Boilerplate
-
-- Code that needs to be included in multiple places with little to no alteration.
-
-### Terminal 
-
-- An important tool which allows you to access commands and interface with your 
-computer using typed commands. The terminal window runs a shell like Bash, which 
-actually runs your command.
-- [A Youtube Tutorial on Using the Terminal](https://www.youtube.com/watch?v=oxuRxtrO2Ag)
-
-#### Shell
-
-- The actual terminal syntax/program being run in a terminal. 
-Examples of this are Bash and Windows Command Prompt
-
-##### Bash
+### Bash
 
 - Bourne Again Shell, a really common shell used for Mac and Linux machines.
 - [BASH](https://www.gnu.org/software/bash/)
 
-###### Git Bash
+### Boilerplate
 
-- A Bash terminal/shell for Windows.
+- Code that needs to be included in multiple places with little to no alteration.
 
-##### Command Prompt (CMD)
+### Command Prompt (CMD)
 
 - The shell for Windows machines.
-
-### Directory 
-
-- A folder in a filesystem. Desktop, Documents, and Downloads are all really common directories.
-- Folder and directory are used interchangeably.
 
 ### Dependency/Package/Library
 
@@ -221,24 +193,52 @@ They provide functionality and prevent you from having to implement a lot of thi
 - A package is what a dependency is called in Node/JavaScript.
 - A library is what a dependency is called in Java.
 
-### README.md
+### Directory 
 
-- A file typically provided with a lot of programs which describes a high-level overview, 
-instructions for setup and use, and anything else a developer would want his/her users to know.
+- A folder in a filesystem. Desktop, Documents, and Downloads are all really common directories.
+- Folder and directory are used interchangeably.
 
-#### Markdown
+### Framework
 
-- A format of writing files in a really lightweight way which provides basic 
-styling. The .md file type is a Markdown file.
+- A dependency which handles setting up the boilerplate stuff. This is usually stuff which 
+doesn't often change, and may end up taking a lot of work to set up, so it's nice to have 
+frameworks which handle that for you.
+- [Software Framework - Wikipedia](https://en.wikipedia.org/wiki/Software_framework)
+
+### Git Bash
+
+- A Bash terminal/shell for Windows.
 
 ### JAVA_HOME
 
 - A system-level variable which lets programs know where to look for the Java 
 Development Kit (JDK) you want to be used in general.
 
+### Markdown
+
+- A format of writing files in a really lightweight way which provides basic 
+styling. The .md file type is a Markdown file.
+
 ### Module
 
 - Groups of code that are compiled separately of each other and can be used as dependencies in other modules.
+
+### README.md
+
+- A file typically provided with a lot of programs which describes a high-level overview, 
+instructions for setup and use, and anything else a developer would want his/her users to know.
+
+### Shell
+
+- The actual terminal syntax/program being run in a terminal. 
+Examples of this are Bash and Windows Command Prompt
+
+### Terminal 
+
+- An important tool which allows you to access commands and interface with your 
+computer using typed commands. The terminal window runs a shell like Bash, which 
+actually runs your command.
+- [A Youtube Tutorial on Using the Terminal](https://www.youtube.com/watch?v=oxuRxtrO2Ag)
 
 ## Week 2
 
