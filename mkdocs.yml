@@ -9,7 +9,10 @@ theme:
 
 nav:
   - Home: index.md
-  - Jumpstart:
+  - Jumpstart Docs:
+      - Home: jumpstart/index.md
+      - Jumpstart Dictionary: jumpstart/dictionary.md
+      - Important Links for Jumpstart: jumpstart/important_links.md
       - Week 1: jumpstart/week-1.md
   - Guides:
       - Home: guides/index.md

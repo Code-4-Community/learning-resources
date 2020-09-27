@@ -245,6 +245,8 @@ important course resources.
 
 [Jumpstart Backend Starter Code](https://github.com/Code-4-Community/jumpstart-backend/tree/starter-code)
 
+[C4C Youtube Channel](https://youtube.com/channel/UC7FI2u_BVjB0EkKMmx-yibA)
+
 [C4C Slack](https://c4cneu.slack.com/)
 
 [C4C GitHub Repository](https://github.com/Code-4-Community)
