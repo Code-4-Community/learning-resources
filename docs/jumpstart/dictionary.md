@@ -92,14 +92,14 @@ time, which provides 2 main benefits.
     thing at the same time while providing a way to combine their changes when they’re ready.
 - [Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/what-is-version-control)
 
-#### GitHub
+### GitHub
 
 - A website for hosting git repositories. It’s used  by many major companies and 
 open source projects, and it allows multiple people to contribute to the same 
 project in a really cohesive manner.
 - [GitHub.com](https://github.com/)
 
-#### .gitignore
+### .gitignore
 
 - A file containing regular expressions describing files and directories that git won’t keep track of.
 
@@ -156,11 +156,11 @@ filled in with information, and is separate from other instances of the same cla
 - A style of programming which relies on objects to be created and describes 
 transformation, states, and interactions entirely through the created objects.
 
-##### Open Source
+### Open Source
 
 - Code that is openly available for viewing, editing, and use.
 
-#### Repositories (Repos)
+### Repositories (Repos)
 
 - An individual 'project' in git.
 
@@ -389,13 +389,13 @@ operations on the wrapped text.
 
 ## Week 4
 
-#### API
+### API
 
 - An application programming interface is a computing interface which defines 
 interactions between multiple software applications.
 - [API Definition](https://www.mulesoft.com/resources/api/what-is-an-api)
 
-#### API Client
+### API Client
 
 - An API client is a ‘client’ application which makes sending requests and viewing responses very easy. 
 You can also have setup scripts and response validators (and there are a lot of other nice 
@@ -647,9 +647,9 @@ test, use the `@Test` (or `@ParameterizedTest`) annotation.
 
 ### Static Class
 
-#### Subclass
+### Subclass
 
-#### Superclass
+### Superclass
 
 ### Test suite
 

@@ -9,6 +9,8 @@ do web development.
 - [Jumpstart Backend Starter Code](https://github.com/Code-4-Community/jumpstart-backend/tree/starter-code)
 - [C4C Slack Workspace](https://c4cneu.slack.com/)
     - We really recommend you join us!
+- [C4C Youtube Channel](https://youtube.com/channel/UC7FI2u_BVjB0EkKMmx-yibA)
+    - This is where we'll be putting our recordings after the weekly meetings
 - [C4C GitHub Repository](https://github.com/Code-4-Community)
     - If you want to check us out on GitHub
 - [C4C Website](https://c4cneu.com)
