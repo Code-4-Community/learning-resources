@@ -9,6 +9,10 @@ theme:
 
 nav:
   - Home: index.md
+  - Jumpstart Docs:
+      - Home: jumpstart/index.md
+      - Jumpstart Dictionary: jumpstart/dictionary.md
+      - Important Links for Jumpstart: jumpstart/important_links.md
   - Guides:
       - Home: guides/index.md
       - Send a POST request: guides/postrequest.md
