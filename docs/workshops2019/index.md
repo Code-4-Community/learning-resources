@@ -10,7 +10,7 @@ GitPresentation.pptx is the intro slideshow that goes over the basics of source 
 
 demonotes.md are the speaker notes used throughout the demo including helpful learning resources at the end. The speaker notes also include all code that was written throughout the demo.
 
-[Source Control with Git](git/index.md)
+[Source Control with Git](../jumpstart/git/week-1.5-git.md)
 
 ## Frontend Web Development and Vue.js
 
