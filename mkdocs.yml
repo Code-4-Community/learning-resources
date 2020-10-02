@@ -14,7 +14,7 @@ nav:
       - Jumpstart Dictionary: jumpstart/dictionary.md
       - Important Links for Jumpstart: jumpstart/important_links.md
       - "Week 1: Project Overview and Terminal Basics": jumpstart/week-1.md
-      - "Week 1.5: Version Control and Git": jumpstart/git/week-1.5-git.md
+      - "Week 1.5: Version Control and Git": jumpstart/week-1.5-git.md
       - "Week 2: Introduction to HTML and CSS": jumpstart/week-2.md
   - Guides:
       - Home: guides/index.md

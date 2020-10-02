@@ -12,7 +12,7 @@ a bunch of other really useful features, like the ability to work on multiple fe
 at the same time independently of each other, collaboration with other people on the same
 work, and a way to share these snapshots.
 
-[Check out the presentation slides](./GitPresentation.pptx)
+[Check out the presentation slides](https://drive.google.com/file/d/1rHqLLYtKJYRpoSqVYdYDsBgHaZwSIAnc/view?usp=sharing)
 
 ## 1\. Create a file
 ``` shell
