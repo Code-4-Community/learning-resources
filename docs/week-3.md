@@ -5,27 +5,52 @@ Welcome to the 3rd week of the Jumpstart Program! This is the week we get into t
 This word is probably one that you have heard whenever Web Development has been the topic of conversation 
 and now you will get to learn about this awesome tool.
 
+
+## Basic Plan & Topics Covered
+- React
+    - What is React?
+    - Why is React something we use?
+    - A look at a React file
+- Components
+    - What is component?
+    - How do we use components?
+- Props
+    - What are props?
+    - Why do we use props?
+    - How do we use props?
+- State Management
+    - What is managing state?
+    - useState Hook
+- Typescript
+    - Why use Typescript?
+    - Typing in React
+- Material UI
+    - What is Material UI?
+    - How to use Material UI
+    - Styling in Material UI
+    
+
 ## React
 Our good friend John wants to make an interactive user interface for his website but does not want to go through
-the whole process of Creating an HTML layout and then applying a CSS stylesheet and finally adding in Javascript
+the whole process of creating an HTML layout and then applying a CSS stylesheet and finally adding in Javascript
 functionality and liveliness. If only there was a simple library that can do all of this for us and more.......oh
 wait there is. It is called React and it is dope.
  
 ### What is React?
 React is a declarative, efficient, and flexible JavaScript library for building user interfaces. 
-It lets you compose complex User Interfaces from small and isolated pieces of code called “components”. 
+It lets you compose complex User Interfaces from small and isolated pieces of code called “components.” 
 React basically will build you a website out of pure Javascript! It combines HTML tags in the form of JSX, 
 CSS files and good old JS logic to produce a masterpiece. 
 
 
 ### Why is React better than plain old HTML/CSS/JS combo?
 Well React is just a Javascript Library which requires less knowledge and understanding of other frameworks. 
-In addition, React makes it easy for developers to manipulate and work with the DOM with the help of a virtual browser. 
-The virtual browser bridges the gap between the developer and the browser (the actual one). Lastly, React uses a type
+In addition, React makes it easy for developers to manipulate and work with the DOM. The DOM stands for the Document
+Object Model and is what connects the browser and the HTML code. Lastly, React uses a type
 of code called **declarative code**. Declarative code describes the end result, but does not act as a step-by-step 
 guide of how to do it. In practice, that means declarative code is lightweight, easier to understand and change, 
-and has fewer bugs. However, declarative code is not so good preventing errors which is why we use Typescript to help
-prevent errors that may break our application.
+and has fewer bugs. However, declarative code is error prone which is why we use Typescript 
+to help prevent these errors that may break our application.
 
 ### What a file looks like that incorporates React
 Let us call this file LuckyNum.tsx (.tsx refers to the file being a typescript file).
@@ -80,11 +105,11 @@ export default LuckyNum;
 ```
 Here we see the creation of a component. The component's name is LuckyNum and displays our lucky number in a `<h1>`
 tag. We know this is a component because it is returning JSX to be displayed to a user. Notice how our `<h1>` is
-wrapped in a `<div>`. This is because React requires us to return a contained component. This means that there most be
+wrapped in a `<div>`. This is because React requires us to return a contained component. This means that there must be
 a type of container that has what we want to display housed inside. In most cases using a `<div>` is the best way to 
 go. However, you can use any piece of JSX as a wrapper/container.
 
-So, we have covered that a component is just a piece of a React App. A cool thing we can do in react is that we can
+So, we have covered that a component is just a piece of a React App. A cool thing we can do in React is that we can
 use components that we have made in other components that we make.
 
 ### Using Components
@@ -119,7 +144,7 @@ want the imported component to be placed.
 
 ## Props
 Looks like things are going well. We have successfully displayed John's profile picture, name, favorite color and
-lucky number. Now John's friend Doug wants to display his luck number on his profile. John is happy to help and
+lucky number. Now John's friend Doug wants to display his lucky number on his profile. John is happy to help and
 gives him the `LuckyNum` component we made. However, Doug's lucky number is not the same as John's so Doug cannot
 use the `LuckNum` component! John has a solution: use props.
 
@@ -147,8 +172,8 @@ function printHey() {
 }
 ```
 
-We have now printed "hi" and "hey", but it is very repetitive and not efficient. If we wanted to print another
-message we would have to make a new function OR we can just add a parameter to a function to print whatever we
+We have now printed "hi" and "hey," but it is very repetitive and not efficient. If we wanted to print another
+message, we would have to make a new function OR we can just add a parameter to a function to print whatever we
 want to the console and we would not need to make a new function each time. All we would need to do is pass in
 our message as a parameter like so.
 
@@ -285,7 +310,7 @@ through each render? Welcome to state management John.
 ### What is managing state?
 You can think of state as the data that persist through each clock render of your application. Under the hood,
 your react application renders the screen on clock ticks. In order to make your non-constant data persist we
-have to manage the state of our application. We manage the state in our componetns using the react hook 
+have to manage the state of our application. We manage the state in our components using the react hook 
 `useState`. There are other ways of managing state in react, but this is a simple and easy way.
 
 ### useState Hook
@@ -293,7 +318,9 @@ have to manage the state of our application. We manage the state in our componet
 it from react. We use {} when importing useState because it is not a default export but a named one. We will
 discuss default and named exports in Week 6.
 
-```import { useState } from 'react';```
+```
+import { useState } from 'react';
+```
 
 Let us add that import into John's profile component.
 
@@ -375,13 +402,13 @@ export default Profile;
 ```
 
 ## Typing with Typescript
-As you may have noticed, react is normally implement with Javascript. The only downside to using Javascript is 
+As you may have noticed, react is normally implemented with Javascript. The only downside to using Javascript is 
 that we do not get type enforcement.
 
 ### Why use Typescript in the first place?
 When developing an application with a lot of contributors it is important to have some sort of structure to 
-your code. Typing allows us to not create errors and mess up a project with other contributors on it. Typescript
-gives us the functionality of typing our components and data! 
+your code. Typing (the act of giving our code types) allows us to not create errors and mess up a project 
+with other contributors on it. Typescript gives us the functionality of typing our components and data! 
 
 ### How to type in React
 It is as easy as it seems. For example lets type the `useState` that John used for likes on his profile and the
@@ -393,7 +420,7 @@ const [message, setMessage] = useState<String>("Hello World")
 ```
 
 When typing components, we have to make sure to type the props that we are taking in (if applicable). The way
-we do this is with an interface with the name and the type of the prop we are expecting. For example lets 
+we do this is with an interface with the name and the type of the prop we are expecting. For example let's 
 take the `LuckyNum` component as an example.
 
 ```
@@ -464,7 +491,7 @@ export default Profile;
 ```
 
 ### Styling Material UI Components
-If you wanted to style the components in Material UI a little more to taylor your specific needs you can do that!
+If you wanted to style the components in Material UI a little more to tailor your specific needs you can do that!
 For example let us make the newly imported Button component on John's profile to be black.
 
 We first have to import `makeStyles` from `@material-ui/core/styles`. We then make an object for each class we 
