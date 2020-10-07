@@ -1,10 +1,23 @@
 # Introduction to Javascript
 
-## Javascript
+## Topics
 
-Javascript allows you to add interactivity and complex functionality to your website. Javascript started as a simple scripting language designed to complete simple tasks on a webpage. Now we have Javascript frameworks like React that dominate modern web development. We'll see a lot more Javascript as we start working with React but for now we will stick to simple use cases.
+- Variables
+    - let
+    - const
+- Data Types
+    - Numbers & Strings
+    - Arrays
+    - Objects
+    - null & undefined
+- Control Flow
+    - if & else
+    - for
+- Functions
 
-<Show boldIt & revertIt simple methods>
+## What is Javascript
+
+Javascript allows you to add interactivity and complex functionality to your website. Javascript started as a scripting language designed to complete simple tasks on a webpage. Now, we have Javascript frameworks like React that dominate modern web development. We'll see a lot more Javascript as we start working with React, but for now we will stick to simple use cases.
 
 Javascript is fairly intuitive to pick up if you're familiar with Python or a different scripting language but can be tricky if you don't have much general coding experience.
 
@@ -14,36 +27,292 @@ Javascript is fully integrated with HTML and CSS and comes built into any web br
 
 - On Chrome: Options > More tools > Developer tools
 
-- On Firefox:
+- On Firefox: Options > Web Developer > Web Console
 
-- On Safari:
+You can also use any number of online Javascript code editors like [JS Fiddle](jsfiddle.net) or [Code Pen](codepen.io/pen).
 
-### Topics
+## Some Basics
 
-- Data Types
+### Comments
 
-Numbers, Strings, objects, arrays, null, undefined
+To write comments in Javascript you can either write `//` at the beginning of the line or you can wrap any code in `/* some code */` to comment it out.
 
-- Variables
+```js
+// This is a comment
+const thisIs = "Not a comment"; // Another comment here
+/* This is 
+   also a
+   comment */
+```
 
-`var` is the default and used to be the only way to declare a variable. 
-In newer versions of Javascript you should use `let` when your variable may change and `const` when it will never have to change.
+### Printing to the console
 
-- ifs/else/for
+To print a value out to the console you can use `console.log("Some value")`. This is useful for debugging some problems while you are developing.
 
-`if (condition) { path1 } else { path2 }` for controlling flow.
+## Variables
 
-`for (let i = 0; i < 5; i++) { some_repeating_condition }`
-`for (let item in array) { some_repeating_condition }` 
+Variables hold data and give you a way of accessing values by name. A variable can store any type of data that we talk about below.
 
-- Functions
-    - Anonymous syntax
-    
-`function func_name(arg1, arg2) { function_code }`
-`const func_name = (arg1, arg2) => { function_code }`
+Javascript is a *loosely-typed (dynamic) language* meaning you do not specify the type of data you're using. Instead, Javascript infers the type of data based on its value.
+
+In the past, all variables were declared with the `var` keyword. Newer versions of Javascript introduced the keywords `let` and `const` that should now be used in place of `var`.
+
+`let` should be used whenever you have a variable that you want to reassign at some point in your program.
+
+`const` should be used whenever you have a variable that you won't every reassign.
+
+```js
+let changableVar = 1;
+const unchangableVar = 2;
+
+changableVar = 3;
+unchangableVar = 4; // This will cause an error!!
+```
+
+It's important to keep in mind the scope of your variables. As we learn more about functions it'll become clearer, but the basic rule is that you can only use a variable in the same code block that you defined it or a code block that is nested in the block you defined it.
+
+## Data Types
+
+### Numbers, Strings, and Booleans
+
+Numbers can be specified as whole numbers or decimal numbers simply as you would type them normally.
+
+Strings are just text wrapped in quotes. You can use `"` or `'`. If you want to include a single or double quote in your string you can escape it with a backslash (`\`).
+
+Booleans are either the value `false` or `true`.
+
+### Arrays
+
+Arrays in Javascript are ordered collections of data.
+
+Arrays are wrapped in box brackets `[ ... ]`. Arrays can hold any kind of data including arrays.
+
+```js
+const ourArray = ["A first value", 11, ["Nested Value", 0.12], 'A last value'];
+```
+
+You can refer to values in arrays by their *index*. Arrays in Javascript are *0-indexed* meaning the first value in the array has an index of 0, the next value has an index of 1, and so on until the last index that is the length of the array minus 1.
+
+### Objects
+
+Objects in Javascript are used to hold more complex data structures.
+
+Objects are wrapped in curly brackets `{ ... }`. Within the brackets, you can define a list of properties. A property has a key, which is just a single unquoted word, and a value which can be any other Javascript data type (including another object!).
+
+```js
+const ourObject = {
+    aKey: "A String Value",
+    numberOfCars: 10,
+    list_of_values: [1, 'five', 4.0, "six"],
+    aNestedObject: {
+        innerKey: "outer key"
+    },
+    oneLastValue: "Notice this doesn't have a comma"
+};
+```
+
+Properties hava a colon separating the key from the value and they end with a comma if there are more properties in the object.
+
+### null and undefined
+
+`null` and `undefined` are two additional primitive types that Javascript defines. While they will come up, it's almost never a good idea to intentionally use them in your code design.
+
+`null` refers to an unintialized object. This is not the same thing as an empty object (`{}`).
+
+`undefined` is defined as an unitialized variable.
+
+We will see a couple times when these values may come up, but generally if they appear where you do not expect them it's a good indication that you have a bug in your code.
 
 
+## Control Flow
+
+Control flow allows you to execute different pieces of code based on different conditions.
+
+A condition is a statement that evaluates to a *boolean* value (`true` or `false`).
+
+### if & else
+
+`if` statements are the most basic form of control flow. They take a single condition and execute a given block of code once if the condition is true. This can also be combined with an `else` statement that will execute a block of code if the condition is false.
+
+```js
+const conditionOne = false;
+const conditionTwo = true;
+
+if (conditionOne) {
+    // Code block 1
+} else if (conditionTwo) {
+    // Code block 2
+} else {
+    // Code block 3
+}
+```
+
+### while
+
+`while` statements allow you to execute a block of code multiple times based on a changing condition. They take a single condition and execute the given code block until the condition evaluates to false.
+
+```js
+let counter = 0;
+while (counter < 4) {
+    console.log(counter);
+    counter = counter + 1;
+}
+```
+
+You have to make sure that the condition you use in a while loop will change over execution. If you use `while (true) {...}` for example, you will create an infinite loop and your program will likely crash after running out of memory.
+
+### for
+
+`for` statements are similar to while loops but allow you to more succinctly define some common cases.
+
+The basic form of for loop includes declaring a value, defining a condition, and a defining an action to happen at the end of every loop.
+
+`for (decleration; condition; action) { ... }`
+
+The most common use case for this form is to run a block of code a set number of times.
+
+```js
+for (let i = 0; i < 8; i++) {
+    // This code will run 8 times
+}
+```
+
+Another common use case is running a loop for every element in an array. You can do this with the decleration, condition, action syntax but Javascript also defines a shorthand.
+
+```js
+const arr = [1, 2, 3];
+
+for (const element of arr) {
+    console.log(element);
+}
+
+// This is equal to...
+
+for (let i = 0; i < arr.length; i++) {
+    const element = arr[i];
+    console.log(element);
+}
+```
+
+## Functions
+
+### The Basics
+
+Functions are named blocks of code that you can reuse. A function has a name and takes 0 or more arguments as input and returns a single value as output.
+
+```js
+// Declaring our function that takes two arguments and returns their result
+function ourFunctionName(argumentOne, argumentTwo) {
+    const sum = argumentOne + argumentTwo;
+    return sum;
+}
+
+// Calling our function with 4.2 and 6.4
+const functionValue = ourFunctionName(4.2, 6.4);
+// functionValue now is equal to 10.6
+```
+
+The `return` statement lets Javascript define a value to return for the function, but it's not required. Any function that doesn't have a `return` statement will return the `undefined` value instead.
+
+You can also use `return` statements in conjunction with control flow to possibly end a function block early.
+
+```js
+// Note that in this case it would probably be simpler to reverse the if condition and move
+// the console log statement inside the if.
+function printIfLessThanFour(num) {
+    if (num >= 4) {
+        return;
+    }
+    console.log(num);
+}
+```
+
+### Functions as Data
+
+Functions in Javascript are treated very similarly to other types of data like objects or strings. You can assign a variable to a function itself and you can even pass functions as arguments to other functions.
+
+```js
+function adder(num1, num2) {
+    return num1 + num2;
+}
+// Note that this is different than setting 'const adderFunc = adder()'
+// Because we ommit the parenthasis, we don't execute the function yet.
+const adderFunc = adder;
+
+function arrayCombiner(array, combinerFunc) {
+    let sum = 0;
+    for (const el of array) {
+        // Here we are calling the function that we were passed as an argument
+        sum = combinerFunc(sum, el);
+    }
+    return sum;
+}
+
+const numberArray = [1, 2, 3, 4, 5];
+const arraySum = arrayCombiner(numberArray, adderFunc);
+// Array sum is now equal to 15, the sum of every element of numberArray
+```
+
+We can also return functions from functions.
+
+```js
+function getAdder(num1, num2) {
+    return function adder() {
+        return num1 + num2;
+    }
+}
+
+// Here we give the arguments we want to add but the actual addition is not executed yet
+const adderFunction = getAdder(3, 4);
+
+// Here the addition is executed
+const sum = adderFunction();
+```
+
+### Anonymous Functions
+
+We'll be storing and passing functions around a lot in React and it becomes tedious to have to write out `function someName()` every time. Furthermore, in our last example we returned a function named 'adder' but that function name is never used anywhere.
+
+To make things more convenient, Javascript defines a quick way to define functions without names.
+
+```js
+const myFunctionLong = function operator(num1, num2) {
+    const reverse = num1 * -1;
+    return reverse + num2;
+}
+
+// This syntax is equivielent to above
+const myFunctionQuick = (num1, num2) => {
+    const reverse = num1 * -1;
+    return reverse + num2;
+}
+```
+
+An anonymous function drops the `function` keyword and the function name. Instead, we just define the argument list between two parenthasis and use an arrow pointing to the function `=>`.
+
+If our function doesn't have any arguments we just use empty parentheses: `() => { ... }`
+
+We can shorten this syntax even further if we don't have any intermediate steps to preform. We drop the `{}` and point directly to a code statement and the anonymous function will return that statement as if you had specified it with a `return` statement.
+
+```js
+// These syntaxes are all equivielent!
+
+const fiveReturner = function fiveReturnerInner() {
+    return 'five';
+}
+
+const fiveReturnerFast = () => {
+    return 'five';
+}
+
+const fiveReturnerFastest = () => 'five';
+```
+
+
+## Additional Resources
 
 For a great interactive tutorial through the basics of Javascript try [Codecademy](https://www.codecademy.com/learn/introduction-to-javascript).
+
+
 
 
