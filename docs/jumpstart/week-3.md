@@ -189,7 +189,29 @@ const ourObject = {
 };
 ```
 
-Properties hava a colon separating the key from the value and they end with a comma if there are more properties in the object.
+Properties have a colon separating the key from the value and they end with a comma if there are more properties in the object.
+
+#### Operations
+
+You refer to properties in an object by their key. You can either use dot notation `someObject.someKey` or array like notation `someObject['someKey']`. Dot notation is shorter but array like notation gives you the flexibility to use a variable as the key. If you try to access a property that doesn't exist, you'll get the undefined value.
+
+You can add properties to an object just with simple assignment statements, similar to updating an index in an array.
+
+```js
+const person = {
+    name: "Mike",
+    age: 12
+};
+const personName = person.name; // Equal to Mike
+const personAge = person['age']; // Equal to 12
+const personWeight = person.weight; // Equal to undefined
+
+const weightProperty = 'weight';
+person[weightProperty] = 150;
+const newPersonWeightOne = person[weightProperty] // Equal to 150
+const newPersonWeightTwo = person.weight; // Equal to 150
+```
+
 
 ### null and undefined
 
