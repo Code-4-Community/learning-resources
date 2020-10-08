@@ -12,6 +12,7 @@
     - null & undefined
 - Control Flow
     - if & else
+    - while
     - for
 - Functions
 
@@ -49,6 +50,7 @@ const thisIs = "Not a comment"; // Another comment here
 
 To print a value out to the console you can use `console.log("Some value")`. This is useful for debugging some problems while you are developing.
 
+
 ## Variables
 
 Variables hold data and give you a way of accessing values by name. A variable can store any type of data that we talk about below.
@@ -73,25 +75,101 @@ It's important to keep in mind the scope of your variables. As we learn more abo
 
 ## Data Types
 
-### Numbers, Strings, and Booleans
+### Numbers and Strings
 
 Numbers can be specified as whole numbers or decimal numbers simply as you would type them normally.
 
 Strings are just text wrapped in quotes. You can use `"` or `'`. If you want to include a single or double quote in your string you can escape it with a backslash (`\`).
 
-Booleans are either the value `false` or `true`.
+#### Operations
+
+Javascript supports most basic operations that you may want to do with a number. You can add, subtract, multiply, and divide all with their basic operations `+ - * /`. Javascript also can do basic negation for a single number by specifying a negative sign `-` in front of a single number.
+
+```js
+const add = 1 + 2;
+const sub = 1 - 2;
+const mul = 1 * 2;
+const div = 1 / 2;
+const neg = -3;
+```
+
+Strings in Javascript can also be operated on with the addition symbol `+`. This will concat the two strings into one longer string.
+
+```js
+const hello = 'hello';
+const world = 'world';
+const helloWorld = hello + ' ' + world; // Equivilent to 'hello world'
+```
+
+Strings are essentially just a list of characters, so you'll often want to do similar things with strings that you might want to do with lists. 
+
+You can get the length of a string with their `.length` property. 
+ 
+You can also access any specific character of a string by using a square bracket `[]` and the character's index (position in the string). In Javascript, strings (like arrays) are *0-indexed*, meaning the first character has an index of 0, the next an index of 1, all the way until the last character's index which is the length minus 1.
+
+```js
+const str = 'Hello World!';
+const strLength = str.length; // Equal to 12 (Don't forget to count white space!)
+const letterH = str[0];
+const exclamation = str[str.length - 1]
+```
+
+
+### Booleans
+
+Booleans are either the value `false` or `true`. You will also hear the term *condition* which refers to a statement that evaluates to a boolean.
+
+#### Operations
+
+Javascript 2 operators for combining conditions: or `||` & and `&&`. 'or' will return true if either condition is true, and 'and' will only return true only if both conditions are true.
+
+You can also reverse a condition with the not operator `!`.
+
+```js
+const orOne = false || true;                  // This is true
+const orTwo = false || false || false;        // This is false
+const andOne = false && true && true;         // This is false
+const andTwo = true && true;                  // This is true
+const not = !true                             // This is false
+const combination = !true || !false && true;  // This is true
+```
+
+An important concept to be aware of when working with logical operators is the idea of *short-circuiting*. Because 'or' only needs one true condition to be true and 'and' only needs one false to be false, as soon as Javascript encounters one of those values during those operations it'll stop evaluating the rest of the conditions. While this doesn't matter when your conditions are all booleans, once we start using conditions that have *side effects* this behavior will often be exploited.
+
 
 ### Arrays
 
 Arrays in Javascript are ordered collections of data.
 
-Arrays are wrapped in box brackets `[ ... ]`. Arrays can hold any kind of data including arrays.
+Arrays are wrapped in box brackets `[ ... ]`. Arrays can hold any kind of data including other arrays.
 
 ```js
 const ourArray = ["A first value", 11, ["Nested Value", 0.12], 'A last value'];
 ```
 
+#### Operations
+
 You can refer to values in arrays by their *index*. Arrays in Javascript are *0-indexed* meaning the first value in the array has an index of 0, the next value has an index of 1, and so on until the last index that is the length of the array minus 1.
+
+You can also get the length of an array with the `.length` property, identical to a string.
+
+```js
+const arr = [1, 2, 3, 4];
+const arrLength = arr.length; // Equal to 4
+const secondEl = arr[1]; // Equal to 2
+const thirdEl = arr[arr.length - 1]; // Equal to 4
+```
+
+Arrays are also modifiable. You can assign a value to a particular index in an array with the following syntax:
+
+```js
+const arr = [1, 2, 3, 4];
+const beginning = arr[0]; // Equal to 1
+arr[0] = 100;
+const newBeginning = arr[0]; // Equal to 100
+```
+
+Arrays also define several built in functions. You can read a full list of them on [MDN here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).
 
 ### Objects
 
@@ -177,7 +255,7 @@ for (let i = 0; i < 8; i++) {
 }
 ```
 
-Another common use case is running a loop for every element in an array. You can do this with the decleration, condition, action syntax but Javascript also defines a shorthand.
+Another common use case is running a loop for every element in an array. You can do this with the decleration, condition, action syntax, but Javascript also defines a shorthand.
 
 ```js
 const arr = [1, 2, 3];
@@ -229,7 +307,7 @@ function printIfLessThanFour(num) {
 
 ### Functions as Data
 
-Functions in Javascript are treated very similarly to other types of data like objects or strings. You can assign a variable to a function itself and you can even pass functions as arguments to other functions.
+Functions in Javascript are treated very similarly to other types of data like objects or strings. You can assign a variable to a function itself, and you can even pass functions as arguments to other functions.
 
 ```js
 function adder(num1, num2) {
@@ -262,16 +340,16 @@ function getAdder(num1, num2) {
     }
 }
 
-// Here we give the arguments we want to add but the actual addition is not executed yet
+// Here we give the arguments we want to add, but the actual addition is not executed yet
 const adderFunction = getAdder(3, 4);
 
-// Here the addition is executed
+// Here the addition is executed and sum is equal to 7
 const sum = adderFunction();
 ```
 
 ### Anonymous Functions
 
-We'll be storing and passing functions around a lot in React and it becomes tedious to have to write out `function someName()` every time. Furthermore, in our last example we returned a function named 'adder' but that function name is never used anywhere.
+We'll be storing and passing functions around a lot in React, and it becomes tedious to have to write out `function someName()` every time. Furthermore, in our last example we returned a function named 'adder' but that function name is never used anywhere.
 
 To make things more convenient, Javascript defines a quick way to define functions without names.
 
@@ -288,11 +366,11 @@ const myFunctionQuick = (num1, num2) => {
 }
 ```
 
-An anonymous function drops the `function` keyword and the function name. Instead, we just define the argument list between two parenthasis and use an arrow pointing to the function `=>`.
+An anonymous function drops the `function` keyword and the function name. Instead, we just define the argument list between two parenthasis and use an arrow (`=>`) pointing to the function block.
 
 If our function doesn't have any arguments we just use empty parentheses: `() => { ... }`
 
-We can shorten this syntax even further if we don't have any intermediate steps to preform. We drop the `{}` and point directly to a code statement and the anonymous function will return that statement as if you had specified it with a `return` statement.
+We can shorten this syntax even further if we don't have any intermediate steps to preform before returning a value. If we drop the `{}` and point directly to a code statement, and the anonymous function will return that statement as if you had specified it with a `return` keyword.
 
 ```js
 // These syntaxes are all equivielent!
