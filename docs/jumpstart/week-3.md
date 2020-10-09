@@ -30,7 +30,7 @@ Javascript is fully integrated with HTML and CSS and comes built into any web br
 
 - On Firefox: Options > Web Developer > Web Console
 
-You can also use any number of online Javascript code editors like [JS Fiddle](jsfiddle.net) or [Code Pen](codepen.io/pen).
+You can also use any number of online Javascript code editors like [JS Fiddle](jsfiddle.net), [Code Pen](codepen.io/pen), or [repl.it](https://repl.it/~).
 
 ## Some Basics
 
@@ -107,11 +107,16 @@ You can get the length of a string with their `.length` property.
  
 You can also access any specific character of a string by using a square bracket `[]` and the character's index (position in the string). In Javascript, strings (like arrays) are *0-indexed*, meaning the first character has an index of 0, the next an index of 1, all the way until the last character's index which is the length minus 1.
 
+There are several other built in functions to help when working with strings. One of those includes `.substring(startIndex, endIndex)` which will return a partial string that has the characters from 'startIndex' (inclusive) to 'endIndex' (exclusive).
+
+You can see a full list of built in string operations [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String).
+
 ```js
 const str = 'Hello World!';
 const strLength = str.length; // Equal to 12 (Don't forget to count white space!)
 const letterH = str[0];
 const exclamation = str[str.length - 1]
+const hello = str.substring(0, 5);
 ```
 
 
@@ -294,6 +299,22 @@ for (let i = 0; i < arr.length; i++) {
 }
 ```
 
+### break & continue
+
+While working with while and for loops you may encounter a situation where you want to break out of a loop early or skip a certain element. For this, Javascript defines the keywords `break` and `continue`. `break` will immediately end the innermost loop that it's a part of. `continue` will skip the current element in a loop and continue the loop from the next element.
+
+```js
+for (let i = 0; i < 10; i++) {
+    if (i == 2 || i == 4) {
+        continue;
+    } else if (i == 6) {
+        break;
+    }
+    console.log(i);
+}
+// Only 1, 3, and 5 are output to the console
+```
+
 ## Functions
 
 ### The Basics
@@ -336,7 +357,8 @@ function adder(num1, num2) {
     return num1 + num2;
 }
 // Note that this is different than setting 'const adderFunc = adder()'
-// Because we ommit the parenthasis, we don't execute the function yet.
+// Because we ommit the parenthasis, we don't execute the function yet
+// Instead adderFunc just holds a reference to the function and can be executred with `adderFunc()`
 const adderFunc = adder;
 
 function arrayCombiner(array, combinerFunc) {
@@ -367,6 +389,9 @@ const adderFunction = getAdder(3, 4);
 
 // Here the addition is executed and sum is equal to 7
 const sum = adderFunction();
+
+// Here we condense the two statements, sumTwo now contains 4
+const sumTwo = getAdder(2, 2)();
 ```
 
 ### Anonymous Functions
@@ -412,6 +437,8 @@ const fiveReturnerFastest = () => 'five';
 ## Additional Resources
 
 For a great interactive tutorial through the basics of Javascript try [Codecademy](https://www.codecademy.com/learn/introduction-to-javascript).
+
+For a great refernce website for any miscellaneous questions you have try [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference).
 
 
 
