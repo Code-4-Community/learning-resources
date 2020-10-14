@@ -31,12 +31,14 @@ and now you will get to learn about this awesome tool.
     
 
 ## React
+
 Our good friend John wants to make an interactive user interface for his website but does not want to go through
 the whole process of creating an HTML layout and then applying a CSS stylesheet and finally adding in Javascript
 functionality and liveliness. If only there was a simple library that can do all of this for us and more.......oh
 wait there is. It is called React and it is dope.
  
 ### What is React?
+
 React is a declarative, efficient, and flexible JavaScript library for building user interfaces. 
 It lets you compose complex User Interfaces from small and isolated pieces of code called “components.” 
 React basically will build you a website out of pure Javascript! It combines HTML tags in the form of JSX, 
@@ -44,6 +46,7 @@ CSS files and good old JS logic to produce a masterpiece.
 
 
 ### Why is React better than plain old HTML/CSS/JS combo?
+
 Well React is just a Javascript Library which requires less knowledge and understanding of other frameworks. 
 In addition, React makes it easy for developers to manipulate and work with the DOM. The DOM stands for the Document
 Object Model and is what connects the browser and the HTML code. Lastly, React uses a type
@@ -53,6 +56,7 @@ and has fewer bugs. However, declarative code is error prone which is why we use
 to help prevent these errors that may break our application.
 
 ### What a file looks like that incorporates React
+
 Let us call this file LuckyNum.tsx (.tsx refers to the file being a typescript file).
 ```
 import React from 'react'; 
@@ -61,7 +65,7 @@ const LuckyNum = () => {
 
     let myLuckyNumber = 7;
 
-    return(
+    return (
         <div>
             <h1>My Lucky Number is {myLuckyNumber}</h1>
         </div>
@@ -83,9 +87,10 @@ Components are the building blocks of a React application. Understanding what on
 fundamental to one's comprehension of React.
 
 ### What is a Component?
+
 A React component is like a piece of the "React App" puzzle. For a puzzle to be complete we need at least one piece. 
 Similarly, each React application needs at least one component. The default component is usually one by the name of 
-App.js or in our case App.tsx (we are using Typescript instead of Javascript). Let us take a look at the LuckyNum.tsx
+App.js, or in our case, App.tsx (we are using Typescript instead of Javascript). Let us take a look at the LuckyNum.tsx
 file created above.
 ```
 import React from 'react'; 
@@ -94,7 +99,7 @@ const LuckyNum = () => {
 
     let myLuckyNumber = 7;
 
-    return(
+    return (
         <div>
             <h1>My Lucky Number is {myLuckyNumber}</h1>
         </div>
@@ -113,7 +118,8 @@ So, we have covered that a component is just a piece of a React App. A cool thin
 use components that we have made in other components that we make.
 
 ### Using Components
-Remember our LuckyNum component we made above? We are going to use this component in our Profile component below in
+
+Remember our`LuckyNum` component we made above? We are going to use this component in our Profile component below in
 order to display your favorite number along with your name and favorite color.
 
 ```
@@ -138,17 +144,19 @@ const Profile = () => (
 export default Profile;
 ```
 
-As you can see we import the component `LuckNum` from the typescript file we wrote. Once the component is imported
+As you can see we import the component `LuckyNum` from the typescript file we wrote. Once the component is imported
 we are able to use it in our new component. The syntax to do this is by creating a tag to indicate where we
 want the imported component to be placed.
 
 ## Props
+
 Looks like things are going well. We have successfully displayed John's profile picture, name, favorite color and
 lucky number. Now John's friend Doug wants to display his lucky number on his profile. John is happy to help and
 gives him the `LuckyNum` component we made. However, Doug's lucky number is not the same as John's so Doug cannot
-use the `LuckNum` component! John has a solution: use props.
+use the `LuckyNum` component! John has a solution: use props.
 
 ### What are Props and why use them?
+
 Props are a nice way of making your components reusable. Instead of hard coding all of our data and information
 into our components, we can pass in props to give some malleability to our components. A great way to understand
 props is to compare them to how functions work. For example, let us print a message to the console.
@@ -188,6 +196,7 @@ function printMessage(message) {
 Now we can reuse the function whenever we want to print something to the console! 
 
 ### Using Props
+
 This same logic can be applied when we use props. Let us revisit the `LuckyNum` component again.
 
 ```
@@ -197,7 +206,7 @@ const LuckyNum = () => {
 
     let myLuckyNumber = 7;
 
-    return(
+    return (
         <div>
             <h1>My Lucky Number is {myLuckyNumber}</h1>
         </div>
@@ -217,7 +226,7 @@ const LuckyNum = (props) => {
 
     let myLuckyNumber = 7;
 
-    return(
+    return (
         <div>
             <h1>My Lucky Number is {myLuckyNumber}</h1>
         </div>
@@ -227,7 +236,7 @@ const LuckyNum = (props) => {
 export default LuckyNum;
 ```
 
-Now that we have access to `props` we can simply display the luckyNum field of the prop object.
+Now that we have access to `props` we can simply display the `luckyNum` field of the prop object.
 
 ```
 import React from 'react'; 
@@ -242,7 +251,7 @@ const LuckyNum = (props) => (
 
 export default LuckyNum;
 ```
-Our component is now reuseable!! We now can use it on Doug's profile like so.
+Our component is now reusable!! We now can use it on Doug's profile like so.
 
 ```
 import React from 'react';
@@ -261,7 +270,7 @@ export default Profile;
 ```
 
 `props` is an object that React makes for each component. When you pass parameters into component declaration 
-like we did with `LuckNum` React adds the parameter as a field of the object `props`. In order to get the field
+like we did with `LuckyNum` React adds the parameter as a field of the object `props`. In order to get the field
 of the object we simply access the object's field like we would any other object. 
 
 > We can make the `Profile` component more reusable with props. Try now to add props to make `Profile` more
@@ -284,6 +293,7 @@ export default Profile;
 ```
 
 ## State Management
+
 Alright. So John is now super happy with his profile and wants to see if other people like his profile as much
 as he does. To do this John adds a like button on his profile. 
 
@@ -308,14 +318,16 @@ John is now perplexed. How can I keep track of the number of likes and how can I
 through each render? Welcome to state management John.
 
 ### What is managing state?
-You can think of state as the data that persist through each clock render of your application. Under the hood,
-your react application renders the screen on clock ticks. In order to make your non-constant data persist we
+
+You can think of state as the data that persists through each clock render of your application. Under the hood,
+your react application renders the screen on clock ticks. In order to make your non-constant data persist, we
 have to manage the state of our application. We manage the state in our components using the react hook 
 `useState`. There are other ways of managing state in react, but this is a simple and easy way.
 
 ### useState Hook
+
 `useState` allows us to add and keep track of data in the state. In order to use this hook we must import 
-it from react. We use {} when importing useState because it is not a default export but a named one. We will
+it from React. We use {} when importing `useState` because it is a named export. This is different from a default export, which is how we were getting exports earlier. We will
 discuss default and named exports in Week 6.
 
 ```
@@ -341,9 +353,9 @@ const Profile = () => (
 export default Profile;
 ```
 
-Now in order to use `useState` we make a `const` array with the a variable and a setter. We then set this equal
-to a call to useState and pass in the type of data we want to keep track of. For example if we want to keep 
-track of someones message we would write this:
+Now in order to use `useState` we make a `const` array with a variable and a setter. We then set this equal
+to a call to `useState` and pass in the type of data we want to keep track of. For example, if we want to keep 
+track of someone's message, we would write this:
 
 ```const [message, setMessage] = useState("Hello World")```
 
@@ -360,7 +372,7 @@ import LuckyNum from './LuckyNum';
 
 const Profile = () => (
 
-    //initialize the state to 0 because we start with 0 likes
+    // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
     <div>
@@ -382,10 +394,10 @@ import LuckyNum from './LuckyNum';
 
 const Profile = () => (
 
-    //initialize the state to 0 because we start with 0 likes
+    // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
-    //handles incrementing the likes of John's profile
+    // handles incrementing the likes of John's profile
     function handleLikes {
         setProfileLikes(profileLikes + 1);
     }    
@@ -406,12 +418,14 @@ As you may have noticed, react is normally implemented with Javascript. The only
 that we do not get type enforcement.
 
 ### Why use Typescript in the first place?
-When developing an application with a lot of contributors it is important to have some sort of structure to 
+
+When developing an application with a lot of contributors, it is important to have some sort of structure to 
 your code. Typing (the act of giving our code types) allows us to not create errors and mess up a project 
 with other contributors on it. Typescript gives us the functionality of typing our components and data! 
 
 ### How to type in React
-It is as easy as it seems. For example lets type the `useState` that John used for likes on his profile and the
+
+It is as easy as it seems. For example, lets type the `useState` that John used for likes on his profile and the
 `useState` for our message example:
 
 ```
@@ -451,15 +465,18 @@ export default LuckyNum;
 ```
 
 ## Material UI: a lifesaver
+
 We all hate having to style our components for hours on end to make them look beautiful and actually work
 properly. Do not worry because Material UI is here to save the day!
 
 ### What is Material UI?
-Material UI is a popular framework in react. It is a library filled with pre-styled components that are super
+
+Material UI is a popular framework in React. It is a library filled with pre-styled components that are super
 helpful. There are many different components that basically replace the need for any pure html components in
 your project. Each of the pre-made components will save you a ton of time on styling and formatting.
 
 ### How can I use it?
+
 All you have to do is import any component you want from the list found 
 [here](https://material-ui.com/components/box/). For example let us replace the html `<button>` for John's 
 likes with a Material UI Button component.
@@ -471,10 +488,10 @@ import { Button } from '@material-ui/core'
 
 const Profile = () => (
 
-    //initialize the state to 0 because we start with 0 likes
+    // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
-    //handles incrementing the likes of John's profile
+    // handles incrementing the likes of John's profile
     function handleLikes {
         setProfileLikes(profileLikes + 1);
     }    
@@ -514,13 +531,13 @@ const useStyles = makeStyles({
 
 const Profile = () => (
 
-    //allows us to use our custom styles
+    // allows us to use our custom styles
     const classes = useStyles();
 
-    //initialize the state to 0 because we start with 0 likes
+    // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
-    //handles incrementing the likes of John's profile
+    // handles incrementing the likes of John's profile
     function handleLikes {
         setProfileLikes(profileLikes + 1);
     }    
@@ -540,6 +557,7 @@ export default Profile;
 ```
 
 ## Other Learning Sources
+
 Here are some sources that should help your understanding. Also you can always search on Google or Youtube
 if you need more explanation.
 
