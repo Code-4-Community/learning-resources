@@ -31,12 +31,14 @@ and now you will get to learn about this awesome tool.
     
 
 ## React
+
 Our good friend John wants to make an interactive user interface for his website but does not want to go through
 the whole process of creating an HTML layout and then applying a CSS stylesheet and finally adding in Javascript
 functionality and liveliness. If only there was a simple library that can do all of this for us and more.......oh
 wait there is. It is called React and it is dope.
  
 ### What is React?
+
 React is a declarative, efficient, and flexible JavaScript library for building user interfaces. 
 It lets you compose complex User Interfaces from small and isolated pieces of code called “components.” 
 React will build you a website out of pure Javascript! It combines HTML tags in the form of JSX, 
@@ -44,6 +46,7 @@ CSS files and good old JS logic to produce a masterpiece.
 
 
 ### Why is React better than plain old HTML/CSS/JS combo?
+
 Well React is just a Javascript Framework, that simplifies web development. 
 In addition, React makes it easy for developers to manipulate and work with the DOM. The DOM stands for the Document
 Object Model and is what connects the browser and the HTML code. Lastly, React uses a type
@@ -55,6 +58,7 @@ and has fewer bugs. However, declarative code is error prone which is why we use
 to help prevent these errors that may break our application.
 
 ### What a file looks like that incorporates React
+
 Let us call this file LuckyNum.tsx (.tsx refers to the file being a typescript file).
 ```
 import React from 'react'; 
@@ -63,7 +67,7 @@ const LuckyNum = () => {
 
     let myLuckyNumber = 7;
 
-    return(
+    return (
         <div>
             <h1>My Lucky Number is {myLuckyNumber}</h1>
         </div>
@@ -85,6 +89,7 @@ Components are the building blocks of a React application.
 To master react, it's important to understand what a component is and how to create them.
 
 ### What is a Component?
+
 If we think of our React application as a puzzle, then a component is just a single piece. For a puzzle to be complete we need at least one piece. 
 Similarly, each React application needs at least one component. The default component will typically be called 
 App.js or in our case App.tsx (we are using Typescript instead of Javascript). Let us take a look at the LuckyNum.tsx
@@ -96,7 +101,7 @@ const LuckyNum = () => {
 
     let myLuckyNumber = 7;
 
-    return(
+    return (
         <div>
             <h1>My Lucky Number is {myLuckyNumber}</h1>
         </div>
@@ -115,7 +120,8 @@ So, we have covered that a component is just a piece of a React App. As we'll se
 meaning we can use one component inside of another one!
 
 ### Using Components
-Remember our LuckyNum component we made above? We are going to use this component in our Profile component below in
+
+Remember our `LuckyNum` component we made above? We are going to use this component in our Profile component below in
 order to display our favorite number along with our name and favorite color.
 
 ```
@@ -140,17 +146,19 @@ const Profile = () => (
 export default Profile;
 ```
 
-As you can see we import the component `LuckNum` from the typescript file we wrote. Once the component is imported
+As you can see we import the component `LuckyNum` from the typescript file we wrote. Once the component is imported
 we are able to use it in our new component. The syntax to do this is by creating a tag to indicate where we
 want the imported component to be placed.
 
 ## Props
+
 Looks like things are going well. We have successfully displayed John's profile picture, name, favorite color and
 lucky number. Now John's friend Doug wants to display his lucky number on his profile. John is happy to help and
 gives him the `LuckyNum` component we made. However, while John's favorite number is 7, Doug's favorite number is 10, 
 so he can't use the `LuckyNum` component! John has a solution: use props.
 
 ### What are Props and why use them?
+
 Props are a nice way of making your components reusable. Instead of hard coding all of our data and information
 into our components, we can pass in props to give some malleability to our components. A great way to understand
 props is to compare them to how functions work. For example, let us print a message to the console.
@@ -189,6 +197,7 @@ function printMessage(message) {
 Now we can reuse the function whenever we want to print something to the console! 
 
 ### Using Props
+
 This same logic can be applied when we use props. Let us revisit the `LuckyNum` component again.
 
 ```
@@ -198,7 +207,7 @@ const LuckyNum = () => {
 
     let myLuckyNumber = 7;
 
-    return(
+    return (
         <div>
             <h1>My Lucky Number is {myLuckyNumber}</h1>
         </div>
@@ -218,7 +227,7 @@ const LuckyNum = (props) => {
 
     let myLuckyNumber = 7;
 
-    return(
+    return (
         <div>
             <h1>My Lucky Number is {myLuckyNumber}</h1>
         </div>
@@ -264,7 +273,7 @@ export default Profile;
 ```
 
 `props` is an object that React makes for each component. When you pass parameters into component declaration 
-like we did with `LuckNum` React adds the parameter as a field of the object `props`. In order to get the field
+like we did with `LuckyNum` React adds the parameter as a field of the object `props`. In order to get the field
 of the object we simply access the object's field like we would any other object. 
 
 > We can make the `Profile` component more reusable with props. Try now to add props to make `Profile` more
@@ -287,6 +296,7 @@ export default Profile;
 ```
 
 ## State Management
+
 Alright. So John is now super happy with his profile and wants to see if other people like his profile as much
 as he does. To do this, John adds a like button on his profile. 
 
@@ -367,7 +377,7 @@ import LuckyNum from './LuckyNum';
 
 const Profile = () => {
 
-    //initialize the state to 0 because we start with 0 likes
+    // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
     return(
@@ -391,7 +401,7 @@ import LuckyNum from './LuckyNum';
 
 const Profile = () => {
 
-    //initialize the state to 0 because we start with 0 likes
+    // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
     //handles incrementing the likes of John's profile
@@ -488,10 +498,10 @@ import { Button } from '@material-ui/core'
 
 const Profile = () => (
 
-    //initialize the state to 0 because we start with 0 likes
+    // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
-    //handles incrementing the likes of John's profile
+    // handles incrementing the likes of John's profile
     function handleLikes {
         setProfileLikes(profileLikes + 1);
     }    
@@ -532,13 +542,13 @@ const useStyles = makeStyles({
 
 const Profile = () => (
 
-    //allows us to use our custom styles
+    // allows us to use our custom styles
     const classes = useStyles();
 
-    //initialize the state to 0 because we start with 0 likes
+    // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
-    //handles incrementing the likes of John's profile
+    // handles incrementing the likes of John's profile
     function handleLikes {
         setProfileLikes(profileLikes + 1);
     }    
@@ -561,6 +571,7 @@ John and Doug were able to build Profile Website!! However, the website is not t
 we will learn how to spice things up.
 
 ## Other Learning Sources
+
 Here are some sources that should help your understanding. Also you can always search on Google or Youtube
 if you need more explanation.
 
