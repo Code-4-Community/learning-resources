@@ -1,11 +1,29 @@
+# Version Control and Git Workshop (Week 1.5)
 
+Hey everyone! In this workshop, we'll be walking through 
+[Git](https://git-scm.com/). Git is a tool which allows you to create a history
+for the project you're working on. If this isn't something you're interested in,
+then you don't have to go through this, but it's definitely one of the most useful
+tools used in development.
 
-1\. Create a file
+Git enables you to create a snapshot of the state of your code and save it
+whenever you want during your development process. It also provides
+a bunch of other really useful features, like the ability to work on multiple features 
+at the same time independently of each other, collaboration with other people on the same
+work, and a way to share these snapshots.
+
+[Check out the presentation slides](https://drive.google.com/file/d/1rHqLLYtKJYRpoSqVYdYDsBgHaZwSIAnc/view?usp=sharing)
+
+## 1\. Create a file
 ``` shell
 $ mkdir practice-git
 $ cd practice-git
-$ vi index.html
+$ vim index.html
 ```
+
+>Note: to start writing in vim, type `i`. Once you're done writing, type `ESC` to get out
+>of the 'writing' mode (called insertion mode), then type `:w` (with the `:`) to save your file,
+>and `:q` to exit vim.
 
 index.html:
 ``` html
@@ -21,7 +39,7 @@ index.html:
 
 Right now we just have a file with no source control.
 
-2\. Add git
+## 2\. Add git
 
 ``` shell 
 $ git init
@@ -50,7 +68,7 @@ files you want to track because there are going to be a lot of files you
 won't want in your source control (generate files, personal config files,
 ect... ).
 
-3\. Track our file
+## 3\. Track our file
 
 ``` shell 
 $ git add index.html
@@ -73,6 +91,11 @@ $ git log
 $ git log --oneline
 ```
 
+>Note: to quit `git log` (or any of its variations), you'll just need to type `q`.
+>It uses a program very similar to vim called less (less is for reading files _only_ though).
+>To scroll up and down (if you have a big enough history), you can either use arrow keys or
+>`j` and `k`.
+
 At this point we have a single blob with three tags pointing at it. 
 - The commit tag, every commit we make will automatically have their own
 commit tag pointing to it.
@@ -80,7 +103,7 @@ commit tag pointing to it.
 - The 'master' branch tag. Every git project has one default branch that
 will always be called 'master'.
 
-4\. Make our history more interesting
+## 4\. Make our history more interesting
 
 about.html
 ``` html
@@ -175,7 +198,7 @@ At this point we're already getting a lot of benefit out of git. We
 are keeping track of the progress of our project and have a record
 of everything we've done.
 
-5\. Go back in time
+## 5\. Go back in time
 
 Having our history is cool but it only really helpful if we can go
 back and use our history.
@@ -191,6 +214,9 @@ $ git checkout 2f797e6
 $ ls
 $ git log --oneline
 ```
+
+>Note: 4ca0fa is a commit hash __we__ have. You won't have one that looks like that in
+>your git repository, so you'll have to use one that you find when you run `git log`.
 
 Really when we're checking out these commits all we do is move our
 head to a previous commit.
@@ -208,14 +234,14 @@ master.
 $ git checkout master
 ```
 
-6\. Branches and Tags
+## 6\. Branches and Tags
 
 So this is all pretty good but the thing that really makes git so
 powerful is the idea of branches, and really a branch is just a line
 of commits with a __branch tag__ pointing to the end of it.
 
 All branches are going to be defined with a tag at the very tip of
-its line of commits. 'master' points to our last commit because
+its line of commits. Currently, 'master' points to our last commit because
 it is the last commit that we've made in this line of work.
 
 We can look at the branches we currently have with:
@@ -223,7 +249,7 @@ We can look at the branches we currently have with:
 $ git branch
 ```
 
-Right now, as we expect, we just have the one master branch. The astrix
+Right now, as we expect, we just have the one master branch. The asterisk ('*')
 on the left is just going to denote what branch we're currently working
 on (which branch our HEAD points to).
 
@@ -233,6 +259,8 @@ it shows our master branch:
 $ git checkout 4fca0ca
 $ git branch
 ```
+
+>Note: remember, you won't have a 4fca0ca commit hash unless you're working using our repository.
 
 So git doesn't really like when our HEAD is not at the same place as a
 branch tag, this is because if we were to add some commits from here
@@ -289,12 +317,12 @@ $ git add *
 $ git commit -m "Added navigation to the quotes page"
 ```
 
-7\. Merging and Workflow
+## 7\. Merging and Workflow
 
 Let's draw out our tree so far.
 
 So different companies will have different standards for how they're
-using git in their workflow but pretty much anywhere you go the team
+using git in their workflow, but pretty much anywhere you go the team
 will likely reserve the master branch for stable releases of their
 software. That means that if they're working on a new feature
 (like our new quotes page) then instead of developing right on the
@@ -341,12 +369,10 @@ $ git add *
 $ git commit -m "Added color to our about and skills pages"
 ```
 
-<DRAW TREE>
-
 Now once we're sure our hotfix branch is working exactly how we want
 it to we'll want to merge in our master branch to have our changes.
-If you notice, our G'th commit is going in a direct line from our
-master tag. So, to update our master branch, all we really need to do
+If you notice, our N'th commit is going in a direct line from our
+master tag. To update our master branch, all we really need to do
 is change where the master tag is referring to.
 
 ``` shell 
@@ -390,7 +416,8 @@ changes to the same piece of code we would have whats called a __merge conflict_
 When this happens we'd just have to manually decide which parts of each
 branch's changes that we want to keep.
 
-So for now this is where we're going to end this workshop.
+This is where we're going to end this workshop. There's much more to learn about
+though, so try using it and checking it out yourself!
 
 This is basically all git is about. There are some fancy things you can 
 do with rebasing, and changing your log history. When you're working at
@@ -398,14 +425,23 @@ a company you're also going to be dealing with remote branches that
 other developers are working on but everything is built out from the
 basic concepts of commits, branching, and merging.
 
-I'll put all my notes from this workshop on the slack and I linked some
-tutorial that I think do a good job of explaining the concepts if
-you want to learn more or explore some advanced features.
+Down below in the __Extra Materials__ section, you can see a few other resources you can use for
+learning git that we recommend
 
+## Extra Materials:
 
-Extra Materials:
-- https://git-scm.com/doc
-- https://web.archive.org/web/20161121145226/http://rypress.com/tutorials/git/index
-- http://marklodato.github.io/visual-git-guide/index-en.html
-- https://eagain.net/articles/git-for-computer-scientists/
-
+- [Git documentation](https://git-scm.com/doc)
+    - Here's where you can go to get official documentation for Git.
+- [Ry's Git Tutorial (archive)](https://web.archive.org/web/20161121145226/http://rypress.com/tutorials/git/index)
+    - A simple tutorial for learning the basics of Git.
+- [Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials)
+    - A tutorial by a company which makes a lot of enterprise-level stuff for Git. 
+    This one is really useful for learning about new (and sometimes advanced) topics.
+- [Githug](https://github.com/Gazler/githug)
+    - A more in-depth tutorial which teaches more complex Git concepts.
+- [Visual Git Guide](http://marklodato.github.io/visual-git-guide/index-en.html)
+    - A guide to Git done using visual representations of everything.
+- [Git for Computer Scientists](https://eagain.net/articles/git-for-computer-scientists/)
+    - An abstract description of Git.
+- [Hubspot Git Tutorial](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners)
+    - A Git and GitHub tutorial by Hubspot.
