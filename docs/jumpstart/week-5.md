@@ -54,7 +54,7 @@ of code called **declarative code**.
 
 Declarative code describes the end result, but does not act as a step-by-step 
 guide of how to do it. In practice, that means declarative code is lightweight, easier to understand and change, 
-and has fewer bugs. However, declarative code is error prone which is why we use Typescript 
+and has fewer bugs. However, declarative code is error prone, which is why we use Typescript 
 to help prevent these errors that may break our application.
 
 ### What a file looks like that incorporates React
@@ -165,9 +165,7 @@ props is to compare them to how functions work. For example, let us print a mess
 
 ```
 function printHi() {
-
     console.log("hi");
-
 }
 ```
 
@@ -176,9 +174,7 @@ to make a new function because `printHi()` only prints "hi". We would then have 
 
 ```
 function printHey() {
-
     console.log("hey");
-
 }
 ```
 
@@ -188,9 +184,7 @@ want to the console and we would not need to make a new function each time.
 
 ```
 function printMessage(message) {
-
     console.log("Here is your note: " + message);
-
 }
 ```
 
@@ -218,7 +212,7 @@ export default LuckyNum;
 ```
 
 Right now this component only displays John's lucky number. In order to make this component more reusable so that
-Doug can use it, we must add props. We add props as a argument of the function component.
+Doug can use it, we must add props. We add props as an argument of the function component.
 
 ```
 import React from 'react'; 
@@ -331,7 +325,7 @@ have to manage the state of our application. We will be managing state in our co
 `useState` allows us to add and keep track of data in the state. 
 
 In order to use this hook we must import 
-it from react. We use {} when importing useState because it is not a default export but a named one. We will
+it from react. We use `{}` when importing useState because it is not a default export but a named one. We will
 discuss default and named exports in Week 6.
 
 ```
@@ -404,7 +398,7 @@ const Profile = () => {
     // initialize the state to 0 because we start with 0 likes
     const [profileLikes, setProfileLikes] = useState(0);
 
-    //handles incrementing the likes of John's profile
+    // handles incrementing the likes of John's profile
     function handleLikes() {
         setProfileLikes(profileLikes + 1);
     }    
@@ -424,13 +418,13 @@ export default Profile;
 
 ## Typing with Typescript
 
-As you may have noticed, react is normally implemented with Javascript. TOne of the downsides of using JavaScript is 
+As you may have noticed, React is normally implemented with Javascript. One of the downsides of using JavaScript is 
 that we do not get type enforcement.
 
 ### Why use Typescript in the first place?
 
 When developing an application with a lot of contributors it is important to have some sort of structure to 
-your code. Typing (the act of giving our code data types) allows us to not introduce errors and mess up a project 
+your code. Typing (the act of giving our code data types) prevents us from introducing errors and messing up a project 
 with other contributors on it. Typescript gives us the functionality of typing our components and data! 
 
 ### How to type in React
@@ -477,18 +471,18 @@ export default LuckyNum;
 ## Material UI: a lifesaver
 
 We all hate having to style our components for hours on end to make them look beautiful and actually work
-properly. Do not worry because Material UI is here to save the day!
+properly. Do not worry, because Material UI is here to save the day!
 
 ### What is Material UI?
 
-Material UI is a popular framework in react. It is a library filled with pre-styled components that are super
+Material UI is a popular framework in React. It is a library filled with pre-styled components that are super
 helpful. There are many different components that basically replace the need for any pure html components in
 your project. Each of the pre-made components will save you a ton of time on styling and formatting.
 
 ### How can I use it?
 
 All you have to do is import any component you want from the list found 
-[here](https://material-ui.com/components/box/). For example let us replace the html `<button>` for John's 
+[here](https://material-ui.com/components/box/). For example, let us replace the html `<button>` for John's 
 likes with a Material UI Button component.
 
 ```
@@ -519,8 +513,8 @@ export default Profile;
 
 ### Styling Material UI Components
 
-If you wanted to style the components in Material UI a little more to tailor your specific needs you can do that!
-For example let us make the newly imported Button component on John's profile to be black.
+If you wanted to style the components in Material UI a little more to tailor your specific needs, you can do that!
+For example, let us make the newly imported Button component on John's profile black.
 
 We first have to import `makeStyles` from `@material-ui/core/styles`. We then make an object for each class we 
 want to apply to our components. We make an anonymous function called `useStyles` that is equal to `makeStyles`
