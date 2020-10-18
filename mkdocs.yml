@@ -17,6 +17,7 @@ nav:
       - "Week 1.5: Version Control and Git": jumpstart/week-1.5-git.md
       - "Week 2: Introduction to HTML and CSS": jumpstart/week-2.md
       - "Week 3: Introduction to Javascript": jumpstart/week-3.md
+      - "Week 4: React": jumpstart/week-4.md
   - Guides:
       - Home: guides/index.md
       - Send a POST request: guides/postrequest.md
