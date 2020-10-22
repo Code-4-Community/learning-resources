@@ -658,12 +658,13 @@ them, you can use `getRequestParameterAsString`. They're written in a path by st
 together with `&`. It's very similar to the JSON `object` type we described earlier, where items are referened by a key.
 
 Here are a some examples: 
+
 - `/some/path?param1=value1&param2=value2&param3=value3`
     - Multiple values with different keys.
 - `/some/path?param1=value1&param1=value2&param1=value3`
     - Multiple values with the same key (this is allowed here, while in an `object` for JSON you'd have to have a 
     single key relate to a list of values).
-- `/posts/15?sort=score&asc=true&username=jumpstart1234
+- `/posts/15?sort=score&asc=true&username=jumpstart1234`
     - An example of a path '/posts/15' that has params like `{ "sort": "score", "asc": true", "username": "jumpstart1234" }`
 
 The way 
