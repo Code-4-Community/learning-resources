@@ -319,7 +319,9 @@ There are a couple outside of those, but in most cases, you'll just stick with t
 
 The `GET` method is one of the most commonly used request methods (along with `POST`). It corresponds to the read 
 operation of CRUD, so it's usually used when you're trying to just get information from a server. In fact, whenever you
-load a website using a web browser, you're sending `GET` requests to the website you want to access. 
+load a website using a web browser, you're sending `GET` requests to the website you want to access. There are a bunch 
+of other request methods too (like `POST`, `PUT`, `DELETE`, ...), which we'll be covering next week. Be sure to join 
+us then!
 
 ### What is REST
 
@@ -376,7 +378,7 @@ The api directory is where all requests will enter through. It is the way that a
 and view the results of our application.
 
 The persist directory is where all *persisting* information will live. Starting out, it is where we'll create our 
-database mocks, and later on, it will be where our database interactivity classes will be placed.
+database mocks, and later on, it will be where our database interactivity class files will be placed.
 
 The service directory is what unifies everything together. Since we want to not make the persist and api directories 
 dependent on each other, there will end up being a few interfaces that are made available and implemented in service. 
