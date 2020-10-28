@@ -4,6 +4,58 @@ Hey guess what, you got a working frontend!! Now how do we get some data from th
 learn that and more this week.
 
 ## Async
+Javascript is a fundamentally synchronous language. This means that all of its commands are executed one after another.
+
+But this raises an issue. Let's say we want to do something that takes a significant amount of time (orders of magnitude longer than it takes to execute a line of code). For example, imagine we wanted to get information from another resource on the internet. Because of physical limitations (the time it takes for data to travel through wires that connect the web), this request will take thousands of times longer to execute than a normal line of code. This is an issue because we don't want our program to simply freeze while this execution is happening -- we want the rest of our code to continue executing in the background.
+
+The solution is asynchronous Javascript. Instead of completely pausing our code, `async` enables us to "wait it out." This gives us the corresponding keyword, `await`. Let's see how they can be used together.
+
+Let's say we're using a library that has an asynchronous `request()` function, and we wanted to get some response from it. Here's our first attempt:
+
+```
+const response = request('https://someresource.com');
+console.log(response);
+```
+
+If we ran this code, `undefined` would appear in the console, even though the request we're trying to make should return data. This is because Javascript will just keep executing code, without awaiting the results of any asynchronous calls. So, the `console.log()` line will be called instantaneously after the `request()` line, so the response will still be undefined -- the request has not yet been received.
+
+To fix this, we use the `await` keyword:
+
+```
+const response = await request('https://someresource.com');
+console.log(response);
+```
+
+Now, the console should correctly log the response. This works because Javascript will wait for our request to complete before moving on to the next line.
+
+So where does `async` come in? Imagine further that we defined a function that wrapped this request:
+
+```
+function getResponse() {
+    const response = await request('https://someresource.com');
+    return response.data;
+}
+```
+
+If we try to compile this code, we'll get an error: <em>await is only valid in async function</em>. This makes sense: if our `getResponse()` function isn't asynchronous itself, then it won't be able to fully execute because it contains asynchronous calls within it. So, any function that contains `await` must be declared `async`, like this:
+
+```
+async function getResponse() {
+    ...
+}
+```
+
+Now, we must use `await` to call `getResponse()` because it is asynchronous. 
+
+You may worry that this will ultimately make all our code asynchronous because only asynchronous functions can use `await`. Fortunately, we can still call asynchronous functions inside synchronous ones:
+
+```
+function doSomething() {
+    getResponse();
+}
+```
+
+This <em>will</em> still call `getResponse()`, even though it's `async`. It just won't wait for the call to return a value.
 
 ## API Specification
 Up to now, we've only been worried about displaying our data. We've never really thought about how or where we get that data from. That's where the API comes in.
@@ -16,7 +68,7 @@ An API specification just refers to the definition of this interface. It tells u
 
 1. The different commands we can send to the backend
 2. What inputs those commands need so that the backend can make sense of them
-3. What, if anything, we should receive as a response to each command we send
+3. What, if anything, we should expect to receive as a response to each command we send
 
 We'll start with the first two.
 
