@@ -13,13 +13,13 @@
 
 Open the terminal application and check that node is installed correctly by running: 
 
-```shell script
+```sh
 node --version
 ```
 
 Create a new directory somewhere with a name of your choice then navigate in the terminal to that directory.
 
-```shell script
+```sh
 cd ~/Desktop
 mkdir backendexample
 cd backendexample
@@ -27,13 +27,13 @@ cd backendexample
 
 Initialize your node project with the following command. You can leave all the default settings or change whatever you want.
 
-```shell script
+```sh
 npm init
 ```
 
 Download the following 3 libraries, do not type the `#` symbol or anything after it.
 
-```shell script
+```sh
 npm install express # For creating our backend logic
 npm install body-parser # For handling JSON request bodies
 npm install axios # For making our own HTTP requests
@@ -54,7 +54,7 @@ Node should have generated a file called `package.json` in your current director
 
 Create a directory called `src` within your current directory and within create a file called `index.js`. (Note that these are normal naming conventions but can be replaced with anything)
 
-```shell script
+```sh
 mkdir src
 cd src
 touch index.js
@@ -107,7 +107,7 @@ app.listen(3000, () =>
 
 To start your app, from the terminal in the outer directory you created (not `src`), run the following command. You should see it output "Example app listening on port 3000!".
 
-```shell script
+```sh
 npm start
 ```
 
