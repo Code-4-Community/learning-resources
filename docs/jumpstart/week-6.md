@@ -15,6 +15,7 @@
 1. Talk about testing in the software development world
   - Types of tests
   - Basic testing with JUnit
+    - Test Class Locations
     - Show basic test examples
     - `BeforeEach`/`BeforeAll` annotations
     - Parameterized tests
@@ -39,28 +40,25 @@
 
 ### Types of Tests
 
-You may be able to tell from the name that testing a method used to help prove that your code works the way you expect 
-it to. If you haven't encountered tests before, whether that's because you're new to development or just never thought 
+You may be able to tell from the name that testing is a method used to help prove that your code works the way you expect 
+it to. If you haven't spent a lot of time working on tests before, whether that's because you're new to development or 
+never thought 
 that tests were important enough to spend time on, just know that they're extremely important in helping you 
 diagnose issues in your code (if you write meaningful tests) before releases or after making significant changes. 
-By the way, if you've heard of check-expects, they're basically the same thing if you've taken fundies and that makes it 
-more familiar to you!
-For smaller projects, they have less of an impact, even if they're still helpful. As your project grows, however, and as
-you work with more people, they'll save you a lot of time in tracking down and preventing a lot of bugs that come from
+By the way, if you've heard of check-expects from fundies, they're basically the same thing! For smaller projects, tests 
+have less of an impact, even if they're still helpful. As your project grows and begins incorporating work from more 
+people, however, they'll save you a lot of time in tracking down and preventing a lot of bugs that come from
 unexpected interactions or mistakes that were made in trying to solve a problem.
 
-In the software development side of things, there are around seven types of tests that you'll probably interact with throughout 
+In software development, there are around seven types of tests that you'll probably interact with throughout 
 your career, and different organizations may combine or rename a lot of these. We're calling them 'unit', 'integration', 
 'functional', 'end-to-end', 'acceptance', 'performance', and 'smoke' tests.
 
 - *Unit* tests are meant to test functions/methods. They are basic tests and work with the smallest units of 
 functionality in your code.
-- *Integration* tests ensure that multiple different units, modules, or applications can work together correctly. 
-- *Functional* tests are very similar to integration tests. Functional tests apply business
-logic when testing, so testing expected behavior, while integration tests are only there to make sure multiple modules
-can work together as expected. One example is connecting to a database (integration) vs. getting specific values from 
-the database (functional).
-- *End-To-End* tests are try to act as a user and go through different workflows to ensure large
+- *Integration* tests ensure that multiple different units, modules (groups of code), or applications can successfully 
+work together and produce the response you're expecting.
+- *End-To-End* tests try to act as a user and go through different workflows to ensure large
 parts of the application are working as expected.
 - *Acceptance* tests verify business requirements (and sometime performance) in a formal way to determine if business 
 goals were met.
@@ -73,7 +71,7 @@ testing](https://www.atlassian.com/continuous-delivery/software-testing/types-of
 
 ### Testing in Java with JUnit 5
 
-JUnit is a plugin which provides a lot of help with testing things in Java. It allows you to do a lot of really useful
+JUnit is a library which provides a lot of help with testing things in Java. It allows you to do a lot of really useful
 stuff when testing, like:
 
 - Declaring a test using the `@Test` annotation
@@ -87,32 +85,57 @@ annotations
 
 Check out the [JUnit 5 Documentation page](https://junit.org/junit5/docs/current/user-guide/).
 
-#### Basic Tests
-
-Most of the time, a test is started with the `@Test` annotation, though. Then it will perform some actions, do a couple
-of assertions, and end. If it fails, either Maven or the IntelliJ test window will let you know which tests failed and 
-why.
-
-Here is an example:
-```java
-@Test
-public void testUsingAssertEquals() {
-    for (int i = 0; i < 10; i++) {
-        assertTrue(i > -1); // Makes sure i is positive.
-        assertEquals(i, i); // This one just tests that i is equal to itself.
-        assertNull(i); // This one will cause the test to fail.
-    }
-}
-```
+#### Test Class Locations
 
 Tests are usually placed in a directory in <module>/src/test/, which mirrors the <module>/src/main/ directory.
 Test classes are placed in the same package (within the test directory) of the class they are testing.
 For example, the `PostsProcessor` class in service/src/**main**/java/com.codeforcommunity/processor/ will be tested by a 
 class named something like `PostsProcessorTest` in the service/src/**test**/java/com.codeforcommunity/processor/ directory.
 
+#### Basic Tests
+
+Most of the time, a test is started with the `@Test` annotation. Then it will perform some actions, do a couple
+of assertions, and end. If it fails, either Maven or the IntelliJ test window will let you know which tests failed and 
+why.
+
+Here is an example:
+```java
+// Returns true if i is > 0
+private boolean isPositive(int i) {
+    return i > 0;
+}
+
+// Generate numbers 1 to 10 in a list
+private List<Integer> generateNumbers() {
+    List<Integer> nums = new ArrayList();
+    for (int i = 0; i < 10; i++) {
+        nums.add(i + 1);
+    }
+}
+
+// Makes sure generateNumbers created a list of numbers from 1 to 10
+@Test
+public void testUsingAssertEquals() {
+    List<Integer> nums = generateNumbers();
+
+    assertNotNull(nums); // Make sure the list is not null
+    assertEquals(10, nums.size()); // Make sure the list size is what we're expecting
+    // You usually put what you're expecting before what you're testing (order technicaly doesn't matter, though)
+
+    // Loop through everything in the list.
+    for (int i = 0; i < nums.size(); i++) {
+        assertTrue(isPositive(nums.get(i)); // Make sure each number is positive in the list
+        assertEquals(i + 1, nums.get(i)); // Makes sure each item in the list is what is expected
+    }
+    assertNull(nums); // This one will cause the test to fail, since we know the list shouldn't be null
+}
+```
+
 To run these tests once they've been added, you can just run `mvn` or `mvn install` if you want to do it through Maven.
 The tests will be found and run automatically for you, since Maven is set up to look for IntelliJ tests.
 If you'd prefer to do it in IntelliJ, all you have to do is hit the green play button, and choose Run or Debug.
+
+>Note: for Maven to figure out that the method is a test, the method name needs to have the word 'test' somewhere in it.
 
 #### BeforeEach, BeforeAll, AfterEach, and AfterAll
 
@@ -134,10 +157,10 @@ The above code will then run before each test in the test suite and set up the p
 
 #### Parameterized Tests
 
-As said previously, you can also run multiple tests using different input parameters by using the `@ParameterizedTest` 
+You can also run multiple tests using different input parameters by using the `@ParameterizedTest` 
 annotation. 
 
-Inputs to your method can be provided using another annotation, which can consist of other annotations.
+You can add specific inputs to the `@ParameterizedTest` by adding one or more 'source' annotations.
 Three of the most basic ones are `@NullSource`, `@EmptySource` (provides an empty String, List, Set, Map, or any 
 array type), and the combination `@NullAndEmptySource`. Those can be combined with `@ValueSource` (or you can use them 
 alone if that suits your needs better) to test with a simple set of values.
@@ -176,81 +199,13 @@ public void testParameterizedTest(Integer value) {
 
 ##### Externals Class
 
-Sometimes you end up testing things where you need to supply your own value (especially if the method providing a value 
-is static). For example, when getting a `Router` object in `PostsRouter`. If we have our own version of a `Router` 
-object which we want to supply for testing purposes, we need a way to substitute that in.
+Sometimes you end up testing things where you want to override some behavior the method you're testing is using
+and supply your own value, especially if it's something you can't control directly. For example, when getting a 
+`Router` object in `PostsRouter`, we may want to control exactly what's returned from the `Router`'s methods. If we 
+have our own version of a `Router` object that we want to supply for testing purposes, we need a way to substitute 
+that in.
 
-An `Externals` class (sometimes abbreviated to `externs`) can allow us to do that. We can define a 'nested'
-`public static class Externals` as a nested class in `PostsRouter`, which has a method 
-`public Router getRouter(Vertx vertx)`, and that will allow us to do so. In the default `Externals` 
-(the one in `PostsRouter`),  we'll start out just having that single `getRouter` method. Then, in our test class,
-we'll extend that `Externals` class with a new `TestExternals` class, and override the `getRouter` method to have it 
-return our custom router object. This can be applied in many different ways for times where you need to override 
-behavior in dependencies needed for testing.
-
->A nested class is a class that is created inside of another one. In general, having separate classes can be better, but
->some reasons to nest classes are because:
->
->- It's a way of logically grouping related classes together
->- The nested class is allowed access to the outer class' private fields/methods
->- The nested class can be private (available to only the outer class) 
->- It can be more readable and maintainable 
->
->Here's an example of one
->```java 
->public class OuterClass {
->  public class NestedClass { }
->}
->```
-
->A **_static_** nested class is a nested class which doesn't depend on an instance of the outer class to be created.
->Usually, when creating a nested class, you need to create/have an outer class to create the nested class from, but
->static nested classes bypass that. However, if a nested class is declared static, then it can't access any non-static
->methods of its outer class.
->
->For example, if we have the `OuterClass` and `NestedClass` above, and we added the following `StaticNestedClass` to 
->the outer class, here is how we would access them.
->
->The StaticNestedClass.
->
->```java 
->... // in OuterClass
->  public static class StaticNestedClass { }
->```
->
->How to get instances of them.
->
->```java 
->// Non-static
->OuterClass outerClass = new OuterClass();
->OuterClass.NestedClass nestedClass = outerClass.new NestedClass();
->
->// Static
->OuterClass.StaticNestedClass staticNestedClass = new OuterClass.StaticNestedClass();
->```
-
->Extending a class is when you create a 'subclass' which inherits all of the functions and fields of another 
->'superclass' (but it only has access to `public` and `protected` fields and methods (unless it's in the same package, 
->then it also has access to package-private fields and methods)). It's then able to define new functionality and 
->'override' existing functionality with the `@Override` annotation. In a really simple explanation, it allows you to
->take an existing class with all of their existing functionality, and lets you change parts you want about that.
->This can be done for both non-final classes and abstract classes if you know what either of those are.
->See more information on [extending classes](https://www.tutorialspoint.com/java/java_inheritance.htm).
-
->Overriding a method (using the `@Override` annotation) allows you to define an implementation for a declared method
->of an interface or superclass which the given class is planning on implementing (for interfaces) or changing the 
->implementation of (for extended classes or interface default methods). The `@Override` lets your compiler perform some 
->checks for you to make sure that you're actually overriding methods that you're expecting to override.
->See more information on [overriding class or interface 
->methods](https://www.tutorialspoint.com/java/java_overriding.htm).
-
->Dependencies are external classes (in the case of Java and other Object-Oriented languages) or functions/methods that 
->are imported and which your code depends on. In compiled languages and sometimes 
->[linting](https://stackoverflow.com/questions/8503559/what-is-linting), your code cannot be complied without access to 
->the dependencies (since it needs to know what functionality is provided). In the case of our 
->backend code, we have dependencies on Vert.x, Mockito, JUnit, and a few other libraries.
-
-This is what our `PostsRouter` looked like initially:
+This is what our `PostsRouter` look like initially:
 ```java
 public class PostsRouter implements IRouter {
     IPostsProcessor processor;
@@ -265,6 +220,75 @@ public class PostsRouter implements IRouter {
         Router router = Router.router(vertx);
     ...
 ```
+
+To reiterate the problem we have, how would we be able to test the `initializeRouter` method, but avoid *actually* 
+calling `Router.router()`?
+
+An `Externals` class (sometimes abbreviated to `externs`) can allow us to do that. We can define a 
+`public static class Externals` as a nested class in `PostsRouter`, which has a method 
+`public Router getRouter(Vertx vertx)`. This externs class will now allow us to override that `getRouter` behavior. 
+
+>A nested class is a class that is created inside of another one. In general, you should avoid nested classes, but some
+>reasons you may want to use them are:
+>
+>- It's a way of logically grouping related classes together
+>- The nested class is allowed access to the outer class' private fields/methods
+>- The nested class can be private (available to only the outer class) 
+>
+>Here's an example of one
+
+```java 
+public class OuterClass {
+  public class NestedClass { }
+}
+```
+
+>A **_static_** nested class is a nested class which doesn't depend on an instance of the outer class to be created.
+>Usually, when creating a nested class, you need to create/have an outer class to create the nested class from, but
+>static nested classes bypass that. However, if a nested class is declared static, then it can't access any non-static
+>methods of its outer class.
+>
+>For example, if we have the `OuterClass` and `NestedClass` above, and we added the following `StaticNestedClass` to 
+>the outer class, here is how we would access them.
+>
+>The StaticNestedClass.
+
+```java 
+... // in OuterClass
+  public static class StaticNestedClass { }
+```
+
+>How to get instances of them.
+
+```java 
+// Non-static
+OuterClass outerInstance = new OuterClass();
+OuterClass.NestedClass nestedClass = outerInstance.new NestedClass();
+
+// Static
+OuterClass.StaticNestedClass staticNestedClass = new OuterClass.StaticNestedClass();
+```
+
+>Extending a class is when you create a 'subclass' which inherits all of the functions and fields of another 
+>'superclass'. It's then able to define new functionality and 
+>'override' existing functionality with the `@Override` annotation. In a really simple explanation, it allows you to
+>take an existing class with all of its functionality, and selectively rewrite specific functionality you want to 
+>override. This can be done for both non-final classes and abstract classes if you know what either of those are.
+>See more information on [extending classes](https://www.tutorialspoint.com/java/java_inheritance.htm).
+
+>Overriding a method (using the `@Override` annotation) allows you to define an implementation for a declared method
+>of an interface or superclass which the given class is planning on implementing (for interfaces) or changing the 
+>implementation of (for extended classes or interface default methods). The `@Override` lets your compiler perform some 
+>checks for you to make sure that you're actually overriding methods that you're expecting to override.
+>See more information on [overriding class or interface 
+>methods](https://www.tutorialspoint.com/java/java_overriding.htm).
+
+>Dependencies are external classes (in the case of Java and other Object-Oriented languages) or functions/methods that 
+>are imported and which your code depends on. In compiled languages and sometimes when 
+>[linting](https://stackoverflow.com/questions/8503559/what-is-linting), your code cannot be complied without access to 
+>its dependencies (since it needs to know what functionality is provided). In the case of our 
+>backend code, we have dependencies on Vert.x, Mockito, JUnit, and a few other libraries.
+
 
 This is what our `PostsRouter` becomes with our externs:
 ```java
@@ -281,7 +305,7 @@ public class PostsRouter implements IRouter {
     }
 
     // The override constructor.
-    public PostsRouter(IPostsProcessor processor, Externals override) {
+    PostsRouter(IPostsProcessor processor, Externals override) {
         this.processor = processor;
         this.externs = override;
     }
@@ -319,20 +343,29 @@ public class PostsRouterTest {
 }
 ```
 
+In the default `Externals` (the one in `PostsRouter`),  we'll start out just having that single `getRouter` method. 
+Then, in our test class, we'll extend that `Externals` class with a new `TestExternals` class, and override the 
+`getRouter` method to have it return our custom router object. This concept can be applied in many different ways
+whenever a method has a dependency whose behavior we want to override when testing. 
+
 #### Exceptions
 
-When testing exceptions, JUnit provides methods and annotations to help, but we find it more helpful to use the 
-try/catch way of doing things. We think it allows you to test things about the exception better.
+An exception is an error produced by your code or dependencies telling you about something that went wrong.
+When testing exceptions, JUnit provides methods and annotations to help, but we find it more useful to use 
+try/catch blocks because they allow you to test the contents of an exception more easily.
 
 Example:
 ```java 
-try {
-    thingThatThrowsException();
-    fail(); // fail this test if we make it this far
-}
-catch (TheExpectedExceptionType e) {
-    assertEquals("My exception message", e.getMessage());
-    assertEquals(otherThingsAboutExceptionIfYouWant, e.doSomething());
+@Test
+public void someTestMethod() {
+    try {
+        thingThatThrowsException();
+        fail(); // fail this test if we make it this far
+    }
+    catch (TheExpectedExceptionType e) {
+        assertEquals("My exception message", e.getMessage());
+        assertEquals(otherThingsAboutExceptionIfYouWant, e.doSomething());
+    }
 }
 ```
 
@@ -349,13 +382,16 @@ does, and then just override/verify/mock what you want!
 
 #### Mocking an Object and Overriding Returns
 
-To mock an object, all you have to do is call (the static method) `mock(Thing.class)`, which will return a fake
-instance of that `Thing` class/interface. By default, it will return null 
+To mock an object, all you have to do is call (the static method) `Mockito.mock(Thing.class)`, which will return a fake
+instance of that `Thing` class/interface. By default, that fake instance will return `null`
 for every non-void method you call, but you can override that using `thenReturn`, `thenThrow`, `then` (`thenAnswer`, 
 allows you to do custom stuff), or `doReturn`, `doThrow`, `doAnswer`, `doNothing`, `doCallRealMethod` in the case of 
-void returns. You can also chain them together to have it return/throw/do things one after the other in the order 
-they're called.
+void returns. You can also chain these then/do methods together to have the instance return/throw/do each thing in order 
+each time the overridden method is called.
 
+You can read more about the tradeoffs between do... and then... 
+[here](http://sangsoonam.github.io/2019/02/04/mockito-doreturn-vs-thenreturn.html#:~:text=In%20Mockito%2C%20a%20side%20effect%20happens%20to%20the%20real%20method%20invocation.&text=When%20you%20call%20a%20method,thenReturn%20has%20a%20type%20safety).
+ 
 >An 'instance' of an object is a constructed value of the object created by its constructor. So for the class `Thing`, 
 >it's the difference between referring to `Thing.staticMethod()` as a static method and `new Thing().instanceMethod()`.
 
@@ -380,10 +416,10 @@ String res = obj.myCustomMethod() // Returns "Hello World!");
 assertEquals("Hello World!", res);
 ```
 
-If you're interested in having the thing you want to do be done only when certain parameters are entered, then you can 
+If you only want to mock a method when it's called with certain parameters, then you can 
 do that with argument matchers. You can do things like `any()` for anything, `anyInt()` for any integer, 
 `any(MyClass.class)` for that specific class, or even just enter your own number/string for specific entries.
-The result you specify will only be returned/done when that matcher is satisfied. 
+The result you specify will only be returned/done when all matchers are satisfied. 
 
 >Note: if there's another condition you need satisfied, you can also create your own matcher if the default ones aren't 
 >enough (I've never done that though, the default ones are usually good enough).
