@@ -480,95 +480,80 @@ whenever a method has a dependency whose behavior we want to override when testi
 
 #### A Full Mockito Example
 
-Because this topic can be pretty complicated, we'll be providing an extensive example below. Please note, we don't 
+Because this topic can be pretty complicated, we'll be providing an example below. Please note, we don't 
 expect you to actually write these tests (you can if you want though). There's not much to test with Mockito on this 
-project (unless you want to mock the 
-database interfaces as an exercise). Writing tests for the router is also a bit much, so Mockito is included in this project more as an
+project. Writing tests for the router is also a bit much, so Mockito is included in this project more as an
 example of what is available to you if you end up doing more projects in Java. 
 
-Example from `PostsRouterTest`:
-```java
-// Set up some stuff for our test
-@BeforeEach
-public void setup() {
-  // The mock method allows us to create a fake version of the Vertx class (which we usually don't
-  // have a lot
-  // of control over) where we can simply write the interactions we want it to have.
-  this.vertx = mock(Vertx.class);
-  // Remember, we don't have access to this since the api module doesn't have a dependency on the
-  // service module (that would create a dependency cycle, which is really bad).
-  this.processor = mock(IPostsProcessor.class);
-  this.router = new PostsRouter(this.processor, new TestExternals());
-  this.vertxRouter = mock(Router.class);
-  this.route = mock(Route.class);
-  this.ctx = mock(RoutingContext.class);
+If you worked using the Care Package from the previous workshop, you probably noticed the `IPostTable` and 
+`IPostsProcessor` interfaces. For this example, assume that the `IPostTable.deletePost(int postId)` and 
+`IPostsProcessor.deletePost(int postId)` methods have been created. They do exactly what you'd think; check if a post
+exists and delete it from the database.
 
-  // Mock for the IRouter#end method. We don't have to handle HttpServerResponse#end method, since
-  // unmocked methods just return null.
-  res = mock(HttpServerResponse.class);
-  when(res.setStatusCode(anyInt())).thenReturn(res);
-  when(res.putHeader(anyString(), anyString())).thenReturn(res);
-  when(ctx.response()).thenReturn(res);
-
-  when(vertxRouter.get(anyString())).thenReturn(route);
-  when(vertxRouter.post(anyString())).thenReturn(route);
-  when(vertxRouter.delete(anyString())).thenReturn(route);
-}
-
-private PostsResponse generatePosts(int count) {
-  List<PostSummary> posts = new ArrayList<>();
-  for (int i = 0; i < count; i++) {
-    SinglePostResponse post = generatePost(i);
-    String preview = post.getBody().substring(0, Math.min(50, post.getBody().length()));
-    posts.add(new PostSummary(post, preview, i));
+For this example, we're going to pretend that the `IPostTable` interface and its implementations are an external
+dependency (meaning we don't have control over the code), but we want to easily set it up for a test. If our
+`IPostsProcessor.deletePost()` method looks like this:
+```java 
+public void deletePost(int postId) {
+  // Make sure the post exists.
+  if (!this.postTable.postExists(postId)) {
+    throw new IllegalArgumentException("The post doesn't exist!");
   }
-  return new PostsResponse(posts);
+
+  ...
+
+  // Then delete the post itself.
+  postTable.deletePost(postId);
 }
+```
 
+If, as we said, `IPostTable` is a dependency we don't have control over (so we can't just make a simple way to set it
+up in the constructor, for example),  then we can mock it to make sure its methods are called and returned as we'd like.
+
+Our test:
+```java
 @Test
-public void testGetPosts() {
-  // Set up for the get route specifically.
-  Route getRoute = mock(Route.class);
-  when(vertxRouter.get("/")).thenReturn(getRoute);
+public void mockitoValidateWithAnyInt() {
+  // Look, we can even mock interfaces!
+  IPostTable mockPostTable = Mockito.mock(IPostTable.class);
+  // Set up what to do when postExists is called.
+  Mockito.when(mockPostTable.postExists(Mockito.anyInt())).thenReturn(true);
 
-  // Just to show you one, this is how we would test something (using an any...) that might be called
-  // more than once. There's also an atMostOnce(), times(<some number>), and a few other counting params.
-  verify(vertxRouter, atLeastOnce()).get(anyString());
-  // If it's just once you're expecting, you can leave it off though.
-  verify(vertxRouter).get("/");
+  // Set up what to do when deletePost is called.
+  // Note: since deletePost is a void method, we have to set it up using doThrow instead.
+  String msg = "Oh no! You weren't supposed to call that!";
+  // It's only going to get thrown when called with ID 5.
+  Mockito.doThrow(new IllegalArgumentException(msg)).when(mockPostTable).deletePost(5);
 
-  // Here's how to capture an argument used. We can then test things about it.
-  ArgumentCaptor<Handler<RoutingContext>> handlerArgumentCaptor =
-      ArgumentCaptor.forClass(Handler.class);
-  verify(getRoute).handler(handlerArgumentCaptor.capture());
+  // We can now set up our processor with our mocked database.
+  PostsProcessor newProcessor = new PostsProcessor(mockPostTable, this.commentTable);
 
-  // Here is the 'private' PostsRouter::handleGetPostsRoute handler. We can now test stuff about
-  // it.
-  Handler<RoutingContext> handler = handlerArgumentCaptor.getValue();
+  // Run the method.
+  newProcessor.deletePost(100);
 
-  // But first we need to prepare for the call to PostsRouter::getPosts.
-  when(processor.getPosts()).thenReturn(generatePosts(5));
+  // Make sure that postExists was called! We can use either 100 or anyInt() for this, depending
+  // on whether or not we want to make sure that it was called with 100 or
+  // just see if it was called.
+  Mockito.verify(mockPostTable).postExists(100);
+  // Make sure deletePost was called too! Let's switch it up and call it with anyInt() this time.
+  Mockito.verify(mockPostTable).deletePost(Mockito.anyInt());
 
-  // And run the handler.
-  handler.handle(ctx);
+  // Now we're going to make it throw the exception.
+  try {
+    newProcessor.deletePost(5);
+  } catch (IllegalArgumentException e) {
+    // See if the messages are the same.
+    assertEquals(msg, e.getMessage());
+  }
 
-  // Finally, get the encoded String using an ArgumentCaptor, and make sure it's what we're
-  // expecting.
-  // We could also test the status code and headers, but we're not too worried about those.
-  ArgumentCaptor<String> encodedResponse = ArgumentCaptor.forClass(String.class);
-  verify(res).end(encodedResponse.capture());
-  assertEquals(
-      "{\"posts\":[{\"id\":0,\"author\":\"author 0\",\"dateCreated\":\"today's date\","
-          + "\"title\":\"title\",\"clapCount\":500,\"preview\":\"this is a body\"},"
-          + "{\"id\":1,\"author\":\"author 1\",\"dateCreated\":\"today's date\",\"title\":\"title\","
-          + "\"clapCount\":500,\"preview\":\"this is a body\"},"
-          + "{\"id\":2,\"author\":\"author 2\",\"dateCreated\":\"today's date\",\"title\":\"title\","
-          + "\"clapCount\":500,\"preview\":\"this is a body\"},{\"id\":3,\"author\":"
-          + "\"author 3\",\"dateCreated\":\"today's date\",\"title\":\"title\",\"clapCount\":500,"
-          + "\"preview\":\"this is a body\"},{\"id\":4,\"author\":\"author 4\","
-          + "\"dateCreated\":\"today's date\",\"title\":\"title\",\"clapCount\":500,\"preview\":"
-          + "\"this is a body\"}]}",
-      encodedResponse.getValue());
+  // Let's verify again. This time, since it's been called twice, we need to let Mockito know
+  // we're expecting it to have been called more than once.
+  Mockito.verify(mockPostTable, Mockito.times(2)).postExists(Mockito.anyInt());
+  // But it should have only been called once with id = 5.
+  Mockito.verify(mockPostTable).postExists(5);
+  // And we can make sure deletePost was called the same way.
+  Mockito.verify(mockPostTable, Mockito.times(2)).deletePost(Mockito.anyInt());
+  Mockito.verify(mockPostTable).deletePost(5);
 }
 ```
 
