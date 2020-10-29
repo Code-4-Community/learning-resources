@@ -19,12 +19,12 @@
     - Show basic test examples
     - `BeforeEach`/`BeforeAll` annotations
     - Parameterized tests
-    - `Externals` Class
     - Exceptions
   - Mocking objects with Mockito
     - Mocking behavior and returns
     - Verification
     - Argument Captors
+    - `Externals` Class
     - Show the test created for the backend api module
     
 2. New Request Types
@@ -197,7 +197,136 @@ public void testParameterizedTest(Integer value) {
 }
 ```
 
-##### Externals Class
+#### Exceptions
+
+An exception is an error produced by your code or dependencies telling you about something that went wrong.
+When testing exceptions, JUnit provides methods and annotations to help, but we find it more useful to use 
+try/catch blocks because they allow you to test the contents of an exception more easily.
+
+Example:
+```java 
+@Test
+public void someTestMethod() {
+    try {
+        thingThatThrowsException();
+        fail(); // fail this test if we make it this far
+    }
+    catch (TheExpectedExceptionType e) {
+        assertEquals("My exception message", e.getMessage());
+        assertEquals(otherThingsAboutExceptionIfYouWant, e.doSomething());
+    }
+}
+```
+
+### Testing Using Mockito
+
+Mockito is a really useful library for mocking the interactions between objects that you don't have control over
+(like dependencies). It lets you create fake versions of objects which you have complete control over, and it even lets
+you verify things about how it was called.
+
+If you're interested in learning more about Mockito, [here is the 
+documentation](http://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html). It even lets you do some 
+really cool things like `spy()`, where you can pass in an existing object, have it do _most_ of the things it usually 
+does, and then just override/verify/mock what you want!
+
+#### Mocking an Object and Overriding Returns
+
+To mock an object, all you have to do is call (the static method) `Mockito.mock(Thing.class)`, which will return a fake
+instance of that `Thing` class/interface. By default, that fake instance will return `null`
+for every non-void method you call, but you can override that using `thenReturn`, `thenThrow`, `then` (`thenAnswer`, 
+allows you to do custom stuff), or `doReturn`, `doThrow`, `doAnswer`, `doNothing`, `doCallRealMethod` in the case of 
+void returns. You can also chain these then/do methods together to have the instance return/throw/do each thing in order 
+each time the overridden method is called.
+
+You can read more about the tradeoffs between do... and then... 
+[here](http://sangsoonam.github.io/2019/02/04/mockito-doreturn-vs-thenreturn.html#:~:text=In%20Mockito%2C%20a%20side%20effect%20happens%20to%20the%20real%20method%20invocation.&text=When%20you%20call%20a%20method,thenReturn%20has%20a%20type%20safety).
+ 
+>An 'instance' of an object is a constructed value of the object created by its constructor. So for the class `Thing`, 
+>it's the difference between referring to `Thing.staticMethod()` as a static method and `new Thing().instanceMethod()`.
+
+Here are examples of the `then...` and `do...` styles of mocking:
+```java 
+MyCustomObject obj = mock(MyCustomObject.class); // can be done to interfaces too!
+
+when(obj.myCustomMethod()).thenReturn("Hello World!");
+
+String res = obj.myCustomMethod() // Returns "Hello World!");
+
+assertEquals("Hello World!", res);
+```
+
+```java 
+MyCustomObject obj = mock(MyCustomObject.class); // can be done to interfaces too!
+
+doReturn("Hello World!").when(obj).myCustomMethod());
+
+String res = obj.myCustomMethod() // Returns "Hello World!");
+
+assertEquals("Hello World!", res);
+```
+
+If you only want to mock a method when it's called with certain parameters, then you can 
+do that with argument matchers. Mockito defines the matcher `any()` for anything, `anyInt()` for any integer, 
+`any(MyClass.class)` for a specific class, or even just enter your own number/string for specific arguments.
+The result you specify will only be returned/done when all matchers are satisfied. 
+
+>Note: if there's another condition you need satisfied, you can also create your own matcher if the default ones aren't 
+>enough (I've never done that though, the default ones are usually good enough).
+
+Example:
+```java 
+when(myMock.performMyOperation(anyInt()).thenReturn(5);
+
+myMock.performMyOperation(5); // returns 5
+myMock.performMyOperation(-1); // returns 5
+myMock.performMyOperation(anyInt()); // you can't do this though, it only works in the "when" or "do..." methods
+// This is because you're actually calling the method (or the mocked version), so you need to pass in a real value
+
+when(myMock.otherMethod(any(OtherClass.class)).thenReturn(5);
+myMock.otherMethod(new OtherClass()); // returns 5
+myMock.otherMethod(new NotOtherClass()); // returns null, we didn't specify what to do here
+```
+
+#### Verification
+
+You can also verify that methods on your mock were called.
+
+Example:
+```java 
+Thing thing = mock(Thing.class);
+thing.callSomeMethod(5);
+
+// This will throw an exception if it wasn't called.
+verify(thing).callSomeMethod(5);
+verify(thing).callSomeMethod(any()); // this also takes argument matchers
+verify(thing).callSomeMethod(6); // this will throw an exception
+```
+
+By default, the above `verify` will only pass if the method was called _exactly_ once. To verify that it wasn't called,
+you can use `verify(thing, never())`. To verify that it was called exactly 5 times, you can use 
+`verify(thing, times(5))`. To verify that it was called at least/most 2 times, you can use 
+`verify(thing, atLeast(2))` or `verify(thing, atMost(2))`. There are other call count matchers available in the Mockito
+documentation.
+
+#### ArgumentCaptors
+
+An `ArgumentCaptor` allows you to capture the argument that was used in a method on a mock. This is usually done
+so that you can perform more exact tests on your mock. 
+
+Example:
+```java 
+// Run your test prerequisites.
+
+// Create your ArgumentCaptor.
+ArgumentCaptor<SomeType> arg = ArgumentCaptor.forClass(SomeType.class);
+
+verify(mock).doSomething(arg.capture());
+
+// Then you can test things about your arg.
+assertEquals("Hey!", arg.getMessage());
+```
+
+#### Externals Class
 
 Sometimes you end up testing things where you want to override some behavior the method you're testing is using
 and supply your own value, especially if it's something you can't control directly. For example, when getting a 
@@ -348,134 +477,6 @@ Then, in our test class, we'll extend that `Externals` class with a new `TestExt
 `getRouter` method to have it return our custom router object. This concept can be applied in many different ways
 whenever a method has a dependency whose behavior we want to override when testing. 
 
-#### Exceptions
-
-An exception is an error produced by your code or dependencies telling you about something that went wrong.
-When testing exceptions, JUnit provides methods and annotations to help, but we find it more useful to use 
-try/catch blocks because they allow you to test the contents of an exception more easily.
-
-Example:
-```java 
-@Test
-public void someTestMethod() {
-    try {
-        thingThatThrowsException();
-        fail(); // fail this test if we make it this far
-    }
-    catch (TheExpectedExceptionType e) {
-        assertEquals("My exception message", e.getMessage());
-        assertEquals(otherThingsAboutExceptionIfYouWant, e.doSomething());
-    }
-}
-```
-
-### Testing Using Mockito
-
-Mockito is a really useful library for mocking the interactions between objects that you don't have control over
-(like dependencies). It lets you create fake versions of objects which you have complete control over, and it even lets
-you verify things about how it was called.
-
-If you're interested in learning more about Mockito, [here is the 
-documentation](http://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html). It even lets you do some 
-really cool things like `spy()`, where you can pass in an existing object, have it do _most_ of the things it usually 
-does, and then just override/verify/mock what you want!
-
-#### Mocking an Object and Overriding Returns
-
-To mock an object, all you have to do is call (the static method) `Mockito.mock(Thing.class)`, which will return a fake
-instance of that `Thing` class/interface. By default, that fake instance will return `null`
-for every non-void method you call, but you can override that using `thenReturn`, `thenThrow`, `then` (`thenAnswer`, 
-allows you to do custom stuff), or `doReturn`, `doThrow`, `doAnswer`, `doNothing`, `doCallRealMethod` in the case of 
-void returns. You can also chain these then/do methods together to have the instance return/throw/do each thing in order 
-each time the overridden method is called.
-
-You can read more about the tradeoffs between do... and then... 
-[here](http://sangsoonam.github.io/2019/02/04/mockito-doreturn-vs-thenreturn.html#:~:text=In%20Mockito%2C%20a%20side%20effect%20happens%20to%20the%20real%20method%20invocation.&text=When%20you%20call%20a%20method,thenReturn%20has%20a%20type%20safety).
- 
->An 'instance' of an object is a constructed value of the object created by its constructor. So for the class `Thing`, 
->it's the difference between referring to `Thing.staticMethod()` as a static method and `new Thing().instanceMethod()`.
-
-Here are examples of the `then...` and `do...` styles of mocking:
-```java 
-MyCustomObject obj = mock(MyCustomObject.class); // can be done to interfaces too!
-
-when(obj.myCustomMethod()).thenReturn("Hello World!");
-
-String res = obj.myCustomMethod() // Returns "Hello World!");
-
-assertEquals("Hello World!", res);
-```
-
-```java 
-MyCustomObject obj = mock(MyCustomObject.class); // can be done to interfaces too!
-
-doReturn("Hello World!").when(obj).myCustomMethod());
-
-String res = obj.myCustomMethod() // Returns "Hello World!");
-
-assertEquals("Hello World!", res);
-```
-
-If you only want to mock a method when it's called with certain parameters, then you can 
-do that with argument matchers. Mockito defines the matcher `any()` for anything, `anyInt()` for any integer, 
-`any(MyClass.class)` for a specific class, or even just enter your own number/string for specific arguments.
-The result you specify will only be returned/done when all matchers are satisfied. 
-
->Note: if there's another condition you need satisfied, you can also create your own matcher if the default ones aren't 
->enough (I've never done that though, the default ones are usually good enough).
-
-Example:
-```java 
-when(myMock.performMyOperation(anyInt()).thenReturn(5);
-
-myMock.performMyOperation(5); // returns 5
-myMock.performMyOperation(-1); // returns 5
-myMock.performMyOperation(anyInt()); // you can't do this though, it only works in the "when" or "do..." methods
-// This is because you're actually calling the method (or the mocked version), so you need to pass in a real value
-
-when(myMock.otherMethod(any(OtherClass.class)).thenReturn(5);
-myMock.otherMethod(new OtherClass()); // returns 5
-myMock.otherMethod(new NotOtherClass()); // returns null, we didn't specify what to do here
-```
-
-#### Verification
-
-You can also verify that methods on your mock were called.
-
-Example:
-```java 
-Thing thing = mock(Thing.class);
-thing.callSomeMethod(5);
-
-// This will throw an exception if it wasn't called.
-verify(thing).callSomeMethod(5);
-verify(thing).callSomeMethod(any()); // this also takes argument matchers
-verify(thing).callSomeMethod(6); // this will throw an exception
-```
-
-By default, the above `verify` will only pass if the method was called _exactly_ once. To verify that it wasn't called,
-you can use `verify(thing, never())`. To verify that it was called exactly 5 times, you can use 
-`verify(thing, times(5))`. To verify that it was called at least/most 2 times, you can use 
-`verify(thing, atLeast(2))` or `verify(thing, atMost(2))`. There are other call count matchers available in the Mockito
-documentation.
-
-#### ArgumentCaptors
-
-An `ArgumentCaptor` allows you to capture the argument that was used in a method on a mock. This is usually done
-so that you can perform more exact tests on your mock. 
-
-Example:
-```java 
-// Run your test prerequisites.
-
-// Create your ArgumentCaptor.
-ArgumentCaptor<SomeType> arg = ArgumentCaptor.forClass(SomeType.class);
-
-verify(mock).doSomething(arg.capture());
-
-// Then you can test things about your arg.
-assertEquals("Hey!", arg.getMessage());
-```
 
 #### A Full Mockito Example
 
