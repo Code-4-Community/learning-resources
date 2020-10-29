@@ -27,15 +27,15 @@
     - Argument Captors
     - Show the test created for the backend api module
     
-2. DTOs and Marshalling/Unmarshalling
+2. New Request Types
+  - `POST`, `PUT`, `PATCH`, and `DELETE`: what are they commonly used for
+  
+3. DTOs and Marshalling/Unmarshalling
   - What are DTOs
     - What are they used for
   - Marshalling/Unmarshalling
   - Validating unmarshalled objects/why it's necessary
  
-3. New Request Types
-  - `POST`, `PUT`, `PATCH`, and `DELETE`: what are they commonly used for
-  
 ## Testing
 
 ### Types of Tests
@@ -417,8 +417,8 @@ assertEquals("Hello World!", res);
 ```
 
 If you only want to mock a method when it's called with certain parameters, then you can 
-do that with argument matchers. You can do things like `any()` for anything, `anyInt()` for any integer, 
-`any(MyClass.class)` for that specific class, or even just enter your own number/string for specific entries.
+do that with argument matchers. Mockito defines the matcher `any()` for anything, `anyInt()` for any integer, 
+`any(MyClass.class)` for a specific class, or even just enter your own number/string for specific arguments.
 The result you specify will only be returned/done when all matchers are satisfied. 
 
 >Note: if there's another condition you need satisfied, you can also create your own matcher if the default ones aren't 
@@ -426,16 +426,16 @@ The result you specify will only be returned/done when all matchers are satisfie
 
 Example:
 ```java 
-when(myMock.do(anyInt()).thenReturn(5);
+when(myMock.performMyOperation(anyInt()).thenReturn(5);
 
-myMock.do(5); // returns 5
-myMock.do(-1); // returns 5
-myMock.do(anyInt()); // you can't do this though, it only works in the "when" or "do..." methods
+myMock.performMyOperation(5); // returns 5
+myMock.performMyOperation(-1); // returns 5
+myMock.performMyOperation(anyInt()); // you can't do this though, it only works in the "when" or "do..." methods
 // This is because you're actually calling the method (or the mocked version), so you need to pass in a real value
 
-when(myMock.other(any(Other.class)).thenReturn(5);
-myMock.other(myOther); // returns 5
-myMock.other(notMyOther); // returns null, we didn't specify what to do here
+when(myMock.otherMethod(any(OtherClass.class)).thenReturn(5);
+myMock.otherMethod(new OtherClass()); // returns 5
+myMock.otherMethod(new NotOtherClass()); // returns null, we didn't specify what to do here
 ```
 
 #### Verification
@@ -448,6 +448,7 @@ Thing thing = mock(Thing.class);
 thing.callSomeMethod(5);
 
 // This will throw an exception if it wasn't called.
+verify(thing).callSomeMethod(5);
 verify(thing).callSomeMethod(any()); // this also takes argument matchers
 verify(thing).callSomeMethod(6); // this will throw an exception
 ```
@@ -486,18 +487,51 @@ example of what is available to you if you end up doing more projects in Java.
 
 Example from `PostsRouterTest`:
 ```java
+// Set up some stuff for our test
+@BeforeEach
+public void setup() {
+  // The mock method allows us to create a fake version of the Vertx class (which we usually don't
+  // have a lot
+  // of control over) where we can simply write the interactions we want it to have.
+  this.vertx = mock(Vertx.class);
+  // Remember, we don't have access to this since the api module doesn't have a dependency on the
+  // service module (that would create a dependency cycle, which is really bad).
+  this.processor = mock(IPostsProcessor.class);
+  this.router = new PostsRouter(this.processor, new TestExternals());
+  this.vertxRouter = mock(Router.class);
+  this.route = mock(Route.class);
+  this.ctx = mock(RoutingContext.class);
+
+  // Mock for the IRouter#end method. We don't have to handle HttpServerResponse#end method, since
+  // unmocked methods just return null.
+  res = mock(HttpServerResponse.class);
+  when(res.setStatusCode(anyInt())).thenReturn(res);
+  when(res.putHeader(anyString(), anyString())).thenReturn(res);
+  when(ctx.response()).thenReturn(res);
+
+  when(vertxRouter.get(anyString())).thenReturn(route);
+  when(vertxRouter.post(anyString())).thenReturn(route);
+  when(vertxRouter.delete(anyString())).thenReturn(route);
+}
+
+private PostsResponse generatePosts(int count) {
+  List<PostSummary> posts = new ArrayList<>();
+  for (int i = 0; i < count; i++) {
+    SinglePostResponse post = generatePost(i);
+    String preview = post.getBody().substring(0, Math.min(50, post.getBody().length()));
+    posts.add(new PostSummary(post, preview, i));
+  }
+  return new PostsResponse(posts);
+}
+
 @Test
 public void testGetPosts() {
   // Set up for the get route specifically.
   Route getRoute = mock(Route.class);
   when(vertxRouter.get("/")).thenReturn(getRoute);
 
-  router.initializeRouter(vertx);
-
-  // Just to show you one, this is how we would test something (using an any...) that might be
-  // called
-  // more than once. There's also an atMostOnce(), times(<some number>), and a few other counting
-  // params.
+  // Just to show you one, this is how we would test something (using an any...) that might be called
+  // more than once. There's also an atMostOnce(), times(<some number>), and a few other counting params.
   verify(vertxRouter, atLeastOnce()).get(anyString());
   // If it's just once you're expecting, you can leave it off though.
   verify(vertxRouter).get("/");
@@ -536,92 +570,6 @@ public void testGetPosts() {
       encodedResponse.getValue());
 }
 ```
-
-## DTOs and Marshalling/Unmarshalling
-
-### What are DTOs
-
-DTOs, or Data Transfer Objects, are objects whose only purpose is to contain and transfer data around. They usually
-only have methods for getting and setting data. Sometimes serialization and deserialization is included, but we'll 
-mostly be focusing on the getting and setting part. 
-
-Her is an example of a DTO:
-```java 
-public class SampleDTO {
-  private String name;
-  private Integer id; // Note how we're using wrapper classes. DTOs don't have values set, they may end up being null.
-
-  // For Unmarshalling (if your object will be unmarshalled ever). 
-  private SampleDTO { }
-
-  public SampleDTO(String name, Integer id) {
-    this.name = name;
-    this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  // Sometimes this is included for making sure the object is valid (see below, really only done on incoming requests).
-  public void validate() {
-    if (name == null) {
-      throw ...
-    }
-    ...
-  }
-  ...
-```
-
-They're especially useful with REST requests and APIs because they can hold data from your incoming and outgoing 
-requests.
-
-### Marshalling/Unmarshalling
-
-Marshalling and Unmarshalling is the process of transforming an object instance into a serialized representation  
-of the object or vice versa. For our purposes, it's the process of turning a JSON into one of our DTOs.
-There are a couple of libraries that are really useful for this, namely [Jackson](https://github.com/FasterXML/jackson)
-and Vertx's [JsonObject](https://vertx.io/docs/apidocs/io/vertx/core/json/JsonObject.html) (what we'll be using 
-in this project). Most marshallers/unmarshallers expect the names of the JSON and the class you're working with to 
-match.
-
-The following examples use the `SampleDTO` from above.
-
-An example of Marshalling:
-```java 
-SampleDTO dto = new SampleDTO("me", 1);
-
-String json = JsonObject.mapFrom(dto).encode(); // returns "{'name':'me','id':1}"
-```
-
-An example of Unmarshalling:
-```java
-String input = "{'name':'me','id':1'}";
-
-SampleDTO dto = new JsonObject(input).mapTo(SampleDTO.class); // returns the unmarshalled object
-```
-
->Note: In the `SampleDTO` class above, there is an empty, private constructor. This is required by your unmarshallers
->(as far as we're aware, both JsonObject and Jackson require it) to instantiate a class before using 
->[introspection/reflection](https://www.oracle.com/technical-resources/articles/java/javareflection.html) to find all of 
->the required fields and load them into the class.
-
-### Validating Unmarshalled Objects
-
-After unmarshalling an object, it's important that you validate it to make sure that the fields have valid data. This
-can be just making sure that integers have a positive values, no fields are null, strings aren't empty, or whatever
-other basic data validation checks you need to perform. This needs to be done because users of your platform can't be
-trusted to enter good data. It's always a good idea to make sure the data you are provided from a public facing API is 
-what you're expecting, or you can find errors popping up in your projects. 
-
-To make sure your DTOs have safe data inside, a `validate()` method is usually created in your DTOs (and it's
-not a bad idea to put that into an interface which your DTOs will inherit). This method will be called after 
-unmarshalling (or marshalling if you're worried about returning bad data to the front end) to check the DTO's fields and
-validate them.
 
 ## New Request Types
 
@@ -673,3 +621,91 @@ Route route = router.delete("/delete/route");
 There are many other request types that are used too. In practice, though, you'll probably never see them. The most 
 commonly used requests are `GET` and `POST`, followed by `PUT`, `PATCH`, and `DELETE`.
 MDN has a list of [other request types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) if you're interested.
+
+## DTOs and Marshalling/Unmarshalling
+
+### What are DTOs
+
+DTOs, or Data Transfer Objects, are objects whose only purpose is to contain and transfer data around. They usually
+only have methods for getting and setting data. Sometimes serialization and deserialization is included, but we'll 
+mostly be focusing on the getting and setting part. 
+
+Here is an example of a DTO:
+```java 
+public class SampleDTO {
+  private String name;
+  private Integer id; // Note how we're using wrapper classes. DTOs don't have values set, and they may end up being 
+    // null, so we can't use an 'int' type
+
+  // For Unmarshalling (if your object will be unmarshalled ever). 
+  private SampleDTO { }
+
+  public SampleDTO(String name, Integer id) {
+    this.name = name;
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  // Sometimes this is included for making sure the object is valid (see below, really only done on incoming requests).
+  public void validate() {
+    if (name == null) {
+      throw ...
+    }
+    ...
+  }
+  ...
+```
+
+They're especially useful with REST requests and APIs because they can hold data from your incoming and outgoing 
+requests.
+
+### Marshalling/Unmarshalling
+
+Marshalling and Unmarshalling is the process of transforming an object instance into a serialized representation  
+of the object or vice versa. For our purposes, it's the process of turning a JSON into one of our DTOs.
+There are a couple of libraries that are really useful for this, namely [Jackson](https://github.com/FasterXML/jackson)
+and Vertx's [JsonObject](https://vertx.io/docs/apidocs/io/vertx/core/json/JsonObject.html) (it's actually Jackson!). 
+Most marshallers/unmarshallers expect the names of the JSON and the class you're working with to 
+match.
+
+The following examples use the `SampleDTO` from above.
+
+An example of Marshalling:
+```java 
+SampleDTO dto = new SampleDTO("me", 1);
+
+String json = JsonObject.mapFrom(dto).encode(); // returns "{'name':'me','id':1}"
+```
+
+An example of Unmarshalling:
+```java
+String input = "{'name':'me','id':1'}";
+
+SampleDTO dto = new JsonObject(input).mapTo(SampleDTO.class); // returns the unmarshalled object
+```
+
+>Note: In the `SampleDTO` class above, there is an empty, private constructor. This is required by your unmarshallers
+>to instantiate a class before using 
+>[introspection/reflection](https://www.oracle.com/technical-resources/articles/java/javareflection.html) to find all of 
+>the required fields and load them into the class.
+
+### Validating Unmarshalled Objects
+
+After unmarshalling an object, it's important that you validate it to make sure that the fields have valid data. This
+can be just making sure that integers have a positive values, no fields are null, strings aren't empty, or whatever
+other basic data validation checks you need to perform. This needs to be done because users of your platform can't be
+trusted to enter good data. It's always a good idea to make sure the data you are provided from a public facing API is 
+what you're expecting, or you can find errors popping up in your projects. 
+
+To make sure your DTOs have safe data inside, a `validate()` method is usually created in your DTOs (and it's
+not a bad idea to put that into an interface which your DTOs will inherit). This method will be called after 
+unmarshalling (or marshalling if you're worried about returning bad data to the front end) to check the DTO's fields and
+validate them.
+
