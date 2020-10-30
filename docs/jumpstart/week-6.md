@@ -46,7 +46,7 @@ never thought
 that tests were important enough to spend time on, just know that they're extremely important in helping you 
 diagnose issues in your code (if you write meaningful tests) before releases or after making significant changes. 
 By the way, if you've heard of check-expects from fundies, they're basically the same thing! For smaller projects, tests 
-have less of an impact, even if they're still helpful. As your project grows and begins incorporating work from more 
+have less of an impact, but they're still helpful. As your project grows and begins incorporating work from more 
 people, however, they'll save you a lot of time in tracking down and preventing a lot of bugs that come from
 unexpected interactions or mistakes that were made in trying to solve a problem.
 
@@ -615,6 +615,10 @@ MDN has a list of [other request types](https://developer.mozilla.org/en-US/docs
 DTOs, or Data Transfer Objects, are objects whose only purpose is to contain and transfer data around. They usually
 only have methods for getting and setting data. Sometimes serialization and deserialization is included, but we'll 
 mostly be focusing on the getting and setting part. 
+
+>Note: serialization is the act of turning an object into a format, usually a string, that contains all of the 
+>information needed to reconstruct the object. Deserialization is the opposite of that; it takes a serialized 
+>representation, and turns it into the original object.
 
 Here is an example of a DTO:
 ```java 
