@@ -5,11 +5,139 @@ learn that and more this week.
 
 ## React Router
 
+So, we have a landing page, but there is no way for us to navigate off of the landing page. In
+order to add this functionality we need to use React Router: a framework that helps us add routes
+to our application.
+
 ### What is React Router?
 
-### Components used in React Router
+React Router is just what it sounds like: a third-party framework that adds routing to an
+application. Routing is the capacity to show different pages to the user. That means the 
+user can move between different parts of an application by entering a URL or clicking on an element
+such as a button.
 
-### How do we use it?
+
+### Setting up React Router
+
+First we need to set up our routing in our app. We usually set up the routing in our `App.tsx` file.
+In order to set up the routing we are going to use three components:
+-BrowserRouter
+-Switch
+-Route
+
+>Side note: We can name default exports that we import differently. For example, we will change
+>the naming of BrowserRouter to Router with this import statment: 
+>`import { BrowserRouter as Router } from "react-router-dom";`
+>This means that BrowserRouter just takes on a different name/alias. It is the same component
+>as before but is just named differently.
+
+The `BrowserRouter` component (which we import as `Router`) defines the scope of the router. 
+Everything that we want to include in routing needs to be contained between the `Router` tag. This
+is what we have so far:
+
+```
+<Router>
+</Router>
+```
+
+Next, We use the `Switch` component to house all of our routes. Any `Route` that is in the `Switch` 
+tag will be included in routing. All the `Swtich` component does is tell the React Router to load 
+only one route at a time. Now we can add the `Switch` component:
+
+```
+<Router>
+    <Switch>
+    </Switch>
+</Router>
+```
+
+Lastly we add the meat of the router: the `Route` component. The `Route` component is just a
+self-enclosing tag. Each `Route` tag signifies a route in our application. There are some important
+props we must pass to `Route` in order for routing to work well. First we must add the `path=""`
+prop. This prop is the name of the path for the route. This name can be anything (although you might
+want to make it relevant to your applicaiton). Let's make a route to the `CreateBlogPost` component:
+
+```
+<Router>
+    <Switch>
+      <Route path="/posts/create"/>
+    </Switch>
+</Router>
+```
+
+We named our path "/posts/create". This means that our `CreateBlogPost` component can be found at
+the path "/posts/create" from the domain. When running the application on your own computer the full
+link will look like this: "localhost:3000/posts/create". If you type that in to the browser (with 
+the applciation running) you will go to that location, but you will not see the `CreateBlogPost`
+component. In order to render the `CreateBlogPost` component at the given path we need to include 
+it in the prop `component={}`. Now our `Route` looks like this:
+
+```
+<Router>
+    <Switch>
+      <Route path="/posts/create" component={CreateBlogPost}/>
+    </Switch>
+</Router>
+```
+
+Now if you type the correct path you should be able to see the component! However, if you add 
+something to the end of the path, you would expect it to not show the `CreateBlogPost` component
+anymore because it is not the correct path, right? Well, it looks like that 
+"localhost:3000/posts/create/4" still renders the `CreateBlogPost` component when it should not. To
+combat this error we need to add the `exact` prop to the `Route` component. This just tells the 
+`Route` that the path "localhost:3000/posts/create" is the only path to `CreateBlogPost`. The path
+has to be "exact". Our router now looks like this:
+
+```
+<Router>
+    <Switch>
+      <Route path="/posts/create" component={CreateBlogPost} exact />
+    </Switch>
+</Router>
+```
+
+> Since the prop `exact` is a boolean prop, we do not need to assign it anything. Including a 
+>boolean prop is the same as making the prop true, while not including the prop is the same as
+>making the prop false. 
+
+### Using React Router in our application
+
+There are many ways to add routing with React Router, but we are just going to focus on using the
+`Link` component. First we need to import the `Link` component:
+
+```
+import { Link } from 'react-router-dom';
+```
+
+For this example we are going to use a Material UI button. When the button is clicked we are going
+to go to the `CreateBlogPost` component. We first start by defining our button:
+
+```
+<Button size="large"
+    className={classes.navButtons}
+    >Add A Post
+</Button>
+```
+
+This `Button` is just a large button that says "Add A Post" on it. In order to make it be able to 
+route to a component we need to add two props to the component. Those props are `to="""` and
+`component={}`. All the `component={}` prop does is says that the current component should be
+the type of component you pass to the prop. It is similar to casting in Java. In this case
+`component={Link}` because we want our `Button` component to act as a `Link` component. The `to=""`
+prop just defines which path we should route to. In this case our button's purpose is to route
+to the `CreateBlogPost` component, thus we should pass in the route to the `CreateBlogPost`
+component that we defined when setting up the router. Now our `Button` component looks like this:
+
+```
+<Button size="large"
+    className={classes.navButtons}
+    to="/posts/create"
+    component={Link}
+    >Add A Post
+</Button>
+```
+
+That is all there it is to it!
 
 ## Async
 Javascript is a fundamentally synchronous language. This means that all of its commands are executed one after another.
@@ -286,11 +414,93 @@ Here is another get request example:
 export const getPost = async (id: number): Promise<BlogPost> => AxiosInstance.get(`${POSTS}/${id}`).then((response) => response.data);
 ```
 
+In this call we need to take in the specific post number as an argument to the anonymous function
+so that we can use it in the `get()` call in the function body.
+
+> Notice that we are giving types to the arguments of the anonymous functions, the return type of 
+>the anonymous function and the argument portion of the anonymous function.
+
+
 ##### Post Request
+
+Now, what can we use a post request for? That is right! We can use it to create a post/comment and 
+clap a post/comment. Let's take a look at how to make a post request:
+
+```
+export const createPost = async (post: CreatePost): Promise<void> => AxiosInstance.post(`${POSTS}`, post);
+export const clapPost = async (id: number): Promise<void> => AxiosInstance.post(`${POSTS}/${id}/clap`);
+```
+
+Just like before we have an anonymous function that has an `AxiosInstance` to make the request. The
+difference is that this time the function takes in an argument. This argument is going to be the
+data that we want to post to the backend. Now, to make a post request, `post()` takes in the url 
+location of where to post the data, and the data to post at that location in the form 
+`post(location,data)`. Let's look specifically at `createPost`. We know that we want to "post" the 
+blog post to the backend. So, we take in a post as an argument. In the `post()` call we give the 
+url (which in this case is `"/posts"`), and the data we want to post (the argument we took in the 
+anonymous function). 
+
+That's all there is to it.   
 
 ##### Delete Request
 
+The delete request will be the last type of request that we will use. What do you think we can use
+it for? Right again! We can use the delete request to delete a post/comment. Let's take a look at
+how to do that:
+
+```
+export const deletePost = async (id: number) => AxiosInstance.delete(`${POSTS}/${id}`);
+``` 
+
+Same as before. We have an anonymous function that takes in the post number to delete. We then use
+our `AxiosInstance` to call delete the id from the specific url. It is simliar to our get request
+excpet we are not getting but deleting.
+
+### Default Exports vs Named Exports
+
+You may have noticed that we export each axios call separately by name instead of just using
+`export default` at the end of the file. Exporting an individual item is called a named export while
+exporting a whole file is called a default export. The difference between the two is how we import
+them into our other files. A named export has to be imported with curly braces like so:
+
+```
+import { namedExport } from 'things';
+```
+
+Our default exports do not need the curly braces:
+
+```
+import defaultExport from 'otherThing';
+```
+
+> What imports that we use currently are named exports? What about default exports?
+
+
 ### Calling Requests in our application
+
+Using our request is very simple. Let's see how to use our get our `getAllPosts`.
+
+```
+getAllPosts().then((p: Post[])=>{
+    setPosts(p);
+})
+```
+
+We first start by importing request we want from the api file. For the `getAllPosts` request our
+import would look like this:
+
+```
+import { getAllPosts } from '../api/api';
+```
+
+>We have the curly braces because it is a named export
+
+Next we just use the import like a function (because it is one!). All of our request that we made
+in the `api.tsx` file are just axios promises. We now need to further resolve those promises using
+`.then()`. Here we are simply use `.then()` to set the posts state to the posts that we get back
+from the request!
+
+It is as simple as that.
 
 ## JEST
 
