@@ -1,4 +1,4 @@
-# Week 6: Advanced Database Topics
+# Week 9: Advanced Database Topics
 
 In an increasingly data-driven world, efficiently configuring and managing a database are crucial to creating robust and scalable web applications.
 
@@ -7,7 +7,7 @@ In this lesson, we'll cover some more advanced database topics that will help yo
 ## Primary Keys
 By this point, you've heard plenty about ids, and you've probably worked with them in some capacity. It's important that we take the time to understand exactly what an ID is and why we use them.
 
-Let's back up a little bit and begin with primary keys. As the name suggests, a table can only have one primary key. The primary key is the key which uniquely identifies each entry in the table. Alternatively, each entry in the table has a different value for its primary key. Tables do not need a primary key, nor does the primary key need to be a column called id. However, both are standard practice, and it's important to understand why.
+Let's back up a little bit and begin with primary keys. As the name suggests, a table can only have one primary key. The primary key is the key which uniquely identifies each entry in the table. Tables do not need a primary key, nor does the primary key need to be a column called id. However, both are standard practice, and it's important to understand why.
 
 It's straightforward to see why primary keys are so helpful. The most important benefit is that they allow us to quickly identify exactly one row in a table. Whether we are programming a React component on our client or business logic in our backend, we have a way to easily identify entries in our database. Standard practice is to create a column `id` of type `SERIAL` to serve as our primary key. `id` is a short, descriptive and unambiguous name. The `SERIAL` type stores an integer, with the added benefit of auto increment -- whenever we make a new entry, Postgres will automatically increment the id for us. This way, we don't need to worry about setting the id values ourselves. `PRIMARY KEY` is technically just a constraint (more on constraints later) that mandates that all values be `UNIQUE` and `NOT NULL`. Thus, we are guaranteed that each row has an id, and that no other row shares that id.
 
@@ -15,7 +15,7 @@ To designate a column as a primary key when we create a table, we use this synta
 
 ```
 CREATE TABLE products (
-    product_no integer PRIMARY KEY,
+    id serial PRIMARY KEY,
     name text,
     price numeric
 );
@@ -32,7 +32,7 @@ CREATE TABLE products (
     price numeric
 );
 ```
-Next, we want to create an orders table that lists all orders made in the application. However, before we define our table, there is an important observation that we can make. Every order must be <em>of</em> a particular product; in other words, every order must contain exactly one product. It doesn't make sense to have an order with no products, and we can't store multiple products in one row (since we'd need an arbitrary number of columns to store each product). So, we need a column that references exactly one entry in the products table. It makes sense, then, to use its id. That gives us this definition:
+Next, we want to create an orders table that lists all orders made in the application. However, before we define our table, there is an important observation that we can make. Every order must be <em>of</em> a particular product; in other words, every order must contain exactly one product. It doesn't make sense to have an order with no products, and we can't store multiple products in one row (since we'd need an arbitrary number of columns to store each product). So, we need a column in our orders table that references an entry in the products table. It makes sense, then, to use its id. That gives us this definition:
 
 ```
 CREATE TABLE orders (
@@ -47,23 +47,23 @@ CREATE TABLE orders (
     product_id integer REFERENCES products
 );
 ```
-The syntax is fairly straightforward. `REFERENCES` tells Postgres to add a foreign key constraint, and the table name (`products`, in this case) immediately follows, telling Postgres that the `product_id` column refers to a a primary key in the `products` table. Now, if we try to create an order with an invalid `product_id`, we'll get an error. Similarly, if we try to delete a product that is referenced to by an order, we will also get an error.
+`REFERENCES` tells Postgres to add a foreign key constraint, and the table name (`products`, in this case) immediately follows, telling Postgres that the `product_id` column refers to a a primary key in the `products` table. Now, if we try to create an order with an invalid `product_id`, we'll get an error. Similarly, if we try to delete a product that is referenced to by an order, we will also get an error.
 
-With this foreign key in place, we can now have an arbitrary number of orders of any products, which is what we want. But we'd like to take this one step further: a single order should be able to contain multiple products. As we briefly mentioned earlier, this is impossible with the current, two-table setup, because our `orders` table would need to have an arbitrary number of `product_id`s. The solution is to create another table called a <strong>join</strong> table. It has one purpose: to <em>join</em>, or connect, two other tables, so that we can establish what we would call a <em>many-to-many</em> relationship -- put simply, this means that an order can contain an arbitrary many products.
+With this foreign key in place, we can now make an order for any product, and keep order information separate from product info. But we'd like to take this one step further: a single order should be able to contain multiple products. As we briefly mentioned earlier, this is impossible with the current, two-table setup, because our `orders` table would need to have an arbitrary number of `product_id`s. The solution is to create another table called a <strong>join</strong> table. It has one purpose: to <em>join</em>, or connect, two other tables, so that we can establish what we call a <em>many-to-many</em> relationship -- put simply, this means that an order can contain an arbitrary many products.
 
-Our new table only needs two things: an order id and a product id. Every entry in this table represents something like a single item in a shopping basket. That item belongs to a particular basket (the order id), and points to a product. So, we might create a table like this:
+Our new table only needs two columns: an order id and a product id. Every entry in this table represents something like a single item in a shopping basket. That item belongs to a particular basket (the order), and points to a product. So, we might create a table like this:
 ```
 CREATE TABLE order_items (
     product_id integer REFERENCES products,
     order_id integer REFERENCES orders
 );
 ```
-This is an example of a table that needs no primary key. We might add one if we want, but it may not prove useful because the only purpose this table serves is to join two existing tables.
+This is an example of a table that needs no primary key. We might add one if we want, but it may not be useful because the only purpose this table serves is to join two existing tables. If we need to refer to a specific entry in this table, we can use the combination of `order_id` and `product_id`, since no two rows should have the same value for both. We'll see how to do this in the next section.
 
 ## Other Constraints
-As we mentioned earlier, `PRIMARY KEY` is technically just a combination of the `UNIQUE` and `NOT NULL` constraints. These constraints are self-explanatory; `UNIQUE` requires that a column's value is unique with respect to all other rows in the table, and `NOT NULL` requires that a column's value is not null. In general, most columns should be `NOT NULL`. Only allow columns be `NULL` if it makes sense for there to be no data.
+As we mentioned earlier, `PRIMARY KEY` is technically just a combination of the `UNIQUE` and `NOT NULL` constraints. These constraints are self-explanatory; `UNIQUE` requires that a column's value is unique with respect to all other rows in the table, and `NOT NULL` requires that a column's value is not null (like in Javascript, null just represents the absence of a value). In general, most columns should be `NOT NULL`. Only allow columns be `NULL` if it makes sense for there to be no data.
 
-Note: when we say "require," we mean that any attempt to create or update an entry in the table that will violate the constraint will result in an error. This enables us to assume that all entries in a table satisfy the table's constraints.
+Note: when we say "require" in terms of constraints, we mean that any attempt to create or update an entry in the table that will violate the constraint will result in an error. This enables us to assume that all entries in a table satisfy the table's constraints.
 
 Here is an example of how we might define these constraints:
 ```
@@ -80,7 +80,7 @@ CREATE TABLE order_items (
     order_id integer REFERENCES orders
 );
 ```
-We can't make `product_id` unique because we may have multiple order items that refer to the same product. Similarly, we can't make `order_id` unique because the entire point of creating this join table was to allow multiple order items to belong to the same order. However, we may want to guarantee that there are no duplicate entries -- i.e., the <em>combination</em> of the product id and order id is unique. More formally, no entry in the table contains both the same product id and the same order id.
+We can't make `product_id` unique because we may have multiple order items that refer to the same product. Similarly, we can't make `order_id` unique because the entire point of creating this join table was to allow multiple entries to belong to the same order. However, we may want to guarantee that there are no duplicate entries -- i.e., the <em>combination</em> of the product id and order id is unique. More formally, no entry in the table contains both the same product id and the same order id.
 
 Fortunately, Postgres allows us to define a `UNIQUE` constraint over multiple columns:
 ```
@@ -113,4 +113,125 @@ CREATE TABLE products (
 ```
 Note that the final `CHECK` is on its own row, separate from any column. This is because it is a <em>table</em> constraint rather than a <em>column</em> constraint. Table constraints are defined with respect to the entire table, whereas column constraints are only defined with regards to the column whose line they are defined on. Any column constraint can be written as a table constraint, but the reverse is not true. (Column constraints cannot reference other columns.)
 
+## Distinct
+Normally, we can use the `SELECT` keyword to select all relevant rows from a table. But what if
+ we want to only select distinct rows? That is, we want to select all relevant rows that are not
+  identical (by the given criteria).
+  
+For example, let's say we wanted a list of all distinct product names from our `products` table
+ defined above. Rather than query all products and remove duplicates, we can use SQL to query
+  only distinct values:
+  
+`SELECT DISTINCT name FROM products`
+
+We can also apply `DISTINCT` to multiple columns. This works how you would think: 
+
+`SELECT DISTINCT name, price FROM products`
+
+selects all rows whose combination of name and price is unique. In other words, the resulting
+ table will have two columns, `name` and `price`, and no two rows will have the same value for both.
+
+## Union
+Some of you may already be familiar with the mathematical notion of a union -- the combination of
+ two sets. Similarly, we can use SQL's `UNION` keyword to combine the results of two queries
+ . Note that the queries must reference the same columns: a union of two sets of rows with different
+  columns doesn't make sense.
+  
+Like union in math, `UNION` does not include any duplicates (unless you use `UNION ALL`).
+
+Here's an example of a union query:
+
+```
+SELECT column1, column2 FROM table WHERE column1 > 50
+UNION
+SELECT column1, column2 FROM table WHERE column1 < 5
+```
+
+## Aggregate Functions
+If you've used Excel before, you probably appreciate the statistics operations that allow you to
+ quickly get info about data entries, like average() and max(). As you might expect, Postgres
+  includes this functionality out of the box.
+
+### Count
+For example, let's say we want to know how many entries are in a table. This is trivial:
+
+`SELECT COUNT(*) FROM table`
+
+We can add `WHERE` clauses to count only entries that satisfy some condition, like this:
+
+`SELECT COUNT(*) FROM table WHERE column3 = false`
+
+This query returns a table with only a single column `count` and one entry containing the count.
+
+### Min/Max
+To get the minimum or maximum values of a numeric column in a table, we can use the `MIN()` and `MAX
+()` functions, like this:
+
+`SELECT MIN(price) FROM products`
+
+Like `COUNT`, this returns a table with a single column `min` and one entry containing the
+ minimum value of the queried column.
+ 
+### Avg
+Average returns the average of a numeric column:
+
+`SELECT AVG(price) FROM products`
+
+### Sum
+Sum returns the sum of a numeric column:
+
+`SELECT SUM(price) FROM products`
+
+## Group By & Having
+Let's say we had a `payments` table defined like this:
+
+```
+CREATE TABLE payments (
+    id serial PRIMARY KEY,
+    customer_id integer,
+    order_id integer,
+    amount integer
+)
+```
+
+What if we want to know how much each customer has paid over all their orders? We can use SQL's
+ `GROUP BY` clause to group payments by their `customer_id`, and then use `SUM()` to compute the
+  sum.
+  
+`SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id`
+
+Now, imagine we only cared about our most loyal customers -- the ones who've spent more than $200
+. You might think that we could use a `WHERE` clause to only get the groups of payments that sum
+ to more than 200. But `WHERE` only works for rows, not groups. Instead, we use the `HAVING
+ ` keyword, like this:
+ 
+`SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id HAVING SUM(amount) > 200`
+
+## Order By
+Often, we'll want to sort the data that we receive from our database. We could do this in our
+ application logic, but it's almost always faster to ask the database to do it directly for us
+ . Fortunately, SQL makes this trivially easy for us.
+ 
+For example, let's say we wanted to get a list of products sorted from cheapest to most expensive
+. This simple query does that for us:
+
+`SELECT * FROM products ORDER BY price ASC`
+
+Of course `ASC` indicates that the resulting rows will have an ascending price. `DESC` would be
+ the opposite.
+ 
+Sorting works on more than just numeric values. Ordering textual values in `ASC` order sorts by
+ alphabetical order, for example.
+
+## Case
+
+## Like
+
 ## Join
+So far, we've seen how to design tables to help us store related data. For example, we created an e-commerce database with three tables: `orders`, `products`, and `order_items`. Every row in `orders` represents one shopping basket. Every row in `order_items` belongs to one `order` and refers to a `product`, so we can have as many products as we want in one shopping basket.
+
+But storing our data is only one part of our application. Equally important is accessing it. Let's say we want to list all the products in a user's 
+
+## Subquery
+
+### Alias
