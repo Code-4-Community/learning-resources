@@ -60,8 +60,8 @@ When you think of Excel, you think of a bunch of rows/entries and columns/fields
 each table is like a separate sheet containing pretty uniform data. Each column (the up/down ones) acts like a separate 
 field. You specify a datatype and name for your columns, and then as data gets entered, rows (the long left/right) ones 
 get created, read, updated, and deleted (remember CRUD). One thing to note is that in relational databases, unlike 
-Excel, you don't have an unlimited amount of columns that can be automatically added. When you create your table, it has 
-a set structure, meaning you can only add/remove/update columns by changing the structure of the table. You can, 
+Excel, you don't have an unlimited amount of columns that can be automatically added. A table has a set structure once
+you create it. This means you can only add/remove/update columns by changing the structure of the table. You can, 
 however, add an unlimited number of rows in theory, though you'll run out of space and your queries will start to slow 
 down after a while. 
 
@@ -80,22 +80,26 @@ In SQL, when making new columns on a table, altering columns, and dealing with t
 data types of the variables you're working with. It's somewhat similar to working with types in Java, however, you don't
 need to declare types all over the place. It matters most when you're trying to perform operations on types and getting 
 the data using the JDBC/ODBC. For example, if you try to perform a query where you're adding two strings, you'll receive 
-an error since strings can't be added. You can concatenate two strings, but addition is for number types. 
+an error since strings can't be added. You can, however, concatenate two strings. 
 
 There are many types available, especially in PostgreSQL, but below are a few of the most commonly used ones.
+
+>Note: some of the data types we're introducing here may not be compatible with other databases. You'll have to 
+>check the documentation when working with other databases if you're getting errors. You should also be able to look
+>up equivalent data types between different database systems.
 
 #### SERIAL
 
 The `SERIAL` type is an `INTEGER` under the hood, usually used as an ID. It's a 
 PostgreSQL specific data type, which is usually just an `INTEGER` with the `AUTO INCREMENT` modifier in most other 
-databases. This is really useful for integer-typed
+databases (we'll be going over this in a sec). This is really useful for integer-typed
 `PRIMARY KEYS` in other databases, since it automatically creates a new unique ID for you.
 
 #### CHAR
 
 The `CHAR(x)` type is actually a string of max length `x`. If a value you insert isn't the full length `x`, then the 
-value will be right-padded with spaces. For example, if the column type is `CHAR(5)`, then "hello" would be saved as 
-"hello", but "hey" would be saved as "hey__" (pretend the underscores are spaces).
+value will be right-padded with spaces. For example, if the column type is `CHAR(10)`, then "helloworld" would be saved as 
+"helloworld", but "hey" would be saved as "hey       ".
 
 #### VARCHAR
 
@@ -106,6 +110,8 @@ would be saved as "hello" and "hey" would be saved as "hey".
 
 ##### CHAR vs VARCHAR
 
+If we were to save the string "Hey there!" to a `CHAR(15)` and a `VARCHAR(15)`, what do you think they'll output? If 
+your guess was "Hey there!     " for the `CHAR` and "Hey There!" for the `VARCHAR`, you were right!
 The difference between `CHAR(x)` and `VARCHAR(x)` is that a `CHAR` will right-pad the entry with spaces if it isn't of 
 length `x`, but a `VARCHAR` would save the entered value. If either columns attempt to save a value that is longer than
 `x` characters, then the value will be truncated and an error or warning might be thrown.
@@ -237,6 +243,9 @@ DROP DATABASE your_database_name;
 DROP DATABASE IF EXISTS your_database_name;
 ```
 
+>Note: if you're going to be deleting a database, you should be __*REALLY SURE*__ you want to actually do that. If 
+>you're developing locally (especially on this project), you're probably fine, but keep that in mind.
+
 Creating a table follows a simple formula. Declare the table and add all columns by stating the column name, data type,
 and any modifiers if applicable. If you have any constraints (we'll cover that in a later lesson), then those get added
 at the bottom. 
@@ -289,7 +298,7 @@ formula for creating a table, there are formulae for the other data manipulation
 #### The INSERT Statement
 
 The `INSERT` statement is the statement used for creating new data (**C**RUD). This is used whenever you want to enter 
-new data into your table. It has this basic structure. 
+new data into your table. It has this basic structure:
 
 >Note: the indentation is also for readability. We're starting a 
 >new statement normally, and then the rest of the lines for the same statement use a hanging indent.
@@ -368,7 +377,7 @@ An example using the `people` table:
 -- Select all fields from every record in people.
 SELECT * FROM people;
 
--- Select all fields from every record in people who are greater than 5.
+-- Select all fields from every record in people who are greater than 5 (age is a column on the people table).
 SELECT * FROM people 
     WHERE age > 5;
 
@@ -477,7 +486,7 @@ TRUNCATE people;
 ## Backend + DB Connection
 
 Now to the fun part. We'll be connecting your backend application to the database so that you can stop storing 
-information just in memory!
+information in memory!
 
 ### JDBC and Working with the DB in Java
 
@@ -490,7 +499,7 @@ database.
 Most of the time, when working locally, you and other coworkers/teammates/classmates will have different 
 usernames/passwords/urls/other properties which are extremely unlikely to be the same. You also wouldn't want these 
 values to be seen publicly on a Github repository or anything, because then that means anyone with access to the 
-repository will have access to your sensitive information. To deal with this, what most developers do is they create 
+repository will have access to your sensitive information. To deal with this, developers create 
 property files and environment files with that data, which are excluded from git in the .gitignore file. Since we'll now
 be connecting to the database, it's about time we start storing some of our data in there. We'll be including a 
 db.properties.example file (which isn't excluded from git in the .gitignore) which will have dummy variables that you'll
@@ -595,7 +604,7 @@ The `Connection` object handles interactions with the database through Java.
 The way we'll be writing queries in Java is to replace all 'variables' with question marks (`?`), because we'll be using
 prepared statements. Prepared statements are special ways to write queries such that you tell the `Connection` object 
 you have open what query you want to make, and then you provide it with all of the variables separately later on. We 
-want to do this because it's simpler in that you don't have to always be looking to escape your 
+want to do this because it's simpler in that it's simpler to not always be looking to escape your 
 strings/query params/variables all the time, and it's safer to do (we'll explain why later on). 
 
 Writing a prepared statement using the person table from before looks like this:
