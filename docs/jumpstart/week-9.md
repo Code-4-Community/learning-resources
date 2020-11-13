@@ -226,6 +226,20 @@ Sorting works on more than just numeric values. Ordering textual values in `ASC`
 ## Case
 
 ## Like
+This operation is used with the `WHERE` clause. `LIKE` allows you to find a specific pattern in a column of a table. You can use `%` and `_` in conjuction with `LIKE` if there are other characters before or after the wanted pattern. The percent sign and underscore can be used in combinations as well. 
+- `%` represents zero, one, or multiple characters.
+- `_` represents a single character.
+
+Imagine for some reason you wanted to find all products that have <em>s</em> as their second letter; you can perform the following query:
+```
+SELECT * FROM products
+WHERE name LIKE '_s%';
+```
+You can also have as many conditions as you'd like by using `AND` or `OR` operators. So now imagine you wanted every product in your database whose name either started or ended with s:
+```
+SELECT * FROM products
+WHERE name LIKE 's%' OR '%s';
+```
 
 ## Join
 So far, we've seen how to design tables to help us store related data. For example, we created an e-commerce database with three tables: `orders`, `products`, and `order_items`. Every row in `orders` represents one shopping basket. Every row in `order_items` belongs to one `order` and refers to a `product`, so we can have as many products as we want in one shopping basket.
@@ -233,5 +247,18 @@ So far, we've seen how to design tables to help us store related data. For examp
 But storing our data is only one part of our application. Equally important is accessing it. Let's say we want to list all the products in a user's 
 
 ## Subquery
+Subquery's definition is within its name: a query within a query! Subqueries could be nested inside a `SELECT`, `INSERT`, `UPDATE`, `DELETE`, or another subquery. They can output a list of data or individual values. 
+
+We use subqueries as a condition (therefore it's usually used within a `WHERE` clause) and will return data that will be used in the main query and the point of it is to restrict the information that's being retrieved from the database. Make sure you surround your subqueries with paranthesis.
+
+Note: Operators could be < = > etc.
+```
+SELECT column1, column2, ...
+FROM table
+WHERE clause/expressions OPERATOR 
+    (SELECT column
+    FROM table
+    WHERE condition);
+```
 
 ### Alias
