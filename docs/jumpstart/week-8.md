@@ -34,6 +34,7 @@
     - `DEFAULT`
   - Creating a Database and Table
   - Query structure
+    - Comments
     - The `INSERT` statement
     - The `SELECT` statement
     - The `UPDATE` statement
@@ -99,7 +100,7 @@ databases (we'll be going over this in a sec). This is really useful for integer
 
 The `CHAR(x)` type is actually a string of max length `x`. If a value you insert isn't the full length `x`, then the 
 value will be right-padded with spaces. For example, if the column type is `CHAR(10)`, then "helloworld" would be saved as 
-"helloworld", but "hey" would be saved as "hey       ".
+"helloworld", but "hey" would be saved as "hey____" (pretend the '_' are spaces).
 
 #### VARCHAR
 
@@ -111,7 +112,7 @@ would be saved as "hello" and "hey" would be saved as "hey".
 ##### CHAR vs VARCHAR
 
 If we were to save the string "Hey there!" to a `CHAR(15)` and a `VARCHAR(15)`, what do you think they'll output? If 
-your guess was "Hey there!     " for the `CHAR` and "Hey There!" for the `VARCHAR`, you were right!
+your guess was "Hey there!_____" (same as before, pretend the '_' are spaces) for the `CHAR` and "Hey There!" for the `VARCHAR`, you were right!
 The difference between `CHAR(x)` and `VARCHAR(x)` is that a `CHAR` will right-pad the entry with spaces if it isn't of 
 length `x`, but a `VARCHAR` would save the entered value. If either columns attempt to save a value that is longer than
 `x` characters, then the value will be truncated and an error or warning might be thrown.
@@ -206,8 +207,8 @@ table's `PRIMARY KEY`. We'll talk about this more in the next lesson.
 
 #### NOT NULL
 
-The `NOT NULL` modifier lets the database know that a column should never accept null values. You should try to use this
-where you can, since it can help with preventing nulls from being entered where you're not expecting them.
+The `NOT NULL` modifier lets the database know that a column should never accept `null` values. You should try to use this
+where you can, since it can help with preventing `null`s from being entered where you're not expecting them.
 
 #### AUTO INCREMENT
 
@@ -295,6 +296,13 @@ Later on, we'll talk about migrations, but for now if you make any mistakes, jus
 Now that you know how to create a table, we'll go through how to CRUD data on that table. Similar to how there's a 
 formula for creating a table, there are formulae for the other data manipulation tools.
 
+#### Comments
+
+We'll start off by showing comments, since we'll be using them in the script to describe what they're doing.
+You should be able to write block comments the same way you do for Java and JavaScript, with the `/* */` style. If
+you want to write a one-line comment, or if the block comment style isn't working, you can prefix the line with `--` 
+(make sure you add a space after the `--` before your comment).
+
 #### The INSERT Statement
 
 The `INSERT` statement is the statement used for creating new data (**C**RUD). This is used whenever you want to enter 
@@ -345,7 +353,7 @@ INSERT INTO people (name, age) VALUES
 The `SELECT` statement is the statement used for reading data that already exists (C**R**UD). This is probably the most 
 commonly used SQL statement, and we hope that you'll be pretty used to it by the end. There are many conditions and 
 extra things we can add on, like grouping, aggregate functions, renaming columns, sub-queries, joins, row limiting, 
-and many others, but to keep it simple right now we'll just work with the structure below. You'll learn more about some
+and others, but to keep it simple right now we'll just work with the structure below. You'll learn more about some
 of those later on.
 
 Example of select statements:
@@ -502,7 +510,7 @@ values to be seen publicly on a Github repository or anything, because then that
 repository will have access to your sensitive information. To deal with this, developers create 
 property files and environment files with that data, which are excluded from git in the .gitignore file. Since we'll now
 be connecting to the database, it's about time we start storing some of our data in there. We'll be including a 
-db.properties.example file (which isn't excluded from git in the .gitignore) which will have dummy variables that you'll
+db.properties.example file (not excluded from git in the .gitignore), which will have dummy variables that you'll
 have to fill in when you copy it. 
 
 >Note: If you think of any other properties, feel free to add them here if they're related
@@ -596,13 +604,13 @@ The `Connection` object handles interactions with the database through Java.
 
 >Note: the `Connection` object must be closed when you're done doing your work. If left open for too long, they may 
 >begin to timeout or you may end up opening too many connections for the database to handle. Once you're done with 
->whatever operations you need to perform, make sure you call close() on your connection (and both ResultSets and 
->Statements if you have any of those open either).
+>whatever operations you need to perform, make sure you call `close()` on your connection (and any `ResultSets` and 
+>`Statements` if you have any of those open).
 
 ### Prepared Statements
 
 The way we'll be writing queries in Java is to replace all 'variables' with question marks (`?`), because we'll be using
-prepared statements. Prepared statements are special ways to write queries such that you tell the `Connection` object 
+prepared statements. Prepared statements are special ways to write queries to tell the `Connection` object 
 you have open what query you want to make, and then you provide it with all of the variables separately later on. We 
 want to do this because it's simpler in that it's simpler to not always be looking to escape your 
 strings/query params/variables all the time, and it's safer to do (we'll explain why later on). 
