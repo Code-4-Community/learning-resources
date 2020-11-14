@@ -21,6 +21,7 @@ nav:
       - "Week 5: Server, Request, and Backend Basics": jumpstart/week-5.md
       - "Week 6: Advanced Backend and Testing": jumpstart/week-6.md
       - "Week 7: Advanced Frontend": jumpstart/week-7.md
+      - "Week 8: Database Basics and Connecting the Backend to the Database": jumpstart/week-8.md
   - Guides:
       - Home: guides/index.md
       - Send a POST request: guides/postrequest.md
