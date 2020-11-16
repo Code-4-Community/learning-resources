@@ -223,8 +223,6 @@ Of course `ASC` indicates that the resulting rows will have an ascending price. 
 Sorting works on more than just numeric values. Ordering textual values in `ASC` order sorts by
  alphabetical order, for example.
 
-## Case
-
 ## Like
 This operation is used with the `WHERE` clause. `LIKE` allows you to find a specific pattern in a column of a table. You can use `%` and `_` in conjuction with `LIKE` if there are other characters before or after the wanted pattern. The percent sign and underscore can be used in combinations as well. 
 - `%` represents zero, one, or multiple characters.
@@ -244,7 +242,21 @@ WHERE name LIKE 's%' OR '%s';
 ## Join
 So far, we've seen how to design tables to help us store related data. For example, we created an e-commerce database with three tables: `orders`, `products`, and `order_items`. Every row in `orders` represents one shopping basket. Every row in `order_items` belongs to one `order` and refers to a `product`, so we can have as many products as we want in one shopping basket.
 
-But storing our data is only one part of our application. Equally important is accessing it. Let's say we want to list all the products in a user's 
+But storing our data is only one part of our application. Equally important is accessing it. Let
+'s say we want to list all the products in an order. The first step is to obtain all the
+ product_ids associated with that order. So, we might run:
+ 
+```SELECT * FROM order_items WHERE order_id = 20```
+
+to find all the order_items associated with order 20. Then, for each order item, we can find its
+ product by running separate queries:
+ 
+```SELECT * FROM products WHERE id = ORDER_ITEM_ID```
+
+but this verbose. Instead, we can use the `JOIN` keyword, which allows us to join two tables
+ based on a matching column, like an id. So, we could write:
+ 
+???
 
 ## Subquery
 Subquery's definition is within its name: a query within a query! Subqueries could be nested inside a `SELECT`, `INSERT`, `UPDATE`, `DELETE`, or another subquery. They can output a list of data or individual values. 
@@ -260,5 +272,3 @@ WHERE clause/expressions OPERATOR
     FROM table
     WHERE condition);
 ```
-
-### Alias
