@@ -224,7 +224,7 @@ Sorting works on more than just numeric values. Ordering textual values in `ASC`
  alphabetical order, for example.
 
 ## Case
-The `CASE` statement, similar to if-then-else statement or a switch statement, goes through different conditions and returns a value when the first condition is met. If the first condition is true, a value will be returned and , if not, the rest of the conditions will be evaluated. In case non of the given conditions are true, it returns the value in the `ELSE` claues (just like the `default` case in switch statements). Here is what the syntax looks like:
+The `CASE` statement, similar to if-then-else statement or a switch statement, goes through different conditions and returns a value when the first condition is met. If the first condition is true, a value will be returned and , if not, the rest of the conditions will be evaluated. In case non of the given conditions are true, it returns the value in the `ELSE` claues (just like the `default` case in switch statements).Don't forget to tell the program that your `CASE` statement is done by an `END` clause. Here is what the syntax looks like:
 
 ```
 CASE
@@ -242,11 +242,12 @@ SELECT order_id, amount,
 CASE
     WHEN amount > 10 THEN 'Payment due is more that $10'
     WHEN amount < 10 THEN 'Payment due is not much!'
-    ELSE 'You gotta pay exactly %10'sult
-END AS PaymentFeedback
+    ELSE 'You gotta pay exactly $10'
+END AS PaymentDueFeedback
 FROM payments; 
 ```
 *Note: `AS` is used for renaming a column in the table that we want to be displayed after running a query.*
+
 
 ## Like
 This operation is used with the `WHERE` clause. `LIKE` allows you to find a specific pattern in a column of a table. You can use `%` and `_` in conjuction with `LIKE` if there are other characters before or after the wanted pattern. The percent sign and underscore can be used in combinations as well. 
