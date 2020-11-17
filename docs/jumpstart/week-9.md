@@ -223,6 +223,31 @@ Of course `ASC` indicates that the resulting rows will have an ascending price. 
 Sorting works on more than just numeric values. Ordering textual values in `ASC` order sorts by
  alphabetical order, for example.
 
+## Case
+The `CASE` statement, similar to if-then-else statement or a switch statement, goes through different conditions and returns a value when the first condition is met. If the first condition is true, a value will be returned and , if not, the rest of the conditions will be evaluated. In case non of the given conditions are true, it returns the value in the `ELSE` claues (just like the `default` case in switch statements). Here is what the syntax looks like:
+
+```
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    WHEN conditionN THEN resultN
+    ELSE result
+END; 
+```
+
+and here is an example with a `SELECT` statement:
+
+```
+SELECT order_id, amount,
+CASE
+    WHEN amount > 10 THEN 'Payment due is more that $10'
+    WHEN amount < 10 THEN 'Payment due is not much!'
+    ELSE 'You gotta pay exactly %10'sult
+END AS PaymentFeedback
+FROM payments; 
+```
+*Note: `AS` is used for renaming a column in the table that we want to be displayed after running a query.*
+
 ## Like
 This operation is used with the `WHERE` clause. `LIKE` allows you to find a specific pattern in a column of a table. You can use `%` and `_` in conjuction with `LIKE` if there are other characters before or after the wanted pattern. The percent sign and underscore can be used in combinations as well. 
 - `%` represents zero, one, or multiple characters.
