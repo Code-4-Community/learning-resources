@@ -13,7 +13,7 @@ It's straightforward to see why primary keys are so helpful. The most important 
 
 To designate a column as a primary key when we create a table, we use this syntax:
 
-```
+```sql
 CREATE TABLE products (
     id serial PRIMARY KEY,
     name text,
@@ -25,7 +25,7 @@ CREATE TABLE products (
 What gives databases their power and versatility is their ability to establish complex relationships between entries in different tables. For example, let's say we are building a simple e-commerce application that has a list of products and allows users to place orders of those products.
 
 We start with our products table, which just lists all of our products:
-```
+```sql
 CREATE TABLE products (
     id serial PRIMARY KEY,
     name text,
@@ -34,14 +34,14 @@ CREATE TABLE products (
 ```
 Next, we want to create an orders table that lists all orders made in the application. However, before we define our table, there is an important observation that we can make. Every order must be <em>of</em> a particular product; in other words, every order must contain exactly one product. It doesn't make sense to have an order with no products, and we can't store multiple products in one row (since we'd need an arbitrary number of columns to store each product). So, we need a column in our orders table that references an entry in the products table. It makes sense, then, to use its id. That gives us this definition:
 
-```
+```sql
 CREATE TABLE orders (
     id serial PRIMARY KEY,
     product_id integer
 );
 ```
 As you can see, every `order` has a `product_id`. But this makes no guarantee that this id actually points to a product. For example, say you had only two products, with ids of `1` and `2`, but you created an order with a product_id of 3. To prevent unpredictable errors from happening, we might want to add a constraint that guarantees that `product_id` contains a valid product id. That's exactly what the `FOREIGN KEY` constraint does. To use it, we can slightly alter our table definition:
-```
+```sql
 CREATE TABLE orders (
     id serial PRIMARY KEY,
     product_id integer REFERENCES products
@@ -52,7 +52,7 @@ CREATE TABLE orders (
 With this foreign key in place, we can now make an order for any product, and keep order information separate from product info. But we'd like to take this one step further: a single order should be able to contain multiple products. As we briefly mentioned earlier, this is impossible with the current, two-table setup, because our `orders` table would need to have an arbitrary number of `product_id`s. The solution is to create another table called a <strong>join</strong> table. It has one purpose: to <em>join</em>, or connect, two other tables, so that we can establish what we call a <em>many-to-many</em> relationship -- put simply, this means that an order can contain an arbitrary many products.
 
 Our new table only needs two columns: an order id and a product id. Every entry in this table represents something like a single item in a shopping basket. That item belongs to a particular basket (the order), and points to a product. So, we might create a table like this:
-```
+```sql
 CREATE TABLE order_items (
     product_id integer REFERENCES products,
     order_id integer REFERENCES orders
@@ -66,7 +66,7 @@ As we mentioned earlier, `PRIMARY KEY` is technically just a combination of the 
 Note: when we say "require" in terms of constraints, we mean that any attempt to create or update an entry in the table that will violate the constraint will result in an error. This enables us to assume that all entries in a table satisfy the table's constraints.
 
 Here is an example of how we might define these constraints:
-```
+```sql
 CREATE TABLE products (
     id serial UNIQUE NOT NULL,
     name text NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE products (
 );
 ```
 What if we no columns in a table are unique by themselves, but the combination of two or more is unique? For example, recall `order_items`, our join table from earlier:
-```
+```sql
 CREATE TABLE order_items (
     product_id integer REFERENCES products,
     order_id integer REFERENCES orders
@@ -83,7 +83,7 @@ CREATE TABLE order_items (
 We can't make `product_id` unique because we may have multiple order items that refer to the same product. Similarly, we can't make `order_id` unique because the entire point of creating this join table was to allow multiple entries to belong to the same order. However, we may want to guarantee that there are no duplicate entries -- i.e., the <em>combination</em> of the product id and order id is unique. More formally, no entry in the table contains both the same product id and the same order id.
 
 Fortunately, Postgres allows us to define a `UNIQUE` constraint over multiple columns:
-```
+```sql
 CREATE TABLE order_items (
     product_id integer REFERENCES products,
     order_id integer REFERENCES orders,
@@ -92,7 +92,7 @@ CREATE TABLE order_items (
 ```
 
 There is one final important constraint that we will cover today called `CHECK`. `CHECK` allows us to guarantee that some arbitrary expression is true for every entry in our table. For example, let's say we wanted to make sure that all of our product's prices are positive (greater than zero). We might use this definition:
-```
+```sql
 CREATE TABLE products (
     id serial PRIMARY KEY,
     name text,
@@ -102,7 +102,7 @@ CREATE TABLE products (
 Here, whatever follows `CHECK` is an expression that Postgres will automatically check any time we create or update an entry in our table. This again allows us to assume that every entry in the table satisfies this constraint, so we can be absolutely sure that every product has a positive price.
 
 We also might define a constraint that involves two columns. For example, say that we also had a `discounted_price` column, which we want to constrain to be strictly less than the `price`. We can define our updated table like this:
-```
+```sql
 CREATE TABLE products (
     id serial PRIMARY KEY,
     name text,
@@ -122,11 +122,15 @@ For example, let's say we wanted a list of all distinct product names from our `
  defined above. Rather than query all products and remove duplicates, we can use SQL to query
   only distinct values:
   
-`SELECT DISTINCT name FROM products`
+```sql
+SELECT DISTINCT name FROM products
+```
 
 We can also apply `DISTINCT` to multiple columns. This works how you would think: 
 
-`SELECT DISTINCT name, price FROM products`
+```sql
+SELECT DISTINCT name, price FROM products
+```
 
 selects all rows whose combination of name and price is unique. In other words, the resulting
  table will have two columns, `name` and `price`, and no two rows will have the same value for both.
@@ -141,7 +145,7 @@ Like union in math, `UNION` does not include any duplicates (unless you use `UNI
 
 Here's an example of a union query:
 
-```
+```sql
 SELECT column1, column2 FROM table WHERE column1 > 50
 UNION
 SELECT column1, column2 FROM table WHERE column1 < 5
@@ -155,11 +159,15 @@ If you've used Excel before, you probably appreciate the statistics operations t
 ### Count
 For example, let's say we want to know how many entries are in a table. This is trivial:
 
-`SELECT COUNT(*) FROM table`
+```sql
+SELECT COUNT(*) FROM table
+```
 
 We can add `WHERE` clauses to count only entries that satisfy some condition, like this:
 
-`SELECT COUNT(*) FROM table WHERE column3 = false`
+```sql
+SELECT COUNT(*) FROM table WHERE column3 = false
+```
 
 This query returns a table with only a single column `count` and one entry containing the count.
 
@@ -167,7 +175,9 @@ This query returns a table with only a single column `count` and one entry conta
 To get the minimum or maximum values of a numeric column in a table, we can use the `MIN()` and `MAX
 ()` functions, like this:
 
-`SELECT MIN(price) FROM products`
+```sql
+SELECT MIN(price) FROM products
+```
 
 Like `COUNT`, this returns a table with a single column `min` and one entry containing the
  minimum value of the queried column.
@@ -175,17 +185,21 @@ Like `COUNT`, this returns a table with a single column `min` and one entry cont
 ### Avg
 Average returns the average of a numeric column:
 
-`SELECT AVG(price) FROM products`
+```sql
+SELECT AVG(price) FROM products
+```
 
 ### Sum
 Sum returns the sum of a numeric column:
 
-`SELECT SUM(price) FROM products`
+```sql
+SELECT SUM(price) FROM products
+```
 
 ## Group By & Having
 Let's say we had a `payments` table defined like this:
 
-```
+```sql
 CREATE TABLE payments (
     id serial PRIMARY KEY,
     customer_id integer,
@@ -226,10 +240,13 @@ Sorting works on more than just numeric values. Ordering textual values in `ASC`
 ## Case
 The `CASE` statement, similar to if-then-else statement or a switch statement, goes through different conditions and returns a value when the first condition is met. If the first condition is true, a value will be returned and , if not, the rest of the conditions will be evaluated. In case non of the given conditions are true, it returns the value in the `ELSE` claues (just like the `default` case in switch statements).Don't forget to tell the program that your `CASE` statement is done by an `END` clause. Here is what the syntax looks like:
 
-```
+```sql
+SELECT ...
+...
 CASE
     WHEN condition1 THEN result1
     WHEN condition2 THEN result2
+    ...
     WHEN conditionN THEN resultN
     ELSE result
 END; 
@@ -237,7 +254,7 @@ END;
 
 and here is an example with a `SELECT` statement:
 
-```
+```sql
 SELECT order_id, amount,
 CASE
     WHEN amount > 10 THEN 'Payment due is more that $10'
@@ -255,34 +272,60 @@ This operation is used with the `WHERE` clause. `LIKE` allows you to find a spec
 - `_` represents a single character.
 
 Imagine for some reason you wanted to find all products that have <em>s</em> as their second letter; you can perform the following query:
-```
+```sql
 SELECT * FROM products
 WHERE name LIKE '_s%';
 ```
 You can also have as many conditions as you'd like by using `AND` or `OR` operators. So now imagine you wanted every product in your database whose name either started or ended with s:
-```
+```sql
 SELECT * FROM products
 WHERE name LIKE 's%' OR '%s';
 ```
 
 ## Join
-So far, we've seen how to design tables to help us store related data. For example, we created an e-commerce database with three tables: `orders`, `products`, and `order_items`. Every row in `orders` represents one shopping basket. Every row in `order_items` belongs to one `order` and refers to a `product`, so we can have as many products as we want in one shopping basket.
+So far, we've seen how to design tables to help us store related data. For example, we created an e-commerce database with three tables: `orders`, `products`, and `order_items`. Every row in `orders` represents one shopping basket. Every row in `order_items` belongs to one `order` and refers to a `products`, so we can have as many products as we want in one shopping basket.
 
-But storing our data is only one part of our application. Equally important is accessing it. Let
-'s say we want to list all the products in an order. The first step is to obtain all the
- product_ids associated with that order. So, we might run:
+But storing our data is only one part of our application. Equally important is accessing it. Let's say we want to list all the products in an order. The first step is to obtain all the
+ `product_id`s associated with that order. So, we might run:
  
-```SELECT * FROM order_items WHERE order_id = 20```
+```sql
+SELECT * FROM order_items WHERE order_id = 20
+```
 
-to find all the order_items associated with order 20. Then, for each order item, we can find its
- product by running separate queries:
+to find all the order_items associated with order 20. Then, for each order item, we can find its product by running separate queries:
  
-```SELECT * FROM products WHERE id = ORDER_ITEM_ID```
+```sql
+SELECT * FROM products WHERE id = ORDER_ITEM_ID
+```
 
 but this verbose. Instead, we can use the `JOIN` keyword, which allows us to join two tables
  based on a matching column, like an id. So, we could write:
  
-???
+```sql
+SELECT products.id AS Product_ID, products.name AS Product_Name, orders.id AS Order_ID
+FROM order_items 
+    JOIN products
+ON 
+    Product_ID = order_items.product_id;
+```
+
+This table will give us 3 colums representing the Product ID in our order, the name of the product, and finally our order ID in case we wanted to double check that we've got the right products. The rows will contain the list of products in our order.
+
+### Different types of joins
+
+<img align="right" src="img/Joins-in-SQL-Inner-Outer-Left-and-Right-Join.jpg" width="300px">
+
+Based on what we want to get from two tables, we can do different types of joins. As you can see in the picture below, some of these different joins are: `INNER JOIN` (or `JOIN` as default in SQL), `LEFT JOIN`, `RIGHT JOIN`, and `FULL JOIN`. 
+
+`INNER JOIN`: returns rows when there is a match in both tables.
+
+`LEFT JOIN`: returns all rows from the left table, even if there are no matches in the right table.
+
+`RIGHT JOIN`: returns all rows from the right table, even if there are no matches in the left table.
+
+`FULL JOIN`: It combines the results of both left and right outer joins.
+The joined table will contain all records from both the tables and fill in NULLs for missing matches on either side.
+
 
 ## Subquery
 Subquery's definition is within its name: a query within a query! Subqueries could be nested inside a `SELECT`, `INSERT`, `UPDATE`, `DELETE`, or another subquery. They can output a list of data or individual values. 
@@ -290,7 +333,7 @@ Subquery's definition is within its name: a query within a query! Subqueries cou
 We use subqueries as a condition (therefore it's usually used within a `WHERE` clause) and will return data that will be used in the main query and the point of it is to restrict the information that's being retrieved from the database. Make sure you surround your subqueries with paranthesis.
 
 Note: Operators could be < = > etc.
-```
+```sql
 SELECT column1, column2, ...
 FROM table
 WHERE clause/expressions OPERATOR 
