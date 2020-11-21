@@ -313,9 +313,9 @@ This table will give us 3 colums representing the Product ID in our order, the n
 
 ### Different types of joins
 
-<img align="right" src="img/Joins-in-SQL-Inner-Outer-Left-and-Right-Join.jpg" width="300px">
-
 Based on what we want to get from two tables, we can do different types of joins. As you can see in the picture below, some of these different joins are: `INNER JOIN` (or `JOIN` as default in SQL), `LEFT JOIN`, `RIGHT JOIN`, and `FULL JOIN`. 
+
+![SQL Join Comparison](./img/Joins-in-SQL-Inner-Outer-Left-and-Right-Join.jpg)
 
 `INNER JOIN`: returns rows when there is a match in both tables.
 
