@@ -1,15 +1,49 @@
-# Week 9: Advanced Database Topics
+# Week 9: Advanced Database Topics    
+In an increasingly data-driven world, efficiently configuring and managing a database are crucial
+ to creating robust and scalable web applications. This week, we'll learn some tools and
+  techniques to help us make the most of our Postgres database.
 
-In an increasingly data-driven world, efficiently configuring and managing a database are crucial to creating robust and scalable web applications.
+## Agenda
+- Database Constraints
+    - Primary Keys
+    - Foreign Keys
+    - Other Constraints
+        - `UNIQUE`
+        - `CHECK`
+- Advanced Queries
+    - `DISTINCT`
+    - `UNION`
+    - Aggregate Functions
+        - `COUNT`
+        - `MIN`/`MAX`
+        - `AVG`
+        - `SUM`
+        - `GROUP BY` & `HAVING`
+        - `ORDER BY`
+        - `CASE`
+        - `LIKE`
+        - `JOIN`
+        - `SUBQUERY`
+    
+
 
 In this lesson, we'll cover some more advanced database topics that will help you make the most out of your Postgres database by creating and enforcing predictable and reliable data structures.
 
-## Primary Keys
-By this point, you've heard plenty about ids, and you've probably worked with them in some capacity. It's important that we take the time to understand exactly what an ID is and why we use them.
+## Database Constraints
+Databases allow us to define constraints, which are just rules that we can ask our columns to
+ follow. Now, we'll take a look at some of the most common constraints that you'll use when
+  working with databases.
+
+### Primary Keys
+By this point, you've heard plenty about ids, and you've probably worked with them in some capacity. It's important that we take the time to understand exactly what an id is and why we use them.
 
 Let's back up a little bit and begin with primary keys. As the name suggests, a table can only have one primary key. The primary key is the key which uniquely identifies each entry in the table. Tables do not need a primary key, nor does the primary key need to be a column called id. However, both are standard practice, and it's important to understand why.
 
-It's straightforward to see why primary keys are so helpful. The most important benefit is that they allow us to quickly identify exactly one row in a table. Whether we are programming a React component on our client or business logic in our backend, we have a way to easily identify entries in our database. Standard practice is to create a column `id` of type `SERIAL` to serve as our primary key. `id` is a short, descriptive and unambiguous name. The `SERIAL` type stores an integer, with the added benefit of auto increment -- whenever we make a new entry, Postgres will automatically increment the id for us. This way, we don't need to worry about setting the id values ourselves. `PRIMARY KEY` is technically just a constraint (more on constraints later) that mandates that all values be `UNIQUE` and `NOT NULL`. Thus, we are guaranteed that each row has an id, and that no other row shares that id.
+It's straightforward to see why primary keys are so helpful. The most important benefit is that
+ they allow us to quickly identify exactly one row in a table. Whether we are programming a React
+  component on our client or business logic in our backend, ids provide a way of easily
+   identifying entries in our database. Standard practice is to create a column `id` of type
+    `SERIAL` to serve as our primary key. `id` is a short, descriptive and unambiguous name. The `SERIAL` type stores an integer, with the added benefit of auto increment: whenever we make a new entry, Postgres will automatically increment the id for us. This way, we don't need to worry about setting the id values ourselves. `PRIMARY KEY` is technically just a constraint (more on constraints later) that mandates that all values be `UNIQUE` and `NOT NULL`. Thus, we are guaranteed that each row has an id, and that no other row shares that id.
 
 To designate a column as a primary key when we create a table, we use this syntax:
 
@@ -21,10 +55,10 @@ CREATE TABLE products (
 );
 ```
 
-## Foreign Keys
+### Foreign Keys
 What gives databases their power and versatility is their ability to establish complex relationships between entries in different tables. For example, let's say we are building a simple e-commerce application that has a list of products and allows users to place orders of those products.
 
-We start with our products table, which just lists all of our products:
+We start with our products table, which lists all of our products:
 ```sql
 CREATE TABLE products (
     id serial PRIMARY KEY,
@@ -40,7 +74,7 @@ CREATE TABLE orders (
     product_id integer
 );
 ```
-As you can see, every `order` has a `product_id`. But this makes no guarantee that this id actually points to a product. For example, say you had only two products, with ids of `1` and `2`, but you created an order with a product_id of 3. To prevent unpredictable errors from happening, we might want to add a constraint that guarantees that `product_id` contains a valid product id. That's exactly what the `FOREIGN KEY` constraint does. To use it, we can slightly alter our table definition:
+As you can see, every `order` has a `product_id`. But this makes no guarantee that this id actually points to a product. For example, say you had only two products, with ids of `1` and `2`, but you created an order with a `product_id` of `3`. To prevent unpredictable errors from happening, we might want to add a constraint that guarantees that `product_id` contains a valid product id. That's exactly what the `FOREIGN KEY` constraint does. To use it, we can slightly alter our table definition:
 ```sql
 CREATE TABLE orders (
     id serial PRIMARY KEY,
@@ -49,7 +83,7 @@ CREATE TABLE orders (
 ```
 `REFERENCES` tells Postgres to add a foreign key constraint, and the table name (`products`, in this case) immediately follows, telling Postgres that the `product_id` column refers to a a primary key in the `products` table. Now, if we try to create an order with an invalid `product_id`, we'll get an error. Similarly, if we try to delete a product that is referenced to by an order, we will also get an error.
 
-With this foreign key in place, we can now make an order for any product, and keep order information separate from product info. But we'd like to take this one step further: a single order should be able to contain multiple products. As we briefly mentioned earlier, this is impossible with the current, two-table setup, because our `orders` table would need to have an arbitrary number of `product_id`s. The solution is to create another table called a <strong>join</strong> table. It has one purpose: to <em>join</em>, or connect, two other tables, so that we can establish what we call a <em>many-to-many</em> relationship -- put simply, this means that an order can contain an arbitrary many products.
+With this foreign key in place, we can now make an order for any product, and keep order information separate from product info. But we'd like to take this one step further: a single order should be able to contain multiple products. As we briefly mentioned earlier, this is impossible with the current two-table setup, because our `orders` table would need to have an arbitrary number of `product_id`s. The solution is to create another table called a <strong>join</strong> table. It has one purpose: to <em>join</em>, or connect, two other tables, so that we can establish what we call a <em>many-to-many</em> relationship -- put simply, this means that an order can contain an arbitrary many products.
 
 Our new table only needs two columns: an order id and a product id. Every entry in this table represents something like a single item in a shopping basket. That item belongs to a particular basket (the order), and points to a product. So, we might create a table like this:
 ```sql
@@ -60,10 +94,18 @@ CREATE TABLE order_items (
 ```
 This is an example of a table that needs no primary key. We might add one if we want, but it may not be useful because the only purpose this table serves is to join two existing tables. If we need to refer to a specific entry in this table, we can use the combination of `order_id` and `product_id`, since no two rows should have the same value for both. We'll see how to do this in the next section.
 
-## Other Constraints
-As we mentioned earlier, `PRIMARY KEY` is technically just a combination of the `UNIQUE` and `NOT NULL` constraints. These constraints are self-explanatory; `UNIQUE` requires that a column's value is unique with respect to all other rows in the table, and `NOT NULL` requires that a column's value is not null (like in Javascript, null just represents the absence of a value). In general, most columns should be `NOT NULL`. Only allow columns be `NULL` if it makes sense for there to be no data.
+### Other Constraints
 
-Note: when we say "require" in terms of constraints, we mean that any attempt to create or update an entry in the table that will violate the constraint will result in an error. This enables us to assume that all entries in a table satisfy the table's constraints.
+#### `UNIQUE` & `NOT NULL`
+As we mentioned earlier, `PRIMARY KEY` is technically just a combination of the `UNIQUE` and `NOT
+ NULL` constraints. These constraints are self-explanatory; `UNIQUE` requires that a column's
+  value is unique with respect to all other rows in the table, and `NOT NULL` requires that a
+   column's value is not `NULL` (like in Javascript, `NULL` just represents the absence of a value
+   ). In general, most columns should be `NOT NULL`. Only allow columns be `NULL` if it makes sense for there to be no data.
+
+> Note: when we say "require" in terms of constraints, we mean that any attempt to create,
+ update, or delete an entry in the table that will violate the constraint will result in an error
+>. This enables us to assume that all entries in a table satisfy the table's constraints.
 
 Here is an example of how we might define these constraints:
 ```sql
@@ -73,7 +115,7 @@ CREATE TABLE products (
     price numeric
 );
 ```
-What if we no columns in a table are unique by themselves, but the combination of two or more is unique? For example, recall `order_items`, our join table from earlier:
+What if no columns in a table are unique by themselves, but the combination of two or more is unique? For example, recall `order_items`, our join table from earlier:
 ```sql
 CREATE TABLE order_items (
     product_id integer REFERENCES products,
@@ -91,6 +133,7 @@ CREATE TABLE order_items (
 );
 ```
 
+#### `CHECK`
 There is one final important constraint that we will cover today called `CHECK`. `CHECK` allows us to guarantee that some arbitrary expression is true for every entry in our table. For example, let's say we wanted to make sure that all of our product's prices are positive (greater than zero). We might use this definition:
 ```sql
 CREATE TABLE products (
@@ -113,7 +156,13 @@ CREATE TABLE products (
 ```
 Note that the final `CHECK` is on its own row, separate from any column. This is because it is a <em>table</em> constraint rather than a <em>column</em> constraint. Table constraints are defined with respect to the entire table, whereas column constraints are only defined with regards to the column whose line they are defined on. Any column constraint can be written as a table constraint, but the reverse is not true. (Column constraints cannot reference other columns.)
 
-## Distinct
+## Advanced Queries
+Last week, we learned how to construct basic SELECT queries that can read rows and columns from
+ our database. In the real world, though, data is much more complex than just a list of rows and
+  columns. Now, we'll learn some advanced querying techniques that will help us get exactly the
+   data we want using only SQL.
+
+### Distinct
 Normally, we can use the `SELECT` keyword to select all relevant rows from a table. But what if
  we want to only select distinct rows? That is, we want to select all relevant rows that are not
   identical (by the given criteria).
@@ -135,7 +184,7 @@ SELECT DISTINCT name, price FROM products
 selects all rows whose combination of name and price is unique. In other words, the resulting
  table will have two columns, `name` and `price`, and no two rows will have the same value for both.
 
-## Union
+### Union
 Some of you may already be familiar with the mathematical notion of a union -- the combination of
  two sets. Similarly, we can use SQL's `UNION` keyword to combine the results of two queries
  . Note that the queries must reference the same columns: a union of two sets of rows with different
@@ -151,19 +200,20 @@ UNION
 SELECT column1, column2 FROM table WHERE column1 < 5
 ```
 
-## Aggregate Functions
+### Aggregate Functions
 If you've used Excel before, you probably appreciate the statistics operations that allow you to
  quickly get info about data entries, like average() and max(). As you might expect, Postgres
   includes this functionality out of the box.
 
-### Count
+#### Count
 For example, let's say we want to know how many entries are in a table. This is trivial:
 
 ```sql
 SELECT COUNT(*) FROM table
 ```
 
-We can add `WHERE` clauses to count only entries that satisfy some condition, like this:
+The asterisk tells Postgres to count all rows, including `NULL`s and duplicates. We can also add
+ `WHERE` clauses to count only entries that satisfy some condition, like this:
 
 ```sql
 SELECT COUNT(*) FROM table WHERE column3 = false
@@ -171,32 +221,32 @@ SELECT COUNT(*) FROM table WHERE column3 = false
 
 This query returns a table with only a single column `count` and one entry containing the count.
 
-### Min/Max
+#### Min/Max
 To get the minimum or maximum values of a numeric column in a table, we can use the `MIN()` and `MAX
 ()` functions, like this:
 
 ```sql
-SELECT MIN(price) FROM products
+SELECT MIN(price) FROM products;
 ```
 
 Like `COUNT`, this returns a table with a single column `min` and one entry containing the
  minimum value of the queried column.
  
-### Avg
+#### Avg
 Average returns the average of a numeric column:
 
 ```sql
 SELECT AVG(price) FROM products
 ```
 
-### Sum
+#### Sum
 Sum returns the sum of a numeric column:
 
 ```sql
 SELECT SUM(price) FROM products
 ```
 
-## Group By & Having
+### Group By & Having
 Let's say we had a `payments` table defined like this:
 
 ```sql
@@ -212,16 +262,16 @@ What if we want to know how much each customer has paid over all their orders? W
  `GROUP BY` clause to group payments by their `customer_id`, and then use `SUM()` to compute the
   sum.
   
-`SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id`
+```SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id```
 
 Now, imagine we only cared about our most loyal customers -- the ones who've spent more than $200
 . You might think that we could use a `WHERE` clause to only get the groups of payments that sum
  to more than 200. But `WHERE` only works for rows, not groups. Instead, we use the `HAVING
  ` keyword, like this:
  
-`SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id HAVING SUM(amount) > 200`
+```SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id HAVING SUM(amount) > 200```
 
-## Order By
+### Order By
 Often, we'll want to sort the data that we receive from our database. We could do this in our
  application logic, but it's almost always faster to ask the database to do it directly for us
  . Fortunately, SQL makes this trivially easy for us.
@@ -229,16 +279,23 @@ Often, we'll want to sort the data that we receive from our database. We could d
 For example, let's say we wanted to get a list of products sorted from cheapest to most expensive
 . This simple query does that for us:
 
-`SELECT * FROM products ORDER BY price ASC`
+```SELECT * FROM products ORDER BY price ASC;```
 
 Of course `ASC` indicates that the resulting rows will have an ascending price. `DESC` would be
  the opposite.
  
 Sorting works on more than just numeric values. Ordering textual values in `ASC` order sorts by
  alphabetical order, for example.
+ 
+You can also sort on multiple columns as a tie-breaker by separating each term with a comma:
 
-## Case
-The `CASE` statement, similar to if-then-else statement or a switch statement, goes through different conditions and returns a value when the first condition is met. If the first condition is true, a value will be returned and , if not, the rest of the conditions will be evaluated. In case non of the given conditions are true, it returns the value in the `ELSE` claues (just like the `default` case in switch statements).Don't forget to tell the program that your `CASE` statement is done by an `END` clause. Here is what the syntax looks like:
+```SELECT * FROM products ORDER BY column1 ASC, column2 DESC, column3 DESC;```
+
+### Case
+The `CASE` statement, similar to if-then-else statement or a switch statement, goes through
+ different conditions and returns a value when the first condition is met. If the first condition
+  is true, a value will be returned and , if not, the rest of the conditions will be evaluated
+  . In case non of the given conditions are true, it returns the value in the `ELSE` clause (just like the `default` case in switch statements). Don't forget to tell the program that your `CASE` statement is done by an `END` clause. Here is what the syntax looks like:
 
 ```sql
 SELECT ...
@@ -263,10 +320,11 @@ CASE
 END AS PaymentDueFeedback
 FROM payments; 
 ```
-*Note: `AS` is used for renaming a column in the table that we want to be displayed after running a query.*
+> Note: `AS` is used for renaming a column in the table that we want to be displayed after running
+ a query.*
 
 
-## Like
+### Like
 This operation is used with the `WHERE` clause. `LIKE` allows you to find a specific pattern in a column of a table. You can use `%` and `_` in conjuction with `LIKE` if there are other characters before or after the wanted pattern. The percent sign and underscore can be used in combinations as well. 
 - `%` represents zero, one, or multiple characters.
 - `_` represents a single character.
@@ -282,7 +340,7 @@ SELECT * FROM products
 WHERE name LIKE 's%' OR '%s';
 ```
 
-## Join
+### Join
 So far, we've seen how to design tables to help us store related data. For example, we created an e-commerce database with three tables: `orders`, `products`, and `order_items`. Every row in `orders` represents one shopping basket. Every row in `order_items` belongs to one `order` and refers to a `products`, so we can have as many products as we want in one shopping basket.
 
 But storing our data is only one part of our application. Equally important is accessing it. Let's say we want to list all the products in an order. The first step is to obtain all the
@@ -298,7 +356,7 @@ to find all the order_items associated with order 20. Then, for each order item,
 SELECT * FROM products WHERE id = ORDER_ITEM_ID
 ```
 
-but this verbose. Instead, we can use the `JOIN` keyword, which allows us to join two tables
+but this is verbose. Instead, we can use the `JOIN` keyword, which allows us to join two tables
  based on a matching column, like an id. So, we could write:
  
 ```sql
@@ -309,15 +367,16 @@ SELECT p.id AS Product_ID, p.name AS Product_Name, o.id AS Order_ID
     ON Product_ID = o.product_id;
 ```
 
-This table will give us 3 colums representing the Product ID in our order, the name of the product, and finally our order ID in case we wanted to double check that we've got the right products. The rows will contain the list of products in our order.
+This table will give us 3 colums representing the Product id in our order, the name of the product, and finally our order id in case we wanted to double check that we've got the right products. The rows will contain the list of products in our order.
 
-### Different types of joins
+#### Different types of joins
 
 Based on what we want to get from two tables, we can do different types of joins. As you can see in the picture below, some of these different joins are: `INNER JOIN` (or `JOIN` as default in SQL), `LEFT JOIN`, `RIGHT JOIN`, and `FULL JOIN`. 
 
 ![SQL Join Comparison](./img/Joins-in-SQL-Inner-Outer-Left-and-Right-Join.jpg)
 
-`INNER JOIN`: returns rows when there is a match in both tables.
+`INNER JOIN`: returns rows when there is a match in both tables (default if no qualifier is
+ specified).
 
 `LEFT JOIN`: returns all rows from the left table, even if there are no matches in the right table.
 
@@ -327,7 +386,7 @@ Based on what we want to get from two tables, we can do different types of joins
 The joined table will contain all records from both the tables and fill in NULLs for missing matches on either side.
 
 
-## Subquery
+### Subquery
 Subquery's definition is within its name: a query within a query! Subqueries could be nested inside a `SELECT`, `INSERT`, `UPDATE`, `DELETE`, or another subquery. They can output a list of data or individual values. 
 
 We use subqueries as a condition (therefore it's usually used within a `WHERE` clause) and will return data that will be used in the main query and the point of it is to restrict the information that's being retrieved from the database. Make sure you surround your subqueries with paranthesis.
