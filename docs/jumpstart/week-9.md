@@ -302,11 +302,11 @@ but this verbose. Instead, we can use the `JOIN` keyword, which allows us to joi
  based on a matching column, like an id. So, we could write:
  
 ```sql
-SELECT products.id AS Product_ID, products.name AS Product_Name, orders.id AS Order_ID
-FROM order_items 
-    JOIN products
-ON 
-    Product_ID = order_items.product_id;
+SELECT p.id AS Product_ID, p.name AS Product_Name, o.id AS Order_ID
+    -- the trailing 'o' below lets you set a table alias, so you can refer to it in other parts of the query
+    FROM order_items o 
+    JOIN products p
+    ON Product_ID = o.product_id;
 ```
 
 This table will give us 3 colums representing the Product ID in our order, the name of the product, and finally our order ID in case we wanted to double check that we've got the right products. The rows will contain the list of products in our order.
