@@ -332,7 +332,8 @@ Subquery's definition is within its name: a query within a query! Subqueries cou
 
 We use subqueries as a condition (therefore it's usually used within a `WHERE` clause) and will return data that will be used in the main query and the point of it is to restrict the information that's being retrieved from the database. Make sure you surround your subqueries with paranthesis.
 
-Note: Operators could be < = > etc.
+>Note: Operators could be `<`, `=`, `>`, etc.
+
 ```sql
 SELECT column1, column2, ...
 FROM table
