@@ -8,7 +8,7 @@ In an increasingly data-driven world, efficiently configuring and managing a dat
     - Primary Keys
     - Foreign Keys
     - Other Constraints
-        - `UNIQUE`
+        - `UNIQUE` and `NOT NULL`
         - `CHECK`
 - Advanced Queries
     - `DISTINCT`
@@ -19,11 +19,12 @@ In an increasingly data-driven world, efficiently configuring and managing a dat
         - `AVG`
         - `SUM`
         - `GROUP BY` & `HAVING`
-        - `ORDER BY`
-        - `CASE`
-        - `LIKE`
-        - `JOIN`
-        - `SUBQUERY`
+    - `ORDER BY`
+    - `CASE`
+    - `LIKE`
+    - `JOIN`
+        - Different Types of Joins
+    - `SUBQUERY`
     
 
 
@@ -262,14 +263,18 @@ What if we want to know how much each customer has paid over all their orders? W
  `GROUP BY` clause to group payments by their `customer_id`, and then use `SUM()` to compute the
   sum.
   
-```SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id```
+```sql
+SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id
+```
 
 Now, imagine we only cared about our most loyal customers -- the ones who've spent more than $200
 . You might think that we could use a `WHERE` clause to only get the groups of payments that sum
- to more than 200. But `WHERE` only works for rows, not groups. Instead, we use the `HAVING
+ to more than 200. But `WHERE` only works for rows, not groups in the result. Instead, we use the `HAVING
  ` keyword, like this:
  
-```SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id HAVING SUM(amount) > 200```
+```sql
+SELECT customer_id, SUM(amount) FROM payments GROUP BY customer_id HAVING SUM(amount) > 200
+```
 
 ### Order By
 Often, we'll want to sort the data that we receive from our database. We could do this in our
@@ -279,7 +284,9 @@ Often, we'll want to sort the data that we receive from our database. We could d
 For example, let's say we wanted to get a list of products sorted from cheapest to most expensive
 . This simple query does that for us:
 
-```SELECT * FROM products ORDER BY price ASC;```
+```sql
+SELECT * FROM products ORDER BY price ASC
+```
 
 Of course `ASC` indicates that the resulting rows will have an ascending price. `DESC` would be
  the opposite.
@@ -289,7 +296,9 @@ Sorting works on more than just numeric values. Ordering textual values in `ASC`
  
 You can also sort on multiple columns as a tie-breaker by separating each term with a comma:
 
-```SELECT * FROM products ORDER BY column1 ASC, column2 DESC, column3 DESC;```
+```sql
+SELECT * FROM products ORDER BY column1 ASC, column2 DESC, column3 DESC;
+```
 
 ### Case
 The `CASE` statement, similar to if-then-else statement or a switch statement, goes through
@@ -400,4 +409,12 @@ WHERE clause/expressions OPERATOR
     (SELECT column
     FROM table
     WHERE condition);
+```
+
+Here's an example:
+```sql
+SELECT * FROM products
+WHERE id IN (SELECT product_id AS id FROM order_items
+            GROUP BY product_id
+            HAVING COUNT(product_id) > 5) s;
 ```
