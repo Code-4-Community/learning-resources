@@ -172,7 +172,7 @@ git add .
 Which adds all our modified files.
 
 ```shell
-git commit -m "<message" .
+git commit -m "<message>" .
 ```
 
 Which commits our newly updated code.
