@@ -192,7 +192,7 @@ We have to deploy our database to the cloud so that everyone that accesses our a
 Heroku provides us many ways to configure a Postgres database for our application. in fact, Heroku can offer us a Postgres database that we can connect our application to. 
 
 First, we have to run our migration script. This is a command that will migrate our local database schema to our 
-Heroku postgresql database. To do this, we navigate to <strong> src/persist/resources/migrations </strong> directory.
+Heroku PostgreSQL database. To do this, we navigate to <strong> src/persist/resources/migrations </strong> directory.
 Once we are there, there should be a couple of SQL files. These SQL files are what will migrate our local database to our heroku
 postgresql database. To do this we run the command:
 ```shell
