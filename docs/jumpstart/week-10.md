@@ -198,7 +198,7 @@ PostgreSQL database. To do this we run the command:
 ```shell
 heroku pg:psql
 ```
-This will start Heroku's postgres database that is provisioned to us. You should now see that our terminal says that we have connected to our postgresql database server. Now
+This will start a terminal connected to Heroku's Postgres database that is provisioned to us. You should now see that our terminal says that we have connected to our PostgreSQL database server. Now
 we are no longer in our current project directory but rather in our database's server. To leave our database server we run the command:
 ```shell
 \q
