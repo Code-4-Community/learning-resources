@@ -21,12 +21,13 @@ Deploying a program is the act of making a program publicly accessible on the in
 
 ### Why deploy a program?
 
-Developers deploy a program in order to publicly showcase their application and allow people to use it. Deploying a program is a great way to showcase what you built or hopefully provide a service to others. Before we deployed our program, everything was running locally on our machine. If you remember, the URL for our program was localhost followed by the port number. However, other people can't access our localhost because, just like the name says, localhost is our local machine server meant just for us. However, once we deploy a program we are given a public URL which others can access and see our application just as we see it in our localhost.
+Developers deploy a program in order to publicly showcase their application and allow people to use it. Deploying a program is a great way to showcase what you built or hopefully provide a service to others. Currently, our application is running locally on our machine. If you remember, the URL for our program was localhost followed by the port number. Other people can't access our localhost because, just like the name says, localhost is our local machine server meant just for us. We can fix that by deploying to a remote hosting service, like Heroku, which has a public URL others can access and use for your application.
 
 ## Heroku
 
 ### What is Heroku?
-Heroku is a cloud platform that allows developers to deploy their applications quick, easy, and free. Heroku is configured to handle a variety of programming languages and frameworks such as Java, Javascript, Python, Ruby, etc. For our case, Heroku is a great choice. Heroku works by having developers upload their project and Heroku runs our application for us and connects it to a URL waiting to respond to requests. In traditional cloud deployment platforms, developers have to create a virtual machine with a certain Operating System and hardware capabilities and then deploy their application within the application on the virtual machine and then connect it to a URL. A virtual machine can be envisioned as a computer that is separate from our physical computer. In this case, the virtual machine sits in some lab that the cloud provider your using owns, filled with hundreds of other VM's and you basically "rent" these machines. This is a complicated and long process. Thankfully, Heroku simplifies the process. All developers have to do is connect their code with Heroku and Heroku is in charge of doing the rest. 
+Heroku is a cloud platform that allows developers to deploy their applications quick, easy, and free. Heroku is configured to handle a variety of programming languages and frameworks such as Java, Javascript, Python, Ruby, etc. For our case, Heroku is a great choice. Developers upload their project to Heroku's deployment platform and our application gets assigned to a URL. This URL is then waiting to respond to incoming requests. In traditional cloud deployment platforms, developers have to manually configure operating systems, deployment methods and procedures, and URL mappings on a remote server somewhere, which can be a long and complicated process. Thankfully, Heroku simplifies the process. All developers have to do is connect their code with Heroku, and Heroku takes care of the rest!
+  All developers have to do is connect their code with Heroku and Heroku is in charge of doing the rest. 
 
 ### Why do we use Heroku
 The main reason we're going to use Heroku is because it is easier to use than traditional cloud deployment platforms, as previously mentioned, and it allows us to deploy our application for free. When you deploy your application you need some computing resources. These computing resources cost money, therefore, even to run a very simple server with minimum hardware capabilities can cost around 5-10 dollars a month. Heroku allows us to use these minimum computing resources for free, with some restrictions. Of course if you want to upgrade your computing resources to use more RAM or CPU, you can pay for those options.
@@ -35,7 +36,7 @@ The main reason we're going to use Heroku is because it is easier to use than tr
 The way our application is structured, our frontend and backend are separated. They are not dependent on one another and are developed in different environments and tech stacks. Therefore, we have to deploy our frontend and backend separately. Thankfully, Heroku provides great documentation as to how to deploy our React frontend application and our Java backend. However, before you deploy any application on Heroku, we'll need to install Heroku on our machine. First, we need to create an account on Heroku. The link to sign up is [signup.heroku.com](https://signup.heroku.com/). Once you have signed up for a Heroku account, you have to install some of its software on your machine. Because there are different installation methods depending on the machine that you are using, the download instructions for every operating system can be found [here](https://devcenter.heroku.com/articles/heroku-cli). You are installing Heroku's command line application, which will allow you to open a terminal and run Heroku commands on the terminal.
 
 ### Deploy Frontend
-To deploy our frontend application, we need to navigate to the directory that contains our Frontend application. Once we have navigated to our directory we have to initialize a git repository if a git repository has not been initialized yet. To initialize a git repository we run the command:
+To deploy our frontend application, we need to navigate to the directory that contains our frontend application. Once we have navigated to our directory we have to initialize a git repository if a git repository has not been initialized yet. To initialize a git repository we run the command:
  ```shell
  git init
  ```
@@ -58,7 +59,7 @@ To create a project we type the command:
 ```shell 
 heroku create (PROJECT_NAME) --buildpack mars/create-react-app
 ```
-By doing this, Heroku is creating a new deployment server for us and giving us a custom URL for us to use. The buidlpack part is our way of asserting
+By doing this, Heroku is creating a new deployment server for us and giving us a custom URL for us to use. The buildpack part is our way of asserting
 that our project is a React project. Usually, Heroku automatically detects that it is a React application but sometimes it does not. We add the buildpack to make sure we avoid those errors. Now comes the part where we connect our application with our new Heroku created project. 
 ```shell
 git remote add heroku
@@ -72,7 +73,7 @@ the master's branch we can run the command:
 ```shell
 git push heroku <branch_name>:master
 ```
-Now that our Frontend code is uploaded to Heroku, we can use the url Heroku gave us to open our application online. Now anyone with this link will be able to see our application.
+Now that our frontend code is uploaded to Heroku, we can use the url Heroku gave us to open our application online. Now anyone with this link will be able to see our application.
 To open our application we can run:
 ```shell 
 heroku open
@@ -82,10 +83,34 @@ However, this is only the user interface portion of our application. Now we have
 
 
 ### Deploy backend
-To deploy our backend application, first we have to configure our application. First, we have to navigate to our pom.xml 
-file which gets created after every maven project. We have to configure all our app's dependencies through maven so that when we export our Java project our dependencies also get exported.
+
+To deploy our backend application, first we have to configure our application. Next, we have to navigate to our pom.xml 
+file. We have to configure all our app's dependencies through maven so that when we export our Java project our dependencies also get exported.
 A dependency is external code from other people or organizations we want to use in our application. Usually, if we did not have problems during local development, then our pom.xml file should be fine and ready to be exported.
 If not, then now is the time to fix it. Potential fixes include using different versions of a dependency or getting rid of dependencies that we did not end up using.
+
+We actually need to add a dependency ourselves to deploy our backend.
+
+``` xml
+<plugin>
+        <!-- Maven's plugin for copying our dependencies below into our executable Jar file. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals><goal>copy-dependencies</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+```
+
+ 
+This dependency is a maven dependency that copies our dependencies and puts them into a jar file. A jar file is a file that runs our Java application. We'll explain
+more about jar files in a little bit.
+
 Next, we have to create a Procfile. This is a text file that that configures Heroku to set up your Java application. Our Procfile must look like:
 
 ```ignorelang
@@ -99,9 +124,10 @@ web: java $JAVA_OPTS -jar service/target/service-1.0-SNAPSHOT-jar-with-dependenc
 
 This Procfile specifies that our application will use the web, indicated by the "web" portion, and our "java" section specifies how to start it up. 
 The last portion of the Procfile creates our jar file. A jar file is a file used to run a Java application. You can use a jar file to run your Java code anywhere. It's easily exported and
-is how Heroku runs our application. 
+is how Heroku runs our application. Our Procfile is located in our project's root directory.
 
-The next configuration we need is a <strong> system.properties </strong> file. This is a file that Heroku uses to define our application's properties, such as the Java and Maven versions. 
+The next configuration we need is a <strong> system.properties </strong> file. This is a file that Heroku uses to define our application's properties, such as the Java and Maven versions. This properties
+file is different from our <strong> service/.../resources/properties </strong> directory as this property file is only for Heroku.
 
 Our system.properties looks like
 ```ignorelang
@@ -150,6 +176,7 @@ This will push our code to the Heroku server. Again, if we want to deploy a vers
 ```shell
 git push heroku <branch_name>:master
 ```
+This will push our designated git branch but Heroku pretends that this branch is the master branch.
 
 After pushing our code to the Heroku server we should be given a URL. This URL is now the URL that our frontend needs to make request to.
 To verify that our backend deployed successfully, we again run the command:
@@ -186,6 +213,10 @@ Will push the new changes to Heroku and update our current project.
 Now, our frontend application will make requests to our new request URL. 
 
 ### Deploy PostgreSQL
+Before we proceed in deploying our database we have to note one file. Under our <strong> service/src/main/java/com/codeforcommunity/util</strong> file you will see a class called PropertiesLoader.
+This class will examine our resources file under <strong> persist/src/main/resources </strong> and get our database properties. This is useful because this is how our backend service knows where 
+to find our PostgreSQL database. 
+
 Okay so now we have deployed our frontend and our backend and now we have to deploy our database. Similar to our frontend and backend, our database has been running locally on our machine. Therefore, no one else has access to this data.
 We have to deploy our database to the cloud so that everyone that accesses our application shares the same database. 
 
@@ -198,8 +229,8 @@ PostgreSQL database. To do this we run the command:
 ```shell
 heroku pg:psql
 ```
-This will start a terminal connected to Heroku's Postgres database that is provisioned to us. You should now see that our terminal says that we have connected to our PostgreSQL database server. Now
-we are no longer in our current project directory but rather in our database's server. To leave our database server we run the command:
+This will start a terminal connected to Heroku's Postgres database that is provisioned to us. You should now see that our terminal says that we have connected to our PostgreSQL database server. 
+Now we are running PostgreSQL commands directly on the database server. To leave our database server we run the command:
 ```shell
 \q
 ``` 
@@ -209,7 +240,16 @@ To run the migrations scripts we run the command:
 ```shell 
 \i <file_name>.sql
 ```
-We have to run this command in order and one at a time for each file. Once we ran the migration scripts, we have now successfully deployed and migrated
+We have to run this command in order and one at a time for each file. 
+
+Additionally, another script we can run is our seeder script. This script will give our database same base data to use so it is not 
+an empty database. To run our seeder script we navigate to our seeder folder which is under <strong> src/persist/resources/seeder</strong>. Once we are in this directory we run the same commands as our migration script:
+ 
+```shell 
+\i <file_name>.sql
+```
+ 
+Once we ran both our migration and seeder scripts, we successfully deployed and migrated
 our database to Heroku. We now have a fully functional and complete web application that is accessible by anyone.
 
 Congratulations everyone! Everyone from the Jumpstart team hopes everyone had a lot of fun and learned a lot this semester. If you have any questions do not hesitate to reach out to us!
