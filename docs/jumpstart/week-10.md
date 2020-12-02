@@ -101,7 +101,7 @@ This Procfile specifies that our application will use the web, indicated by the 
 The last portion of the Procfile creates our jar file. A jar file is a file used to run a Java application. You can use a jar file to run your Java code anywhere. It's easily exported and
 is how Heroku runs our application. 
 
-The next configuration we need a <strong> system.properties </strong> file. This is a file that Heroku uses to define our application's properties such as our Java and Maven version. 
+The next configuration we need is a <strong> system.properties </strong> file. This is a file that Heroku uses to define our application's properties, such as the Java and Maven versions. 
 
 Our system.properties looks like
 ```ignorelang
