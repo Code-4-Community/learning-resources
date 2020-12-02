@@ -194,7 +194,7 @@ Heroku provides us many ways to configure a Postgres database for our applicatio
 First, we have to run our migration script. This is a command that will migrate our local database schema to our 
 Heroku PostgreSQL database. To do this, we navigate to <strong> src/persist/resources/migrations </strong> directory.
 Once we are there, there should be a couple of SQL files. These SQL files are what will migrate our local database to our Heroku
-postgresql database. To do this we run the command:
+PostgreSQL database. To do this we run the command:
 ```shell
 heroku pg:psql
 ```
