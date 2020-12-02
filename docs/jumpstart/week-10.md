@@ -59,8 +59,7 @@ To create a project we type the command:
 heroku create (PROJECT_NAME) --buildpack mars/create-react-app
 ```
 By doing this, Heroku is creating a new deployment server for us and giving us a custom URL for us to use. The buidlpack part is our way of asserting
-that our project is a React project. Usually, Heroku automatically detects that it is a React application but sometimes it does not. We add the buildpack just to avoid any errors
-in case. Now comes the part where we connect our application with our new Heroku created project. 
+that our project is a React project. Usually, Heroku automatically detects that it is a React application but sometimes it does not. We add the buildpack to make sure we avoid those errors. Now comes the part where we connect our application with our new Heroku created project. 
 ```shell
 git remote add heroku
 ```
@@ -214,6 +213,5 @@ We have to run this command in order and one at a time for each file. Once we ra
 our database to Heroku. We now have a fully functional and complete web application that is accessible by anyone.
 
 Congratulations everyone! Everyone from the Jumpstart team hopes everyone had a lot of fun and learned a lot this semester. If you have any questions do not hesitate to reach out to us!
-
 
 
