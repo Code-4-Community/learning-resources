@@ -92,7 +92,7 @@ Next, we have to create a Procfile. This is a text file that that configures Her
 web: java $JAVA_OPTS -cp target/classes:target/dependency/* <project main package>
 ```
 
-In our case, if you download our catch-up code, our procfile looks like:
+In our case, if you download our catch-up code, our Procfile looks like:
 ```ignorelang
 web: java $JAVA_OPTS -jar service/target/service-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
