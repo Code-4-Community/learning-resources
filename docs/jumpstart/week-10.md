@@ -97,7 +97,7 @@ In our case, if you download our catch-up code, our Procfile looks like:
 web: java $JAVA_OPTS -jar service/target/service-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-What this procfile is doing is specifying that our application will use the HTTP protocol, indicated by the "web" portion and our "java" section specifies it is a Java application. 
+This Procfile specifies that our application will use the web, indicated by the "web" portion, and our "java" section specifies how to start it up. 
 The last portion of the Procfile creates our jar file. A jar file is a file used to run a java application. You can use a jar file to run your java code anywhere. It's easily exported and
 is how Heroku runs our application. 
 
