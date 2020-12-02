@@ -84,7 +84,7 @@ However, this is only the user interface portion of our application. Now we have
 ### Deploy backend
 To deploy our backend application, first we have to configure our application. First, we have to navigate to our pom.xml 
 file which gets created after every maven project. We have to configure all our app's dependencies through maven so that when we export our Java project our dependencies also get exported.
-An app's dependencies is external code that other people wrote that we use in our application. Usually, if we did not have problems during local development, then our pom.xml file should be fine and ready to be exported.
+A dependency is external code from other people or organizations we want to use in our application. Usually, if we did not have problems during local development, then our pom.xml file should be fine and ready to be exported.
 If not, then now is the time to fix it. Potential fixes include using different versions of a dependency or getting rid of dependencies that we did not end up using.
 Next, we have to create a Procfile. This is a text-like file that that acts almost like a configuration file that Heroku uses to set up your java application. Our procfile must look like:
 
@@ -213,4 +213,3 @@ We have to run this command in order and one at a time for each file. Once we ra
 our database to Heroku. We now have a fully functional and complete web application that is accessible by anyone.
 
 Congratulations everyone! Everyone from the Jumpstart team hopes everyone had a lot of fun and learned a lot this semester. If you have any questions do not hesitate to reach out to us!
-
