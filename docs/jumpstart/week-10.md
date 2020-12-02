@@ -72,7 +72,7 @@ the master's branch we can run the command:
 ```shell
 git push heroku <branch_name>:master
 ```
-Now that our Frontend code is uploaded to Heroku, we can use the url Heroku gave us to open our application online. Now, anyone with this link will be able to see our application.
+Now that our Frontend code is uploaded to Heroku, we can use the url Heroku gave us to open our application online. Now anyone with this link will be able to see our application.
 To open our application we can run:
 ```shell 
 heroku open
@@ -213,5 +213,4 @@ We have to run this command in order and one at a time for each file. Once we ra
 our database to Heroku. We now have a fully functional and complete web application that is accessible by anyone.
 
 Congratulations everyone! Everyone from the Jumpstart team hopes everyone had a lot of fun and learned a lot this semester. If you have any questions do not hesitate to reach out to us!
-
 
