@@ -17,7 +17,7 @@
 
 ### What does it mean to deploy our program?
 
-Deploying a program is the act of making a program publicly accessible on the internet through a URL. A program that is deployed is running on either a remote or local server. A server is basically a machine that is running a program waiting for requests. The server that your program is deployed on is running your program and once the URL that maps to your program is requested, the server is in charge of performing the specified actions that you want it to do based on the request URL that you provided.
+Deploying a program is the act of making a program publicly accessible on the internet through a URL. A program that is deployed is running on either a remote or local server. A server is basically a machine that is running a program waiting for requests. The server that your program is deployed on is running your program, and once the URL that maps to your program is requested, the server is in charge of performing whatever operations you programmed it to do!
 
 ### Why deploy a program?
 
@@ -26,17 +26,16 @@ Developers deploy a program in order to publicly showcase their application and 
 ## Heroku
 
 ### What is Heroku?
-Heroku is a cloud platform that allows developers to deploy their applications quick, easy, and free. Heroku is configured to handle a variety of programming languages and frameworks such as Java, Javascript, Python, Ruby, etc. For our case, Heroku is a great choice. Developers upload their project to Heroku's deployment platform and our application gets assigned to a URL. This URL is then waiting to respond to incoming requests. In traditional cloud deployment platforms, developers have to manually configure operating systems, deployment methods and procedures, and URL mappings on a remote server somewhere, which can be a long and complicated process. Thankfully, Heroku simplifies the process. All developers have to do is connect their code with Heroku, and Heroku takes care of the rest!
-  All developers have to do is connect their code with Heroku and Heroku is in charge of doing the rest. 
+Heroku is a cloud platform that allows developers to quickly and easily deploy their applications for free. It's configured to handle a variety of programming languages and frameworks such as Java, Javascript, Python, Ruby, etc. For our case, Heroku is a great choice. Developers upload their project to Heroku's deployment platform and our application gets assigned to a URL. This URL is then waiting to respond to incoming requests. In traditional cloud deployment platforms, developers have to manually configure operating systems, deployment methods and procedures, and URL mappings on a remote server somewhere, which can be a long and complicated process. Thankfully, Heroku simplifies the process. All developers have to do is connect their code with Heroku, and Heroku takes care of the rest!
 
 ### Why do we use Heroku
 The main reason we're going to use Heroku is because it is easier to use than traditional cloud deployment platforms, as previously mentioned, and it allows us to deploy our application for free. When you deploy your application you need some computing resources. These computing resources cost money, therefore, even to run a very simple server with minimum hardware capabilities can cost around 5-10 dollars a month. Heroku allows us to use these minimum computing resources for free, with some restrictions. Of course if you want to upgrade your computing resources to use more RAM or CPU, you can pay for those options.
 
 ### Install Heroku
-The way our application is structured, our frontend and backend are separated. They are not dependent on one another and are developed in different environments and tech stacks. Therefore, we have to deploy our frontend and backend separately. Thankfully, Heroku provides great documentation as to how to deploy our React frontend application and our Java backend. However, before you deploy any application on Heroku, we'll need to install Heroku on our machine. First, we need to create an account on Heroku. The link to sign up is [signup.heroku.com](https://signup.heroku.com/). Once you have signed up for a Heroku account, you have to install some of its software on your machine. Because there are different installation methods depending on the machine that you are using, the download instructions for every operating system can be found [here](https://devcenter.heroku.com/articles/heroku-cli). You are installing Heroku's command line application, which will allow you to open a terminal and run Heroku commands on the terminal.
+The way our application is structured, our frontend and backend are separated. They are not dependent on one another and are developed in different environments and tech stacks. Therefore, we have to deploy our frontend and backend separately. Thankfully, Heroku provides great documentation as to how to deploy our React frontend and Java backend. However, before you deploy any application on Heroku, we'll need to install Heroku on our machine. First, we need to create an account on Heroku. The link to sign up is [signup.heroku.com](https://signup.heroku.com/). Once you have signed up for a Heroku account, you have to install some of its software on your machine. Because there are different installation methods depending on the machine that you are using, the download instructions for every operating system can be found [here](https://devcenter.heroku.com/articles/heroku-cli). You are installing Heroku's command line application, which will allow you to open a terminal and run Heroku commands on the terminal.
 
 ### Deploy Frontend
-To deploy our frontend application, we need to navigate to the directory that contains our frontend application. Once we have navigated to our directory we have to initialize a git repository if a git repository has not been initialized yet. To initialize a git repository we run the command:
+To deploy our frontend application, we need to navigate to its directory. Once we have navigated to the directory we have to initialize a git repository if a git repository has not been initialized yet. To initialize a git repository we run the command:
  ```shell
  git init
  ```
@@ -53,7 +52,7 @@ Once we have committed our code, we now have to connect our downloaded Heroku ap
 ```shell 
 heroku login
 ```
-follow the instructions to enter our Heroku credentials. Once we have logged in, we now have to create a new Heroku project. 
+Then follow the instructions to enter our Heroku credentials. Once we have logged in, we now have to create a new Heroku project. 
 
 To create a project we type the command:
 ```shell 
@@ -93,18 +92,18 @@ We actually need to add a dependency ourselves to deploy our backend.
 
 ``` xml
 <plugin>
-        <!-- Maven's plugin for copying our dependencies below into our executable Jar file. -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.0.1</version>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals><goal>copy-dependencies</goal></goals>
-          </execution>
-        </executions>
-      </plugin>
+    <!-- Maven's plugin for copying our dependencies below into our executable Jar file. -->
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <version>3.0.1</version>
+    <executions>
+      <execution>
+        <id>copy-dependencies</id>
+        <phase>package</phase>
+        <goals><goal>copy-dependencies</goal></goals>
+      </execution>
+    </executions>
+  </plugin>
 ```
 
  
@@ -218,7 +217,7 @@ This class will examine our resources file under <strong> persist/src/main/resou
 to find our PostgreSQL database. 
 
 Okay so now we have deployed our frontend and our backend and now we have to deploy our database. Similar to our frontend and backend, our database has been running locally on our machine. Therefore, no one else has access to this data.
-We have to deploy our database to the cloud so that everyone that accesses our application shares the same database. 
+We have to deploy our database to the cloud so that everyone that accesses our application shares the same database schema. 
 
 Heroku provides us many ways to configure a Postgres database for our application. in fact, Heroku can offer us a Postgres database that we can connect our application to. 
 
