@@ -49,16 +49,11 @@ Once all the files are added, we can call
 git commit -m 'commit message'
 ```
 
-Once we have committed our code, we now have to push it into our master branch on git. To do this we run the command:
 
-```shell
-git push <branch_name>:master
-```
-
-If you have been working from the starter code from the first week, then our branch name is called starter-code. If you have created your own
-git repository, make sure to replace <branch_name> with the name of your branch if you are <strong> not </strong> in the master branch already.
-
-Once we have pushed our code, we now have to connect our downloaded Heroku application with our Heroku account. We run the command:
+If you have been working from the starter code from the first week, then our branch name is called starter-code. To merge that into master, you can run the following commands: `git merge master` to add your changes to master, and `git checkout master` to switch to the master branch.
+If you have created your own
+git repository (if your `git init` command succeeded a minute ago), and you haven't created any branches, then you'll already be on master.
+We now have to connect our downloaded Heroku application with our Heroku account. We run the command:
 ```shell 
 heroku login
 ```
@@ -122,7 +117,7 @@ We actually need to add a dependency ourselves to deploy our backend.
 
  
 This dependency is a maven dependency that copies our dependencies and puts them into a jar file. A jar file is a file that runs our Java application. We'll explain
-more about jar files in a little bit. Make sure this dependency is added under the `<plugins>` tag (make sure you <strong> don't </strong> put it under `<pluginManagement>`:
+more about jar files in a little bit. Make sure this dependency is added under the `<plugins>` tag (make sure you <strong> don't </strong> put it under `<pluginManagement>`):
 
 ``` xml
 <plugins>
@@ -177,21 +172,6 @@ git commit -m
 ```
 which commits our added files
 
-Once we have committed our code, we now have to push it into our master branch on git. To do this we run the command:
-
-```shell
-git push <branch_name>:master
-```
-
-If you have been working from the starter code from the first week, then our branch name is called starter-code. If you have created your own
-git repository, make sure to replace <branch_name> with the name of your branch if you are <strong> not </strong> in the master branch already.
-
-
-We should already be logged into Heroku because we deployed our frontend code but if we're not, then we have to login again using:
-```shell
-heroku login
-```
-
 After logging in we run:
 
 ```shell
@@ -202,11 +182,11 @@ which creates a new project on Heroku that represents our backend
 ```shell
 git push heroku master
 ```
-This will push our code to the Heroku server. Again, if we want to deploy a version that is not in our master branch we run the command:
+This will push our code to the Heroku server. Again, if we want to deploy, we run the command:
 ```shell
-git push heroku <branch_name>:master
+git push heroku <branch_name>
 ```
-This will push our designated git branch but Heroku pretends that this branch is the master branch.
+This will push our designated git branch. Again, you should merge your branch into master using the steps above if you're not on master already.
 
 After pushing our code to the Heroku server we should be given a URL. This URL is now the URL that our frontend needs to make request to.
 To verify that our backend deployed successfully, we again run the command:
