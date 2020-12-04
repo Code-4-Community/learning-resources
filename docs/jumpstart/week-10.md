@@ -49,20 +49,6 @@ Once all the files are added we can call
 git commit -m 'commit message'
 ```
 
-If we already had a git repository then first let's push our code to the master branch before deploying our frontend.
-In case you forgot the steps to push our code is:
-
-```shell 
-git add .
-```
-
-```shell 
-git commit -m "<message>"
-```
-
-```shell 
-git push
-``` 
 
 Once we have committed our code, we now have to connect our downloaded Heroku application with our Heroku account. We run the command:
 ```shell 
@@ -76,10 +62,6 @@ heroku create (PROJECT_NAME) --buildpack mars/create-react-app
 ```
 By doing this, Heroku is creating a new deployment server for us and giving us a custom URL for us to use. The buildpack part is our way of asserting
 that our project is a React project. Usually, Heroku automatically detects that it is a React application but sometimes it does not. We add the buildpack to make sure we avoid those errors.
-Heroku should automatically connect our git repository to the newly created Heroku project but in case it did not we run the command:
-```shell
-git remote add heroku
-```
 This will add Heroku to our git repository which is how we will push our code to Heroku. Finally, to push our code we run the command: 
 ```shell
 git push heroku master
@@ -90,7 +72,7 @@ the master's branch we can run the command:
 git push heroku <branch_name>:master
 ```
 
-This will push our designated git branch but Heroku pretends that this branch is the master branch.
+This will push our designated git branch, but git pretends that this branch is master.
 
 Now that our frontend code is uploaded to Heroku, we can use the url Heroku gave us to open our application online. Now anyone with this link will be able to see our application.
 To open our application we can run:
@@ -128,11 +110,12 @@ We actually need to add a dependency ourselves to deploy our backend.
 
  
 This dependency is a maven dependency that copies our dependencies and puts them into a jar file. A jar file is a file that runs our Java application. We'll explain
-more about jar files in a little bit. Make sure this dependency is added under:
+more about jar files in a little bit. Make sure this dependency is added under the `<plugins>` tag (make sure you <strong> don't </strong> put it under `<pluginManagement>`:
+
  ``` xml
- <pluginManagement>
+ <plugins>
 <!-- Insert Dependency here -->
-</pluginManagement
+</plugins>
 ```
 
 
@@ -148,8 +131,8 @@ web: java $JAVA_OPTS -jar service/target/service-1.0-SNAPSHOT-jar-with-dependenc
 ```
 
 This Procfile specifies that our application will use the web, indicated by the "web" portion, and our "java" section specifies how to start it up. 
-The last portion of the Procfile creates our jar file. A jar file is a file used to run a Java application. You can use a jar file to run your Java code anywhere. It's easily exported and
-is how Heroku runs our application. Our Procfile is located in our project's root directory.
+The last portion of the Procfile specifies how to run our jar file. A jar file is a file used to run a Java application. You can use a jar file to run your Java code anywhere. It's easily exported and
+is how Heroku runs our application. <strong> Our Procfile is located in our project's root directory. </strong>
 
 The next configuration we need is a <strong> system.properties </strong> file. This is a file that Heroku uses to define our application's properties, such as the Java and Maven versions. This properties
 file is different from our <strong> service/.../resources/properties </strong> directory as this property file is only for Heroku.
@@ -159,7 +142,7 @@ Our system.properties looks like
 java.runtime.version=11
 maven.version=3.6.2
 ```
-Make sure this file is in our root directory so that Heroku can easily identify this file.
+<strong> Make sure this file is in our root directory with your Procfile so that Heroku can easily identify this file. </strong>
 
 Once we have all of our configurations set up, we can begin deploying our backend. Navigate to our backend directory and run the command:
 
@@ -181,11 +164,6 @@ which adds all our files to our project's git repository
 git commit -m
 ```
 which commits our added files
-
-```shell script
-git push
-```
-which pushes our code to the master branch.
 
 
 We should already be logged into Heroku because we deployed our frontend code but if we're not, then we have to login again using:
