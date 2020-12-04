@@ -37,20 +37,28 @@ The way our application is structured, our frontend and backend are separated. T
 ### Deploy Frontend
 
 To deploy our frontend application, we need to navigate to its directory. Once we have navigated to the directory we have to initialize a git repository if a git repository has not been initialized yet. To initialize a git repository we run the command:
- ```shell
- git init
- ```
- After running our git init command, we have to add our project's files to the git repository. To add the files we type the command:
-  ```shell
-  git add .
-  ```
-Once all the files are added we can call
+```shell
+git init
+```
+After running our git init command, we have to add our project's files to the git repository. To add the files we type the command:
+```shell
+git add .
+```
+Once all the files are added, we can call
 ```shell
 git commit -m 'commit message'
 ```
 
+Once we have committed our code, we now have to push it into our master branch on git. To do this we run the command:
 
-Once we have committed our code, we now have to connect our downloaded Heroku application with our Heroku account. We run the command:
+```shell
+git push <branch_name>:master
+```
+
+If you have been working from the starter code from the first week, then our branch name is called starter-code. If you have created your own
+git repository, make sure to replace <branch_name> with the name of your branch if you are <strong> not </strong> in the master branch already.
+
+Once we have pushed our code, we now have to connect our downloaded Heroku application with our Heroku account. We run the command:
 ```shell 
 heroku login
 ```
@@ -85,6 +93,10 @@ However, this is only the user interface portion of our application. Now we have
 
 ### Deploy backend
 
+Before we proceed in deploying our backend we have to note one file. Under our <strong> service/src/main/java/com/codeforcommunity/util</strong> directory you will see a class called PropertiesLoader.
+This class will examine our resources file under <strong> persist/src/main/resources </strong> and get our database properties. This is useful because this is how our backend service knows where 
+to find our PostgreSQL database. It will also specify the port number in which our backend service will run in.  
+
 To deploy our backend application, first we have to configure our application. Next, we have to navigate to our pom.xml 
 file. We have to configure all our app's dependencies through maven so that when we export our Java project our dependencies also get exported.
 A dependency is external code from other people or organizations we want to use in our application. Usually, if we did not have problems during local development, then our pom.xml file should be fine and ready to be exported.
@@ -112,8 +124,8 @@ We actually need to add a dependency ourselves to deploy our backend.
 This dependency is a maven dependency that copies our dependencies and puts them into a jar file. A jar file is a file that runs our Java application. We'll explain
 more about jar files in a little bit. Make sure this dependency is added under the `<plugins>` tag (make sure you <strong> don't </strong> put it under `<pluginManagement>`:
 
- ``` xml
- <plugins>
+``` xml
+<plugins>
 <!-- Insert Dependency here -->
 </plugins>
 ```
@@ -165,6 +177,15 @@ git commit -m
 ```
 which commits our added files
 
+Once we have committed our code, we now have to push it into our master branch on git. To do this we run the command:
+
+```shell
+git push <branch_name>:master
+```
+
+If you have been working from the starter code from the first week, then our branch name is called starter-code. If you have created your own
+git repository, make sure to replace <branch_name> with the name of your branch if you are <strong> not </strong> in the master branch already.
+
 
 We should already be logged into Heroku because we deployed our frontend code but if we're not, then we have to login again using:
 ```shell
@@ -206,7 +227,7 @@ This creates a configuration variable called REQUEST_URL which maps to the value
 replace where we write <strong> REACT_APP_API_DOMAIN </strong> with <strong> process.env.REQUEST_URL </strong>
 
 Therefore, everytime we make a request, our React application will look for our current processes configuration variable called REQUEST_URL, which Heroku 
-stored, and make requests using that URL.
+stored, and make requests using that URL. Make sure that after you do this step you remove the .env.production file in the root directory.
 
 Now that we changed our API request URL we have to re-deploy our frontend with this modified changes. To do this,
 we simply navigate back to our frontend project directory and type in:
@@ -230,10 +251,6 @@ Will push the new changes to Heroku and update our current project.
 Now, our frontend application will make requests to our new request URL. 
 
 ### Deploy PostgreSQL
-Before we proceed in deploying our database we have to note one file. Under our <strong> service/src/main/java/com/codeforcommunity/util</strong> file you will see a class called PropertiesLoader.
-This class will examine our resources file under <strong> persist/src/main/resources </strong> and get our database properties. This is useful because this is how our backend service knows where 
-to find our PostgreSQL database. 
-
 Okay so now we have deployed our frontend and our backend and now we have to deploy our database. Similar to our frontend and backend, our database has been running locally on our machine. Therefore, no one else has access to this data.
 We have to deploy our database to the cloud so that everyone that accesses our application shares the same database schema. 
 
