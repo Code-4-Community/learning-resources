@@ -35,6 +35,7 @@ The main reason we're going to use Heroku is because it is easier to use than tr
 The way our application is structured, our frontend and backend are separated. They are not dependent on one another and are developed in different environments and tech stacks. Therefore, we have to deploy our frontend and backend separately. Thankfully, Heroku provides great documentation as to how to deploy our React frontend and Java backend. However, before you deploy any application on Heroku, we'll need to install Heroku on our machine. First, we need to create an account on Heroku. The link to sign up is [signup.heroku.com](https://signup.heroku.com/). Once you have signed up for a Heroku account, you have to install some of its software on your machine. Because there are different installation methods depending on the machine that you are using, the download instructions for every operating system can be found [here](https://devcenter.heroku.com/articles/heroku-cli). You are installing Heroku's command line application, which will allow you to open a terminal and run Heroku commands on the terminal.
 
 ### Deploy Frontend
+
 To deploy our frontend application, we need to navigate to its directory. Once we have navigated to the directory we have to initialize a git repository if a git repository has not been initialized yet. To initialize a git repository we run the command:
  ```shell
  git init
@@ -48,6 +49,21 @@ Once all the files are added we can call
 git commit -m 'commit message'
 ```
 
+If we already had a git repository then first let's push our code to the master branch before deploying our frontend.
+In case you forgot the steps to push our code is:
+
+```shell 
+git add .
+```
+
+```shell 
+git commit -m "<message>"
+```
+
+```shell 
+git push
+``` 
+
 Once we have committed our code, we now have to connect our downloaded Heroku application with our Heroku account. We run the command:
 ```shell 
 heroku login
@@ -59,7 +75,8 @@ To create a project we type the command:
 heroku create (PROJECT_NAME) --buildpack mars/create-react-app
 ```
 By doing this, Heroku is creating a new deployment server for us and giving us a custom URL for us to use. The buildpack part is our way of asserting
-that our project is a React project. Usually, Heroku automatically detects that it is a React application but sometimes it does not. We add the buildpack to make sure we avoid those errors. Now comes the part where we connect our application with our new Heroku created project. 
+that our project is a React project. Usually, Heroku automatically detects that it is a React application but sometimes it does not. We add the buildpack to make sure we avoid those errors.
+Heroku should automatically connect our git repository to the newly created Heroku project but in case it did not we run the command:
 ```shell
 git remote add heroku
 ```
@@ -72,6 +89,9 @@ the master's branch we can run the command:
 ```shell
 git push heroku <branch_name>:master
 ```
+
+This will push our designated git branch but Heroku pretends that this branch is the master branch.
+
 Now that our frontend code is uploaded to Heroku, we can use the url Heroku gave us to open our application online. Now anyone with this link will be able to see our application.
 To open our application we can run:
 ```shell 
@@ -108,7 +128,13 @@ We actually need to add a dependency ourselves to deploy our backend.
 
  
 This dependency is a maven dependency that copies our dependencies and puts them into a jar file. A jar file is a file that runs our Java application. We'll explain
-more about jar files in a little bit.
+more about jar files in a little bit. Make sure this dependency is added under:
+ ``` xml
+ <pluginManagement>
+<!-- Insert Dependency here -->
+</pluginManagement
+```
+
 
 Next, we have to create a Procfile. This is a text file that that configures Heroku to set up your Java application. Our Procfile must look like:
 
@@ -144,7 +170,7 @@ mvn clean install
 This will clean our application and build it again.
 Once we verified that our application successfully built, we follow the same steps as deploying our frontend code.
 
-We run the commands:
+If we have not committed our changes to the master branch make so to do so with:
 
 ```shell
 git add .
@@ -155,6 +181,12 @@ which adds all our files to our project's git repository
 git commit -m
 ```
 which commits our added files
+
+```shell script
+git push
+```
+which pushes our code to the master branch.
+
 
 We should already be logged into Heroku because we deployed our frontend code but if we're not, then we have to login again using:
 ```shell
@@ -184,11 +216,19 @@ heroku open
 ```
 which should open a new browser window with a message at the top saying <strong> Hello Jumpstarters! </strong>
 
-Now that our backend and frontend are deployed, we have to configure our requests URL. We have to navigate back to our frontend project and modify our 
-<strong> .env.production </strong> file and change it from:
+Now that our backend and frontend are deployed, we have to configure our requests URL. 
+To do this, we have to use a feature in Heroku called Heroku configuration files or Heroku secrets. Basically, this is a way for us
+to write down important information such as our backend request route in a secure and inaccessible way. To do this we 
+have to navigate back to our frontend project. Now we run the command:
+```shell
+heroku config:set REQUEST_URL=<backend_url>
+```
 
-~~REACT_APP_API_DOMAIN = "http://localhost:8081"~~
-REACT_APP_API_DOMAIN = "<heroku_backend_url>"
+This creates a configuration variable called REQUEST_URL which maps to the value of our backend url. Now we have to go to our React application and 
+replace where we write <strong> REACT_APP_API_DOMAIN </strong> with <strong> process.env.REQUEST_URL </strong>
+
+Therefore, everytime we make a request, our React application will look for our current processes configuration variable called REQUEST_URL, which Heroku 
+stored, and make requests using that URL.
 
 Now that we changed our API request URL we have to re-deploy our frontend with this modified changes. To do this,
 we simply navigate back to our frontend project directory and type in:
@@ -229,12 +269,8 @@ PostgreSQL database. To do this we run the command:
 heroku pg:psql
 ```
 This will start a terminal connected to Heroku's Postgres database that is provisioned to us. You should now see that our terminal says that we have connected to our PostgreSQL database server. 
-Now we are running PostgreSQL commands directly on the database server. To leave our database server we run the command:
-```shell
-\q
-``` 
-This will return us back to our backend project directory.
-
+Now we are running PostgreSQL commands directly on the database server.
+ 
 To run the migrations scripts we run the command:
 ```shell 
 \i <file_name>.sql
@@ -247,6 +283,12 @@ an empty database. To run our seeder script we navigate to our seeder folder whi
 ```shell 
 \i <file_name>.sql
 ```
+ To leave our database server we run the command:
+```shell
+\q
+``` 
+This will return us back to our backend project directory.
+
  
 Once we ran both our migration and seeder scripts, we successfully deployed and migrated
 our database to Heroku. We now have a fully functional and complete web application that is accessible by anyone.
